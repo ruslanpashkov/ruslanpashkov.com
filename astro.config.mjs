@@ -11,5 +11,8 @@ export default defineConfig({
 		Compress(),
 	],
 	output: 'static',
+	redirects: {
+		'/feed': '/rss.xml',
+	},
 	site: 'https://ruslanpashkov.com',
 });
