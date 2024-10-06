@@ -125,20 +125,20 @@ const generator = Astro.generator;
 
 		<meta
 			content={colors.light}
+			id="theme-color-light"
 			media="(prefers-color-scheme: light)"
 			name="theme-color"
-			id="theme-color-light"
 		/>
 		<meta
 			content={colors.dark}
+			id="theme-color-dark"
 			media="(prefers-color-scheme: dark)"
 			name="theme-color"
-			id="theme-color-dark"
 		/>
 
-		<style media="(prefers-color-scheme: light)" set:html={lightStyles} id="style-media-light"
+		<style id="style-media-light" media="(prefers-color-scheme: light)" set:html={lightStyles}
 		></style>
-		<style media="(prefers-color-scheme: dark)" set:html={darkStyles} id="style-media-dark"
+		<style id="style-media-dark" media="(prefers-color-scheme: dark)" set:html={darkStyles}
 		></style>
 
 		<ViewTransitions />

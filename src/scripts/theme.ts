@@ -10,10 +10,10 @@ let refs: ReturnType<typeof getRefs>;
 let darkMediaQuery: MediaQueryList;
 
 const getRefs = () => ({
-	lightStyles: document.getElementById('style-media-light') as HTMLStyleElement,
 	darkStyles: document.getElementById('style-media-dark') as HTMLStyleElement,
-	lightThemeColor: document.getElementById('theme-color-light') as HTMLMetaElement,
 	darkThemeColor: document.getElementById('theme-color-dark') as HTMLMetaElement,
+	lightStyles: document.getElementById('style-media-light') as HTMLStyleElement,
+	lightThemeColor: document.getElementById('theme-color-light') as HTMLMetaElement,
 	themeToggler: document.getElementById('theme-toggler') as HTMLButtonElement,
 });
 

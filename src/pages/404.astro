@@ -8,9 +8,9 @@ import { Icon } from 'astro-icon/components';
 const title = getPageTitle('404');
 
 const emailDetails = {
+	body: `I was trying to access the page at: ${Astro.url.href}`,
 	recipient: global.email,
 	subject: 'Page not found',
-	body: `I was trying to access the page at: ${Astro.url.href}`,
 };
 
 const mailToUrl =
@@ -41,8 +41,8 @@ const githubIssueUrl = `https://github.com/0o22/ruslanpashkov.com/issues`;
 					<a class="not-found__contact" href={mailToUrl}>contact me</a>.
 				</p>
 
-				<a href="/" class="not-found__back hover">
-					<Icon name="arrow-short" width={28} aria-hidden="true" />
+				<a class="not-found__back hover" href="/">
+					<Icon aria-hidden="true" name="arrow-short" width={28} />
 
 					Go back to the homepage
 				</a>
@@ -52,9 +52,9 @@ const githubIssueUrl = `https://github.com/0o22/ruslanpashkov.com/issues`;
 
 					<a
 						class="not-found__contact"
+						href={githubIssueUrl}
 						rel="noopener noreferrer"
 						target="_blank"
-						href={githubIssueUrl}
 					>
 						report this issue on GitHub
 					</a>

@@ -2,11 +2,11 @@ import { createFocusTrap } from 'focus-trap';
 
 const getRefs = () => ({
 	body: document.getElementById('body') as HTMLElement,
+	feed: document.getElementById('feed') as HTMLLinkElement,
 	header: document.getElementById('header') as HTMLElement,
 	menu: document.getElementById('menu') as HTMLElement,
-	navigation: document.getElementById('navigation') as HTMLElement,
-	feed: document.getElementById('feed') as HTMLLinkElement,
 	menuToggler: document.getElementById('menu-toggler') as HTMLButtonElement,
+	navigation: document.getElementById('navigation') as HTMLElement,
 });
 
 let refs: ReturnType<typeof getRefs>;

@@ -3,18 +3,18 @@ import Menu from '@/components/Menu.astro';
 import { Icon } from 'astro-icon/components';
 ---
 
-<header id="header" class="grain header header--animation">
+<header class="grain header header--animation" id="header">
 	<div class="header__content container">
 		<a aria-label="Home" class="header__logo" href="/">
 			<Icon aria-hidden="true" height={32} name="logo" width={32} />
 		</a>
 
 		<button
-			id="menu-toggler"
 			aria-controls="menu"
 			aria-expanded="false"
 			aria-label="Toggle navigation menu"
 			class="menu-toggler"
+			id="menu-toggler"
 			type="button"
 		>
 			<span class="menu-toggler__icon"></span>

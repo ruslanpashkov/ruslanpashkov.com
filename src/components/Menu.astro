@@ -6,7 +6,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <div class="grain grain--menu menu menu--closed" id="menu">
-	<nav id="navigation" aria-label="Main navigation" class="menu__navigation" role="navigation">
+	<nav aria-label="Main navigation" class="menu__navigation" id="navigation" role="navigation">
 		<ul class="menu__list">
 			{
 				menu.map(({ title, url }) => {
@@ -34,9 +34,9 @@ const currentPath = Astro.url.pathname;
 
 	<a
 		aria-label="RSS Feed (opens in a new tab)"
-		id="feed"
 		class="action menu__feed"
 		href="/rss.xml"
+		id="feed"
 		rel="noopener noreferrer"
 		target="_blank"
 	>
@@ -47,7 +47,7 @@ const currentPath = Astro.url.pathname;
 		<span class="action__label">RSS</span>
 	</a>
 
-	<button id="theme-toggler" class="action menu__theme-toggler" type="button">
+	<button class="action menu__theme-toggler" id="theme-toggler" type="button">
 		<span class="action__icon">
 			<Icon aria-hidden="true" name="sun" size={22} />
 		</span>
