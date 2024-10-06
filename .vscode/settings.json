@@ -1,20 +1,5 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["css", "postcss", "astro"],
-  "eslint.validate": ["javascript", "typescript", "astro"],
-  "cSpell.words": [
-    "astro",
-    "astrojs",
-    "changefreq",
-    "Fastify",
-    "fullscreen",
-    "Pashkov",
-    "playform",
-    "Ruslan",
-    "ruslanpashkov",
-    "stylelint",
-    "tsconfigs",
-    "tseslint",
-    "Wiew"
-  ]
+  "eslint.validate": ["javascript", "typescript", "astro"]
 }
