@@ -17,13 +17,15 @@ import { Image } from 'astro:assets';
 			class="hero__image"
 			decoding="async"
 			loading="eager"
+			quality="max"
 			sizes={`
-				(max-width: 767px) 720px,
-				(max-width: 1023px) 1080px,
+				(max-width: 767px) 320px,
+				(max-width: 1023px) 400px,
+				(max-width: 1535px) 440px,
 				${myImage.width}px
 			`}
 			src={myImage}
-			widths={[720, 1080, myImage.width]}
+			widths={[320, 400, 440, myImage.width]}
 		/>
 
 		<span class="hero__image-glow">

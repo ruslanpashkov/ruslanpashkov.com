@@ -8,13 +8,7 @@ export default defineConfig({
 	integrations: [
 		sitemap({ changefreq: 'weekly' }),
 		icon({ iconDir: 'src/assets/svg' }),
-		Compress({
-			// HTML: false,
-			CSS: false,
-			Image: false,
-			JavaScript: false,
-			SVG: false,
-		}),
+		Compress(),
 	],
 	output: 'static',
 	site: 'https://ruslanpashkov.com',
