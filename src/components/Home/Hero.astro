@@ -3,6 +3,15 @@ import myImage from '@/assets/img/me.png';
 import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 import { Image } from 'astro:assets';
+
+const sizeConditions = [
+	'(max-width: 767px) 640px',
+	'(max-width: 1023px) 800px',
+	'(max-width: 1535px) 880px',
+	`${myImage.width}px`,
+];
+
+const imageSizeRules = sizeConditions.join(', ');
 ---
 
 <header class="hero">
@@ -18,12 +27,7 @@ import { Image } from 'astro:assets';
 			decoding="async"
 			loading="eager"
 			quality="max"
-			sizes={`
-				(max-width: 767px) 640px,
-				(max-width: 1023px) 800px,
-				(max-width: 1535px) 880px,
-				${myImage.width}px
-			`}
+			sizes={imageSizeRules}
 			src={myImage}
 			widths={[640, 800, 880, myImage.width]}
 		/>
