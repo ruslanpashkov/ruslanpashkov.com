@@ -11,4 +11,9 @@ export const credits: Link[] = [
 		title: 'Powered by Astro',
 		url: 'https://astro.build',
 	},
+	{
+		label: 'Netlify',
+		title: 'Hosted on Netlify',
+		url: 'https://www.netlify.com',
+	},
 ];
