@@ -1,0 +1,52 @@
+---
+import type { Link } from '@/types/Link';
+
+interface Props {
+	credits: Link[];
+}
+
+const { credits } = Astro.props;
+---
+
+<ul class="credit-list">
+	{
+		credits.map(({ label, title, url }) => (
+			<li class="credit-list__item">
+				<a
+					aria-label={label && `Visit ${label}`}
+					class="credit-list__link hover"
+					href={url}
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					{title}
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.credit-list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		@media (width >= 768px) {
+			gap: 12px;
+			align-items: end;
+		}
+	}
+
+	.credit-list__item {
+		max-width: max-content;
+	}
+
+	.credit-list__link {
+		text-decoration: underline;
+
+		@media (width >= 768px) {
+			font-size: 1.25rem;
+		}
+	}
+</style>

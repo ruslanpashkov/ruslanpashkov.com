@@ -1,0 +1,210 @@
+---
+import type { Article } from '@/types/Article';
+import type { Thing, WithContext } from 'schema-dts';
+
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import SkipToContent from '@/components/SkipToContent.astro';
+import { colors } from '@/constants/colors';
+import { global } from '@/data/global';
+import darkStyles from '@/styles/dark.css?raw';
+import '@/styles/global.css';
+import lightStyles from '@/styles/light.css?raw';
+import { ViewTransitions } from 'astro:transitions';
+
+interface DefaultProps {
+	cover: `/${string}`;
+	description: string;
+	schemas?: WithContext<Thing>[];
+	title: string;
+}
+
+interface ArticleProps extends DefaultProps {
+	article: Article;
+	type: 'article';
+}
+
+interface WebsiteProps extends DefaultProps {
+	type: 'website';
+}
+
+type Props = ArticleProps | WebsiteProps;
+
+const props = Astro.props;
+const { cover, description, schemas = [], title, type } = props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const previewImageURL = new URL('/images/previews' + cover, Astro.site);
+const rssURL = new URL('/rss.xml', Astro.site);
+
+const generator = Astro.generator;
+---
+
+<!doctype html>
+<html class="page" lang="en" prefix="og: http://ogp.me/ns#">
+	<head>
+		<meta charset="UTF-8" />
+
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+
+		<link
+			as="font"
+			crossorigin
+			href="/fonts/Montserrat-Regular.woff2"
+			rel="preload"
+			type="font/woff2"
+		/>
+		<link
+			as="font"
+			crossorigin
+			href="/fonts/FiraCode-Light.woff2"
+			rel="preload"
+			type="font/woff2"
+		/>
+
+		<link href="/favicon.ico" rel="icon" sizes="48x48" />
+		<link href="/icon.svg" rel="icon" type="image/svg+xml" />
+		<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
+		<link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed" />
+
+		<link href="/manifest.webmanifest" rel="manifest" />
+
+		<link href="/sitemap-index.xml" rel="sitemap" />
+
+		<link href={rssURL} rel="alternate" title={global.author} type="application/rss+xml" />
+
+		<link href={canonicalURL} rel="canonical" />
+
+		<title>{title}</title>
+
+		<meta content={title} name="title" />
+		<meta content={description} name="description" />
+
+		<meta content="yes" name="mobile-web-app-capable" />
+		<meta content={global.author} name="application-name" />
+
+		<meta content={global.author} name="author" />
+
+		<meta content={generator} name="generator" />
+
+		<meta content="index,follow" name="robots" />
+		<meta content="max-snippet:-1" name="robots" />
+		<meta content="max-image-preview:large" name="robots" />
+		<meta content="max-video-preview:0" name="robots" />
+
+		<meta content="en_US" property="og:locale" />
+		<meta content={global.author} property="og:site_name" />
+		<meta content={type} property="og:type" />
+		<meta content={title} property="og:title" />
+		<meta content={description} property="og:description" />
+		<meta content={canonicalURL} property="og:url" />
+		<meta content={previewImageURL} property="og:image" />
+		<meta content="image/png" property="og:image:type" />
+		<meta content="1200" property="og:image:width" />
+		<meta content="630" property="og:image:height" />
+
+		<meta content="summary_large_image" property="twitter:card" />
+		<meta content={title} property="twitter:title" />
+		<meta content={description} property="twitter:description" />
+		<meta content={canonicalURL} property="twitter:url" />
+		<meta content={previewImageURL} property="twitter:image" />
+
+		{
+			type === 'article' && (
+				<>
+					<meta content={global.author} property="article:author" />
+					<meta content={props.article.data.pubDate} property="article:published_time" />
+					<meta content={props.article.data.topic} property="article:section" />
+
+					{props.article.data.categories.map((category) => (
+						<meta content={category} property="article:tag" />
+					))}
+				</>
+			)
+		}
+
+		<meta
+			content={colors.light}
+			media="(prefers-color-scheme: light)"
+			name="theme-color"
+			id="theme-color-light"
+		/>
+		<meta
+			content={colors.dark}
+			media="(prefers-color-scheme: dark)"
+			name="theme-color"
+			id="theme-color-dark"
+		/>
+
+		<style media="(prefers-color-scheme: light)" set:html={lightStyles} id="style-media-light"
+		></style>
+		<style media="(prefers-color-scheme: dark)" set:html={darkStyles} id="style-media-dark"
+		></style>
+
+		<ViewTransitions />
+
+		{
+			schemas.length > 0 &&
+				schemas.map((schema) => (
+					<script
+						is:inline
+						set:html={JSON.stringify(schema)}
+						type="application/ld+json"
+					/>
+				))
+		}
+	</head>
+
+	<body class="grain page__body" id="body">
+		<SkipToContent />
+
+		<Header transition:persist />
+
+		<main class="page__content" id="content">
+			<slot />
+		</main>
+
+		<Footer transition:persist />
+	</body>
+</html>
+
+<style>
+	.page {
+		font-family: Montserrat, sans-serif;
+		font-size: 16px;
+		line-height: 1.5;
+		color: var(--color-contrast);
+
+		@media (prefers-reduced-motion: no-preference) {
+			scroll-behavior: smooth;
+			transition: color var(--motion-duration) ease-in-out;
+		}
+	}
+
+	.page__body {
+		overflow-x: hidden;
+		display: flex;
+		flex-direction: column;
+		min-height: 100dvh;
+		overflow-wrap: anywhere;
+		background-color: var(--color-primary);
+	}
+
+	.page__body--clip {
+		overflow: hidden;
+	}
+
+	.page__content {
+		overflow-x: clip;
+		flex: 1;
+		margin-bottom: 60px;
+
+		@media (width >= 768px) {
+			margin-bottom: 80px;
+		}
+
+		@media (width >= 1024px) {
+			margin-bottom: 100px;
+		}
+	}
+</style>

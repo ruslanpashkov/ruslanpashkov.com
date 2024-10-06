@@ -1,0 +1,103 @@
+---
+import type { Link } from '@/types/Link';
+
+import { slugify } from '@/utils/slugify';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	counter?: number;
+	link?: Link;
+	title: string;
+}
+
+const { counter, link, title } = Astro.props;
+
+const slug = slugify(title);
+---
+
+<section aria-labelledby={slug} class="section">
+	<header class="section__header">
+		<div class="section__title-container">
+			<h2 class="section__title" id={slug}>
+				{title}
+
+				{
+					counter && (
+						<span class="section__counter">
+							{counter}
+
+							<span class="sr-only">in total</span>
+						</span>
+					)
+				}
+			</h2>
+
+			{
+				link && (
+					<a aria-label={link.label} class="section__link" href={link.url}>
+						{link.title}
+
+						<Icon
+							aria-hidden="true"
+							class="section__navigation-icon"
+							name="arrow-default"
+							width={40}
+						/>
+					</a>
+				)
+			}
+		</div>
+
+		<div class="section__divider" role="presentation"></div>
+	</header>
+
+	<slot />
+</section>
+
+<style>
+	.section {
+		position: relative;
+	}
+
+	.section__header {
+		margin-bottom: 40px;
+	}
+
+	.section__title-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		align-items: end;
+		justify-content: space-between;
+		margin-bottom: 12px;
+	}
+
+	.section__title {
+		font-size: 2.25rem;
+
+		@media (width >= 768px) {
+			font-size: 2.5rem;
+		}
+	}
+
+	.section__counter {
+		font-size: 1.25rem;
+		line-height: 2.25;
+		vertical-align: top;
+	}
+
+	.section__link {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+	}
+
+	.section__navigation-icon {
+		min-width: max-content;
+	}
+
+	.section__divider {
+		height: 1px;
+		background-color: var(--color-contrast);
+	}
+</style>

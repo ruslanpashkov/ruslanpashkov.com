@@ -1,0 +1,111 @@
+---
+import type { Project } from '@/types/Project';
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<ul class="project-list">
+	{
+		projects.map(({ tags, title, url }) => (
+			<li>
+				<article class="card project-card">
+					<a
+						aria-label={`Visit project: ${title}`}
+						class="project-card__link"
+						draggable="false"
+						href={url}
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						<h3 class="project-card__title">
+							{title}
+
+							<Icon
+								aria-hidden="true"
+								class="project-card__navigation-icon"
+								name="arrow-default"
+								width={40}
+							/>
+						</h3>
+					</a>
+
+					<ul class="project-tags">
+						{tags.map((tag) => (
+							<li class="project-tags__item">{tag}</li>
+						))}
+					</ul>
+				</article>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.project-list {
+		--column-size: minmax(0, 1fr);
+
+		display: grid;
+		grid-template-columns: repeat(1, var(--column-size));
+		gap: 20px;
+
+		@media (width >= 1024px) {
+			grid-template-columns: repeat(2, var(--column-size));
+		}
+
+		@media (width >= 1240px) {
+			grid-template-columns: repeat(3, var(--column-size));
+		}
+	}
+
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		height: 100%;
+
+		&:focus-within {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
+	}
+
+	.project-card__link {
+		outline: none;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+		}
+	}
+
+	.project-card__title {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		font-size: 1.5rem;
+	}
+
+	.project-card__navigation-icon {
+		min-width: max-content;
+	}
+
+	.project-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: start;
+	}
+
+	.project-tags__item {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+</style>

@@ -1,0 +1,48 @@
+---
+import { copyright } from '@/data/copyright';
+---
+
+<footer class="footer">
+	<div class="container footer__content">
+		<a class="footer__back-to-top" href="#body">Back to top</a>
+
+		<p class="footer__copyright">{copyright}</p>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		display: flex;
+		justify-content: center;
+		justify-items: center;
+		padding-block: 20px;
+	}
+
+	.footer__content {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.footer__back-to-top {
+		align-self: end;
+		text-decoration: underline;
+
+		@media (width >= 1024px) {
+			position: absolute;
+			right: 20px;
+			align-self: auto;
+		}
+	}
+
+	.footer__copyright {
+		text-align: center;
+		text-wrap: balance;
+
+		@media (width >= 768px) {
+			font-size: 1.25rem;
+		}
+	}
+</style>

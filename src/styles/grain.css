@@ -1,0 +1,22 @@
+.grain {
+	--grain-effect: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj48ZmlsdGVyIGlkPSJncmFpbnkiPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iMC42NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZ3JhaW55KSIgLz48L3N2Zz4=");
+
+	position: relative;
+
+	&::before {
+		pointer-events: none;
+		content: "";
+		position: absolute;
+		inset: 0;
+		opacity: 0.1;
+		background-image: var(--grain-effect);
+		background-repeat: repeat;
+		background-size: 400px;
+	}
+}
+
+.grain--menu::before {
+	@media (width >= 1024px) {
+		content: none;
+	}
+}

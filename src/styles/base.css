@@ -1,0 +1,26 @@
+:root {
+	/* Z-Indexes */
+	--z-index-glow: -1;
+	--z-index-menu: 1;
+	--z-index-header: 3;
+	--z-index-skip-to-content: 4;
+
+	/* Sizes */
+	--container-width: 1440px;
+	--header-min-height: 60px;
+	--header-max-height: 80px;
+
+	/* Timings */
+	--motion-duration: 0.3s;
+	--highlight-duration: 0.15s;
+
+	/* Colors */
+	--color-white: 99.99% 0 0;
+	--color-timberwolf: 85.45% 0 0;
+	--color-cadet-gray: 70.58% 0 0;
+	--color-dim-gray: 54.52% 0 0;
+	--color-onyx: 37.53% 0 0;
+	--color-night: 18.22% 0 0;
+	--color-mindaro: 93.72% 0.1729 126.6;
+	--color-rebecca-purple: 42.11% 0.1579 293.85;
+}

@@ -1,0 +1,51 @@
+{
+  "private": true,
+  "type": "module",
+  "browserslist": [
+    "last 2 version",
+    "not dead"
+  ],
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint:eslint": "eslint",
+    "lint:stylelint": "stylelint \"**/*.{css,astro}\"",
+    "lint": "bun run lint:eslint && bun run lint:stylelint",
+    "format": "prettier -w ."
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.3",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "@eslint/js": "^9.9.1",
+    "@playform/compress": "^0.1.1",
+    "@types/eslint__js": "^8.42.3",
+    "@typescript-eslint/parser": "8.4.0",
+    "astro": "4.15.9",
+    "astro-embed": "^0.7.2",
+    "astro-eslint-parser": "^1.0.2",
+    "astro-icon": "^1.1.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.1",
+    "eslint-plugin-astro": "^1.2.3",
+    "eslint-plugin-jsx-a11y": "6.10.0",
+    "eslint-plugin-perfectionist": "^3.7.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "focus-trap": "^7.5.4",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.47",
+    "postcss-preset-env": "^10.0.2",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "schema-dts": "^1.1.2",
+    "stylelint": "^16.9.0",
+    "stylelint-config-clean-order": "^6.1.0",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-prettier": "^5.0.2",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "8.4.0"
+  }
+}

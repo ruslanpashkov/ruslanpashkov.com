@@ -1,0 +1,29 @@
+<span class="glow"></span>
+
+<style>
+	.glow {
+		--glow-sm: 300px;
+		--glow-md: 350px;
+		--glow-lg: 400px;
+
+		content: '';
+		position: absolute;
+		transform: translate(-50%, -50%);
+		width: var(--glow-sm);
+		height: var(--glow-sm);
+		background-color: var(--color-accent);
+		filter: blur(100px);
+		border-radius: 50%;
+		box-shadow: 0 0 20px 20px var(--color-accent);
+
+		@media (width >= 768px) {
+			width: var(--glow-md);
+			height: var(--glow-md);
+		}
+
+		@media (width >= 1024px) {
+			width: var(--glow-lg);
+			height: var(--glow-lg);
+		}
+	}
+</style>

@@ -1,0 +1,156 @@
+---
+import Glow from '@/components/Glow.astro';
+import { global } from '@/data/global';
+import Layout from '@/layouts/Layout.astro';
+import { getPageTitle } from '@/utils/getPageTitle';
+import { Icon } from 'astro-icon/components';
+
+const title = getPageTitle('404');
+
+const emailDetails = {
+	recipient: global.email,
+	subject: 'Page not found',
+	body: `I was trying to access the page at: ${Astro.url.href}`,
+};
+
+const mailToUrl =
+	`mailto:${emailDetails.recipient}?` +
+	`subject=${encodeURIComponent(emailDetails.subject)}&` +
+	`body=${encodeURIComponent(emailDetails.body)}`;
+const githubIssueUrl = `https://github.com/0o22/ruslanpashkov.com/issues`;
+---
+
+<Layout cover="/404.png" description="Page not found" title={title} type="website">
+	<div class="layout container">
+		<section class="not-found">
+			<div class="not-found__title-container">
+				<h1 class="not-found__title">Page not found</h1>
+
+				<div class="not-found__divider" role="presentation"></div>
+			</div>
+
+			<div class="not-found__content">
+				<h2 class="not-found__subtitle">
+					Sorry, the page you are looking for does not exist.
+				</h2>
+
+				<p class="not-found__description">
+					Please check the URL in the address bar and try again. If you believe this is an
+					error, please
+
+					<a class="not-found__contact" href={mailToUrl}>contact me</a>.
+				</p>
+
+				<a href="/" class="not-found__back hover">
+					<Icon name="arrow-short" width={28} aria-hidden="true" />
+
+					Go back to the homepage
+				</a>
+
+				<p class="not-found__issue">
+					You can also
+
+					<a
+						class="not-found__contact"
+						rel="noopener noreferrer"
+						target="_blank"
+						href={githubIssueUrl}
+					>
+						report this issue on GitHub
+					</a>
+
+					— because clearly the website forgot how links work.
+				</p>
+			</div>
+		</section>
+
+		<span class="glow-not-found">
+			<Glow />
+		</span>
+	</div>
+</Layout>
+
+<style>
+	.not-found {
+		padding-block: 60px;
+
+		@media (width >= 768px) {
+			padding-block: 80px;
+		}
+
+		@media (width >= 1024px) {
+			padding-block: 100px;
+		}
+	}
+
+	.not-found__title-container {
+		margin-bottom: 40px;
+	}
+
+	.not-found__title {
+		margin-bottom: 12px;
+		font-size: 2.25rem;
+
+		@media (width >= 768px) {
+			font-size: 3rem;
+		}
+
+		@media (width >= 1024px) {
+			font-size: 4.5rem;
+		}
+	}
+
+	.not-found__divider {
+		height: 1px;
+		background-color: var(--color-contrast);
+	}
+
+	.not-found__content {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+
+		@media (width >= 768px) {
+			gap: 24px;
+		}
+
+		@media (width >= 1024px) {
+			gap: 20px;
+		}
+	}
+
+	.not-found__subtitle {
+		font-size: 1.5rem;
+	}
+
+	.not-found__description {
+		@media (width >= 768px) {
+			font-size: 1.125rem;
+		}
+	}
+
+	.not-found__contact {
+		text-decoration: underline;
+	}
+
+	.not-found__back {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		width: max-content;
+		font-size: 1.125rem;
+		text-decoration: underline;
+	}
+
+	[data-icon='arrow-short'] {
+		transform: rotate(180deg);
+	}
+
+	.glow-not-found {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		bottom: 0;
+		width: 100vw;
+		margin-left: calc(50% + 50vw);
+	}
+</style>

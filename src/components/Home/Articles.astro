@@ -1,0 +1,100 @@
+---
+import type { Article } from '@/types/Article';
+
+import { getFormattedDate } from '@/utils/getFormattedDate';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<ul class="article-list">
+	{
+		articles.map(({ data, slug }) => (
+			<li>
+				<article class="card article-card">
+					<time class="article-card__date" datetime={data.pubDate}>
+						{getFormattedDate(data.pubDate)}
+					</time>
+
+					<h3 class="article-card__title">{data.title}</h3>
+
+					<p>{data.description}</p>
+
+					<a
+						aria-label={`Read full article: ${data.title}`}
+						class="article-card__link"
+						draggable="false"
+						href={`/blog/${slug}`}
+					>
+						More
+						<Icon
+							aria-hidden="true"
+							class="article-card__navigation-icon"
+							name="arrow-short"
+							width={20}
+						/>
+					</a>
+				</article>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.article-list {
+		--column-size: minmax(0, 1fr);
+
+		display: grid;
+		grid-template-columns: repeat(1, var(--column-size));
+		gap: 20px;
+
+		@media (width >= 1024px) {
+			grid-template-columns: repeat(2, var(--column-size));
+		}
+
+		@media (width >= 1240px) {
+			grid-template-columns: repeat(3, var(--column-size));
+		}
+	}
+
+	.article-card {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		height: 100%;
+
+		&:focus-within {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
+	}
+
+	.article-card__date {
+		font-size: 0.875rem;
+	}
+
+	.article-card__title {
+		font-size: 1.5rem;
+	}
+
+	.article-card__link {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		outline: none;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+		}
+	}
+
+	.article-card__navigation-icon {
+		min-width: max-content;
+	}
+</style>

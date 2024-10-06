@@ -1,0 +1,168 @@
+---
+import { menu } from '@/data/menu';
+import { Icon } from 'astro-icon/components';
+
+const currentPath = Astro.url.pathname;
+---
+
+<div class="grain grain--menu menu menu--closed" id="menu">
+	<nav id="navigation" aria-label="Main navigation" class="menu__navigation" role="navigation">
+		<ul class="menu__list">
+			{
+				menu.map(({ title, url }) => {
+					const isSelected = url === currentPath;
+
+					return (
+						<li>
+							<a
+								aria-current={isSelected ? 'page' : null}
+								class:list={[
+									'menu__link',
+									{ 'menu__link--selected': isSelected },
+									'hover',
+								]}
+								href={url}
+							>
+								{title}
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</nav>
+
+	<a
+		aria-label="RSS Feed (opens in a new tab)"
+		id="feed"
+		class="action menu__feed"
+		href="/rss.xml"
+		rel="noopener noreferrer"
+		target="_blank"
+	>
+		<span class="action__icon">
+			<Icon aria-hidden="true" name="rss" size={16} />
+		</span>
+
+		<span class="action__label">RSS</span>
+	</a>
+
+	<button id="theme-toggler" class="action menu__theme-toggler" type="button">
+		<span class="action__icon">
+			<Icon aria-hidden="true" name="sun" size={22} />
+		</span>
+
+		<span class="action__label">Light</span>
+	</button>
+</div>
+
+<style>
+	.menu {
+		@media (width < 1024px) {
+			position: fixed;
+			z-index: var(--z-index-menu);
+			inset: 0;
+			transform: translateX(-100%);
+			display: grid;
+			grid-template-rows:
+				min-content
+				1fr
+				min-content;
+			margin-top: var(--header-min-height);
+			padding: 20px;
+			background-color: var(--color-primary);
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: transform var(--motion-duration) ease-in-out;
+			}
+		}
+
+		@media (width >= 1024px) {
+			display: grid;
+			grid-template-columns:
+				1fr
+				max-content
+				max-content;
+			gap: 40px;
+			width: 100%;
+		}
+	}
+
+	@media (width < 1024px) {
+		.menu--closed {
+			display: none;
+		}
+
+		.menu--open {
+			transform: translateX(0);
+		}
+	}
+
+	.menu__navigation {
+		display: flex;
+		justify-content: center;
+
+		@media (width >= 1024px) {
+			justify-content: start;
+		}
+	}
+
+	.menu__list {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		place-self: center;
+		align-items: center;
+
+		@media (width >= 1024px) {
+			flex-direction: row;
+		}
+	}
+
+	.menu__link {
+		padding: 8px;
+		font-size: 1.25rem;
+	}
+
+	.menu__link--selected {
+		color: var(--color-contrast);
+	}
+
+	.menu__feed {
+		justify-self: end;
+		order: -1;
+
+		@media (width >= 1024px) {
+			order: 0;
+		}
+	}
+
+	.menu__theme-toggler {
+		justify-content: center;
+		justify-self: center;
+		min-width: 125px;
+	}
+
+	.action {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		padding: 8px;
+	}
+
+	.action__icon {
+		--icon-size: 24px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+
+	.action__label {
+		font-size: 1.25rem;
+	}
+</style>
+
+<script src="../scripts/theme.ts"></script>

@@ -1,0 +1,149 @@
+---
+import Menu from '@/components/Menu.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<header id="header" class="grain header header--animation">
+	<div class="header__content container">
+		<a aria-label="Home" class="header__logo" href="/">
+			<Icon aria-hidden="true" height={32} name="logo" width={32} />
+		</a>
+
+		<button
+			id="menu-toggler"
+			aria-controls="menu"
+			aria-expanded="false"
+			aria-label="Toggle navigation menu"
+			class="menu-toggler"
+			type="button"
+		>
+			<span class="menu-toggler__icon"></span>
+		</button>
+
+		<Menu />
+	</div>
+</header>
+
+<style>
+	.header {
+		position: sticky;
+		z-index: var(--z-index-header);
+		top: 0;
+		display: flex;
+		align-items: center;
+		min-height: var(--header-min-height);
+		background-color: var(--color-primary);
+		border-bottom: 1px solid var(--color-secondary);
+
+		@media (width >= 1024px) {
+			min-height: var(--header-max-height);
+		}
+	}
+
+	@supports (animation-timeline: auto) {
+		.header--animation {
+			--timing-function: linear;
+			--fill-mode: both;
+			--timeline: scroll();
+			--range: 0 100px;
+
+			animation-name: header-scroll;
+			animation-timing-function: var(--timing-function);
+			animation-fill-mode: var(--fill-mode);
+			animation-timeline: var(--timeline);
+			animation-range: var(--range);
+
+			&::before {
+				animation-name: grain-scroll;
+				animation-timing-function: var(--timing-function);
+				animation-fill-mode: var(--fill-mode);
+				animation-timeline: var(--timeline);
+				animation-range: var(--range);
+			}
+		}
+	}
+
+	.header__content {
+		display: flex;
+		gap: 60px;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.header__logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px;
+	}
+
+	.menu-toggler {
+		--icon-size: 48px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--icon-size);
+		height: var(--icon-size);
+		padding: 8px;
+
+		@media (width >= 1024px) {
+			display: none;
+		}
+	}
+
+	.menu-toggler__icon {
+		--line-width: 24px;
+		--line-height: 2px;
+		--line-border-radius: 2px;
+
+		position: relative;
+		width: var(--line-width);
+		height: var(--line-height);
+		background-color: var(--color-contrast);
+		border-radius: var(--line-border-radius);
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			inset-inline: 0;
+			width: var(--line-width);
+			height: var(--line-height);
+			background-color: var(--color-contrast);
+			border-radius: var(--line-border-radius);
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: transform var(--motion-duration);
+			}
+		}
+
+		&::before {
+			top: -6px;
+		}
+
+		&::after {
+			top: 6px;
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: background-color var(--motion-duration);
+		}
+	}
+
+	.menu-toggler[aria-expanded='true'] {
+		& .menu-toggler__icon {
+			background-color: transparent;
+		}
+
+		& .menu-toggler__icon::before {
+			transform: translateY(6px) rotate(45deg);
+		}
+
+		& .menu-toggler__icon::after {
+			transform: translateY(-6px) rotate(-45deg);
+		}
+	}
+</style>
+
+<script src="../scripts/menu.ts"></script>

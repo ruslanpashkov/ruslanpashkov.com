@@ -1,0 +1,109 @@
+---
+import Glow from '@/components/Glow.astro';
+import Articles from '@/components/Home/Articles.astro';
+import Contacts from '@/components/Home/Contacts.astro';
+import Credits from '@/components/Home/Credits.astro';
+import Hero from '@/components/Home/Hero.astro';
+import Projects from '@/components/Home/Projects.astro';
+import Section from '@/components/Home/Section.astro';
+import { contacts } from '@/data/contacts';
+import { credits } from '@/data/credits';
+import { descriptions } from '@/data/descriptions';
+import { global } from '@/data/global';
+import { projects } from '@/data/projects';
+import Layout from '@/layouts/Layout.astro';
+import { getSortedArticles } from '@/utils/getSortedArticles';
+import { getCollection } from 'astro:content';
+
+const blog = await getCollection('blog');
+
+const articles = getSortedArticles(blog);
+---
+
+<Layout cover="/home.png" description={descriptions.home} title={global.author} type="website">
+	<div class="layout container">
+		<Hero />
+
+		{
+			articles.length > 0 && (
+				<Section
+					counter={articles.length}
+					link={{
+						label: 'View all articles',
+						title: 'View all',
+						url: '/blog',
+					}}
+					title="Blog"
+				>
+					<Articles articles={articles} />
+				</Section>
+			)
+		}
+
+		{
+			projects.length > 0 && (
+				<Section
+					counter={projects.length}
+					link={{
+						label: 'View all projects',
+						title: 'View all',
+						url: '/projects',
+					}}
+					title="Projects"
+				>
+					<span class="glow-projects">
+						<Glow />
+					</span>
+
+					<Projects projects={projects} />
+				</Section>
+			)
+		}
+
+		{
+			contacts.length > 0 && (
+				<Section title="Contacts">
+					<span class="glow-contacts">
+						<Glow />
+					</span>
+
+					<div class="details">
+						<Contacts contacts={contacts} />
+
+						<Credits credits={credits} />
+					</div>
+				</Section>
+			)
+		}
+	</div>
+</Layout>
+
+<style>
+	.glow-projects,
+	.glow-contacts {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		top: -300px;
+		width: 100vw;
+	}
+
+	.glow-projects {
+		margin-left: calc(50% - 50vw);
+	}
+
+	.glow-contacts {
+		margin-left: calc(50% + 50vw);
+	}
+
+	.details {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+
+		@media (width >= 768px) {
+			flex-direction: row;
+			align-items: end;
+			justify-content: space-between;
+		}
+	}
+</style>

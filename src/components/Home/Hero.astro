@@ -1,0 +1,126 @@
+---
+import myImage from '@/assets/img/me.png';
+import Glow from '@/components/Glow.astro';
+import { global } from '@/data/global';
+import { Image } from 'astro:assets';
+---
+
+<header class="hero">
+	<span class="hero__title-container">
+		<p class="hero__intro">Hi, I am</p>
+		<h1 class="hero__title">{global.author}</h1>
+	</span>
+
+	<div class="hero__image-container">
+		<Image
+			alt={`Portrait of ${global.author}`}
+			class="hero__image"
+			decoding="async"
+			loading="eager"
+			sizes={`
+				(max-width: 767px) 720px,
+				(max-width: 1023px) 1080px,
+				${myImage.width}px
+			`}
+			src={myImage}
+			widths={[720, 1080, myImage.width]}
+		/>
+
+		<span class="hero__image-glow">
+			<Glow />
+		</span>
+	</div>
+
+	<p class="hero__description">{global.about}</p>
+</header>
+
+<style>
+	.hero {
+		display: flex;
+		flex-direction: column;
+		gap: 60px;
+		padding-block: 40px;
+
+		@media (width >= 1024px) {
+			display: grid;
+			grid-template-areas:
+				'title image'
+				'description image';
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 8px;
+		}
+	}
+
+	.hero__title-container {
+		display: flex;
+		grid-area: title;
+		flex-direction: column;
+		justify-content: end;
+	}
+
+	.hero__intro {
+		font-size: 1.5rem;
+	}
+
+	.hero__title {
+		font-size: 2.25rem;
+
+		@media (width >= 768px) {
+			font-size: 3rem;
+		}
+
+		@media (width >= 1024px) {
+			font-size: 3.75rem;
+		}
+
+		@media (width >= 1240px) {
+			text-transform: uppercase;
+		}
+	}
+
+	.hero__image-container {
+		position: relative;
+		display: flex;
+		grid-area: image;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.hero__image {
+		width: 320px;
+		height: 400px;
+
+		@media (width >= 768px) {
+			width: 400px;
+			height: 500px;
+		}
+
+		@media (width >= 1024px) {
+			width: 440px;
+			height: 550px;
+		}
+	}
+
+	.hero__image-glow {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.hero__description {
+		grid-area: description;
+		font-family: 'Fira Code', monospace;
+		font-size: 1.125rem;
+		text-wrap: balance;
+
+		@media (width >= 768px) {
+			text-align: end;
+		}
+
+		@media (width >= 1024px) {
+			text-align: start;
+		}
+	}
+</style>
