@@ -1,7 +1,8 @@
 export const descriptions = {
-	about: 'Meet Ruslan Pashkov, a dedicated Software Engineer with a passion for JavaScript and music production. Learn about his professional journey, skills, and the experiences that shape his approach to creating cutting-edge web solutions.',
-	blog: "Dive into Ruslan Pashkov's blog for expert insights on software engineering, JavaScript tips and tricks, and the latest trends in web development. Enhance your coding skills and stay updated with industry best practices.",
-	home: "Welcome to Ruslan Pashkov's portfolio. Discover the work of a passionate Software Engineer and JavaScript enthusiast. Explore innovative projects, insightful blog posts, and learn about Ruslan's journey in the world of web development.",
+	about: 'Discover the journey, skills, and passion of a seasoned software engineer. Learn about my expertise and professional background.',
+	articles:
+		'Explore in-depth articles on software development, JavaScript best practices, and cutting-edge web technologies.',
+	home: 'Software Engineer, JavaScript enthusiast and Producer. Currently working at Wiew as a Lead Frontend Engineer.',
 	projects:
-		"Explore Ruslan Pashkov's diverse range of projects showcasing expertise in software engineering and JavaScript. From web applications to innovative tools, witness the fusion of creativity and technical prowess in action.",
+		'Browse a diverse portfolio of innovative software projects, showcasing problem-solving skills and technical expertise.',
 };
