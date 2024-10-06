@@ -10,9 +10,9 @@ export default defineConfig({
 		icon({ iconDir: 'src/assets/svg' }),
 		Compress({
 			// HTML: false,
-			// CSS: false,
-			// JavaScript: false,
+			CSS: false,
 			Image: false,
+			JavaScript: false,
 			SVG: false,
 		}),
 	],
