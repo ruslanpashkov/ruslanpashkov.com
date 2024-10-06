@@ -15,7 +15,7 @@ import Layout from '@/layouts/Layout.astro';
 import { getSortedArticles } from '@/utils/getSortedArticles';
 import { getCollection } from 'astro:content';
 
-const blog = (await getCollection('blog')) || [];
+const blog = await getCollection('blog');
 
 const articles = getSortedArticles(blog);
 ---
