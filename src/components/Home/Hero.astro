@@ -5,9 +5,9 @@ import { global } from '@/data/global';
 import { Image } from 'astro:assets';
 
 const sizeConditions = [
-	'(max-width: 767px) 640px',
-	'(max-width: 1023px) 800px',
-	'(max-width: 1535px) 880px',
+	'(max-width: 767px) 320px',
+	'(max-width: 1023px) 400px',
+	'(max-width: 1535px) 440px',
 	`${myImage.width}px`,
 ];
 
@@ -29,7 +29,7 @@ const imageSizeRules = sizeConditions.join(', ');
 			quality="max"
 			sizes={imageSizeRules}
 			src={myImage}
-			widths={[640, 800, 880, myImage.width]}
+			widths={[320, 400, 440, myImage.width]}
 		/>
 
 		<span class="hero__image-glow">
