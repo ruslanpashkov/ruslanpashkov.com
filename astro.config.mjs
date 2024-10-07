@@ -12,7 +12,10 @@ export default defineConfig({
 	],
 	output: 'static',
 	redirects: {
-		'/feed': '/rss.xml',
+		'/feed': {
+			destination: '/rss.xml',
+			status: 200,
+		},
 	},
 	site: 'https://ruslanpashkov.com',
 });
