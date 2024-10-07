@@ -44,6 +44,10 @@ const personSchema = getPersonSchema();
 					}}
 					title="Blog"
 				>
+					<span class="glow-blog">
+						<Glow />
+					</span>
+
 					<Articles articles={articles} />
 				</Section>
 			)
@@ -72,10 +76,6 @@ const personSchema = getPersonSchema();
 		{
 			contacts.length > 0 && (
 				<Section title="Contacts">
-					<span class="glow-contacts">
-						<Glow />
-					</span>
-
 					<div class="details">
 						<Contacts contacts={contacts} />
 
@@ -88,20 +88,20 @@ const personSchema = getPersonSchema();
 </Layout>
 
 <style>
-	.glow-projects,
-	.glow-contacts {
+	.glow-blog,
+	.glow-projects {
 		position: absolute;
 		z-index: var(--z-index-glow);
-		top: -300px;
+		bottom: 0;
 		width: 100vw;
+	}
+
+	.glow-blog {
+		margin-left: calc(50% + 50vw);
 	}
 
 	.glow-projects {
 		margin-left: calc(50% - 50vw);
-	}
-
-	.glow-contacts {
-		margin-left: calc(50% + 50vw);
 	}
 
 	.details {
