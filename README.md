@@ -1,7 +1,7 @@
 # Ruslan Pashkov's Website
 
-[![Lint](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)
-[![HTML Validate](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)
+[![Lint](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml)
+[![HTML Validate](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml)
 [![Last Commit](https://img.shields.io/github/last-commit/0o22/ruslanpashkov.com)](https://github.com/0o22/ruslanpashkov.com/commit/HEAD)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/902b1df2-a4b3-43c9-9f71-847966860a06/deploy-status)](https://app.netlify.com/sites/ruslanpashkov/deploys)
 
