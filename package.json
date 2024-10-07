@@ -13,7 +13,8 @@
     "lint:eslint": "eslint",
     "lint:stylelint": "stylelint \"**/*.{css,astro}\"",
     "lint": "bun run lint:eslint && bun run lint:stylelint",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "html-validate": "w3c-html-validator dist"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.3",
@@ -47,6 +48,7 @@
     "stylelint-config-standard": "^36.0.1",
     "stylelint-prettier": "^5.0.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "8.4.0"
+    "typescript-eslint": "8.4.0",
+    "w3c-html-validator": "^1.8.2"
   }
 }
