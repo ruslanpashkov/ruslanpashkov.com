@@ -9,11 +9,6 @@ export default defineConfig({
 	integrations: [
 		shield({
 			securityHeaders: {
-				contentSecurityPolicy: {
-					cspDirectives: {
-						'default-src': "'self'",
-					},
-				},
 				enableOnStaticPages: { provider: 'netlify' },
 			},
 		}),
