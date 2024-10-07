@@ -14,7 +14,7 @@ export default defineConfig({
 	redirects: {
 		'/feed': {
 			destination: '/rss.xml',
-			status: 200,
+			status: 308,
 		},
 	},
 	site: 'https://ruslanpashkov.com',
