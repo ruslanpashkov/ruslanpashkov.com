@@ -10,6 +10,9 @@
   "orientation": "natural",
   "theme_color": "#CCFF77",
   "background_color": "#FFFFFF",
+  "launch_handler": {
+    "client_mode": ["focus-existing", "auto"]
+  },
   "icons": [
     {
       "src": "/icon-192x192.png",
