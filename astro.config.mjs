@@ -11,7 +11,7 @@ export default defineConfig({
 			securityHeaders: {
 				contentSecurityPolicy: {
 					cspDirectives: {
-						'default-src': "'none'",
+						'default-src': "'self'",
 					},
 				},
 				enableOnStaticPages: { provider: 'netlify' },
