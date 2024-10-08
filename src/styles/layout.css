@@ -11,3 +11,11 @@
 		gap: 100px;
 	}
 }
+
+.layout--spaced {
+	padding-block: 20px;
+
+	@media (width >= 1024px) {
+		padding-block: 40px;
+	}
+}
