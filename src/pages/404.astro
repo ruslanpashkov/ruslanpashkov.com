@@ -13,11 +13,11 @@ const emailDetails = {
 	subject: 'Page not found',
 };
 
-const mailToUrl =
+const mailToURL =
 	`mailto:${emailDetails.recipient}?` +
 	`subject=${encodeURIComponent(emailDetails.subject)}&` +
 	`body=${encodeURIComponent(emailDetails.body)}`;
-const githubIssueUrl = 'https://github.com/0o22/ruslanpashkov.com/issues';
+const githubIssueURL = 'https://github.com/0o22/ruslanpashkov.com/issues';
 ---
 
 <Layout cover="/404.png" description="Page not found" title={title} type="website">
@@ -39,7 +39,7 @@ const githubIssueUrl = 'https://github.com/0o22/ruslanpashkov.com/issues';
 					{' '}
 					If you believe this is an error, please
 
-					<a class="not-found__contact" href={mailToUrl}>contact me</a>.
+					<a class="not-found__contact" href={mailToURL}>contact me</a>.
 				</p>
 
 				<a class="not-found__back hover" href="/">
@@ -53,7 +53,7 @@ const githubIssueUrl = 'https://github.com/0o22/ruslanpashkov.com/issues';
 
 					<a
 						class="not-found__contact"
-						href={githubIssueUrl}
+						href={githubIssueURL}
 						rel="noopener noreferrer"
 						target="_blank"
 					>
