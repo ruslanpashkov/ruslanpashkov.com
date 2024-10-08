@@ -20,7 +20,7 @@ const blog = await getCollection('blog');
 
 const articles = getSortedArticles(blog);
 
-const personSchema = getPersonSchema();
+const personSchema = getPersonSchema(Astro.site!);
 ---
 
 <Layout

@@ -1,63 +1,49 @@
-import type { Person, WithContext } from 'schema-dts';
+import type { Language, Person, WithContext } from 'schema-dts';
 
+import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
+import { getLanguageCode } from '@/utils/getLanguageCode';
 
-export function getPersonSchema(): WithContext<Person> {
+export function getPersonSchema(website: URL): WithContext<Person> {
 	const [firstName, lastName] = global.author.split(' ');
+	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
+	const portraitURL = new URL('/images/portrait.jpg', website);
+	const knownLanguages: Language[] = global.languages.map(buildLanguageSchema);
 
 	return {
 		'@context': 'https://schema.org',
-		'@id': 'https://ruslanpashkov.com',
+		'@id': website.origin,
 		'@type': 'Person',
 		alumniOf: 'Unknown',
+		birthDate: global.birthDate,
 		description: global.about,
-		email: global.email,
+		email: email,
 		familyName: lastName,
-		gender: 'Male',
+		gender: global.gender,
 		givenName: firstName,
-		image: 'https://ruslanpashkov.com/images/portrait.jpg',
-		jobTitle: 'Lead Frontend Engineer',
-		knowsAbout: [
-			'JavaScript',
-			'TypeScript',
-			'Frontend Engineering',
-			'Web Development',
-			'Web Standards',
-		],
-		knowsLanguage: [
-			{
-				'@type': 'Language',
-				alternateName: 'en',
-				name: 'English',
-			},
-			{
-				'@type': 'Language',
-				alternateName: 'ru',
-				name: 'Russian',
-			},
-			{
-				'@type': 'Language',
-				alternateName: 'uk',
-				name: 'Ukrainian',
-			},
-		],
+		image: portraitURL.href,
+		jobTitle: global.job.position,
+		knowsAbout: global.skills,
+		knowsLanguage: knownLanguages,
 		name: global.author,
 		nationality: {
 			'@type': 'Country',
-			name: 'Ukraine',
+			name: global.country,
 		},
-		sameAs: [
-			'https://x.com/ruslanpashkov',
-			'https://mastodon.social/@ruslanpashkov',
-			'https://www.linkedin.com/in/ruslanpashkov',
-			'https://t.me/ruslanpashkov',
-			'https://github.com/0o22',
-			'https://gitlab.com/0o22',
-		],
-		url: 'https://ruslanpashkov.com',
+		sameAs: otherContacts,
+		telephone: global.phone,
+		url: website.origin,
 		worksFor: {
 			'@type': 'Organization',
-			name: 'Wiew',
+			name: global.job.name,
 		},
+	};
+}
+
+function buildLanguageSchema(language: string): Language {
+	return {
+		'@type': 'Language',
+		alternateName: getLanguageCode(language),
+		name: language,
 	};
 }
