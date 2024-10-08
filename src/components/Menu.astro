@@ -65,9 +65,9 @@ const currentPath = Astro.url.pathname;
 			transform: translateX(-100%);
 			display: grid;
 			grid-template-rows:
-				min-content
+				max-content
 				1fr
-				min-content;
+				max-content;
 			gap: 40px;
 			margin-top: var(--header-min-height);
 			padding: 20px;
@@ -118,11 +118,16 @@ const currentPath = Astro.url.pathname;
 		@media (width >= 1024px) {
 			flex-direction: row;
 		}
+
+		@media (height < 512px) {
+			flex-direction: row;
+		}
 	}
 
 	.menu__link {
 		padding: 8px;
 		font-size: 1.25rem;
+		text-wrap: nowrap;
 	}
 
 	.menu__link--selected {
