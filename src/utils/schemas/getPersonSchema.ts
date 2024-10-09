@@ -12,7 +12,7 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 
 	return {
 		'@context': 'https://schema.org',
-		'@id': website.origin,
+		'@id': website.href,
 		'@type': 'Person',
 		alumniOf: 'Unknown',
 		birthDate: global.birthDate,
@@ -32,7 +32,7 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 		},
 		sameAs: otherContacts,
 		telephone: global.phone,
-		url: website.origin,
+		url: website.href,
 		worksFor: {
 			'@type': 'Organization',
 			name: global.job.name,
