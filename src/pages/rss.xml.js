@@ -17,5 +17,6 @@ export async function GET(context) {
 		site: context.site,
 		stylesheet: '/rss/styles.xsl',
 		title: `${global.author}'s Blog`,
+		trailingSlash: false,
 	});
 }

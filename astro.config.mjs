@@ -12,4 +12,5 @@ export default defineConfig({
 	],
 	output: 'static',
 	site: 'https://ruslanpashkov.com',
+	trailingSlash: 'never',
 });
