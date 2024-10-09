@@ -4,5 +4,5 @@ export const descriptions = {
 		'Explore in-depth articles on software development, JavaScript best practices, and cutting-edge web technologies.',
 	home: 'Software Engineer, JavaScript enthusiast and Producer. Currently working at Wiew as a Lead Frontend Engineer.',
 	projects:
-		'Browse a diverse portfolio of innovative software projects, showcasing problem-solving skills and technical expertise.',
+		'Explore my portfolio of projects, which includes web applications, websites, utilities, and developer tools.',
 };
