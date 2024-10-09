@@ -9,17 +9,29 @@ import Layout from '@/layouts/Layout.astro';
 import { projectTypes } from '@/types/Project';
 import { categorizeProjects } from '@/utils/categorizeProjects';
 import { getPageTitle } from '@/utils/getPageTitle';
+import { getProjectsSchema } from '@/utils/schemas/getProjectsSchema';
+import { sortProjectsByType } from '@/utils/sortProjectsByType';
 
 const title = getPageTitle('Projects');
+
+const sortedProjects = sortProjectsByType(projects);
 
 const {
 	'Developer Tools': developerTools,
 	Utilities: utilities,
 	'Web Showcases': webShowcases,
-} = categorizeProjects(projects, projectTypes);
+} = categorizeProjects(sortedProjects, projectTypes);
+
+const projectsSchema = getProjectsSchema(Astro.site!);
 ---
 
-<Layout cover="/projects.png" description={descriptions.projects} title={title} type="website">
+<Layout
+	cover="/projects.png"
+	description={descriptions.projects}
+	schemas={[projectsSchema]}
+	title={title}
+	type="website"
+>
 	<ContentLayout title="Projects">
 		<div class="projects">
 			{

@@ -16,9 +16,9 @@ import { getPersonSchema } from '@/utils/schemas/getPersonSchema';
 import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
 import { getCollection } from 'astro:content';
 
-const blog = await getCollection('blog');
+const articles = await getCollection('blog');
 
-const articles = sortArticlesByDate(blog);
+const sortedArticles = sortArticlesByDate(articles);
 
 const personSchema = getPersonSchema(Astro.site!);
 ---
@@ -34,9 +34,9 @@ const personSchema = getPersonSchema(Astro.site!);
 		<Hero />
 
 		{
-			articles.length > 0 && (
+			sortedArticles.length > 0 && (
 				<Section
-					counter={articles.length}
+					counter={sortedArticles.length}
 					link={{
 						label: 'View all articles',
 						title: 'View all',
@@ -48,7 +48,7 @@ const personSchema = getPersonSchema(Astro.site!);
 						<Glow />
 					</span>
 
-					<Articles articles={articles} />
+					<Articles articles={sortedArticles} />
 				</Section>
 			)
 		}
