@@ -1,4 +1,10 @@
 [[redirects]]
+  from = "/*/"
+  to = "/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/home"
   to = "/"
   status = 301
