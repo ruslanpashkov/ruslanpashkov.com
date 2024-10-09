@@ -1,0 +1,83 @@
+---
+import type { Project } from '@/types/Project';
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+
+const { description, tags, title, url } = project;
+---
+
+<article class="card project-card">
+	<a
+		aria-label={`Visit project: ${title}`}
+		class="project-card__link"
+		draggable="false"
+		href={url}
+		rel="noopener noreferrer"
+		target="_blank"
+	>
+		<h3 class="project-card__title">
+			{title}
+		</h3>
+	</a>
+
+	<p class="project-card__description">{description}</p>
+
+	<ul class="project-tags">
+		{tags.map((tag) => <li class="project-tags__item">{tag}</li>)}
+	</ul>
+</article>
+
+<style>
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		height: 100%;
+
+		&:focus-within {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
+	}
+
+	.project-card__link {
+		outline: none;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+		}
+	}
+
+	.project-card__title {
+		font-size: 1.5rem;
+
+		@media (width >= 768px) {
+			font-size: 1.875rem;
+		}
+	}
+
+	.project-card__description {
+		@media (width >= 768px) {
+			font-size: 1.125rem;
+		}
+	}
+
+	.project-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: start;
+	}
+
+	.project-tags__item {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+</style>

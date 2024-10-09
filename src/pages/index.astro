@@ -12,13 +12,13 @@ import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
 import { projects } from '@/data/projects';
 import Layout from '@/layouts/Layout.astro';
-import { getSortedArticles } from '@/utils/getSortedArticles';
 import { getPersonSchema } from '@/utils/schemas/getPersonSchema';
+import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
 import { getCollection } from 'astro:content';
 
 const blog = await getCollection('blog');
 
-const articles = getSortedArticles(blog);
+const articles = sortArticlesByDate(blog);
 
 const personSchema = getPersonSchema(Astro.site!);
 ---

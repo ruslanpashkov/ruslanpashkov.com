@@ -1,7 +1,7 @@
 ---
 import type { Article } from '@/types/Article';
 
-import { getFormattedDate } from '@/utils/getFormattedDate';
+import { formatDate } from '@/utils/formatDate';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -17,7 +17,7 @@ const { articles } = Astro.props;
 			<li>
 				<article class="card article-card">
 					<time class="article-card__date" datetime={data.pubDate}>
-						{getFormattedDate(data.pubDate)}
+						{formatDate(data.pubDate)}
 					</time>
 
 					<h3 class="article-card__title">{data.title}</h3>

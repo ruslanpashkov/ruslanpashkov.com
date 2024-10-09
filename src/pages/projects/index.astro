@@ -1,12 +1,95 @@
 ---
+import Glow from '@/components/Glow.astro';
+import ProjectList from '@/components/Projects/ProjectList.astro';
+import ProjectSection from '@/components/Projects/ProjectSection.astro';
 import { descriptions } from '@/data/descriptions';
+import { projects } from '@/data/projects';
 import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
+import { projectTypes } from '@/types/Project';
+import { categorizeProjects } from '@/utils/categorizeProjects';
 import { getPageTitle } from '@/utils/getPageTitle';
 
 const title = getPageTitle('Projects');
+
+const {
+	'Developer Tools': developerTools,
+	Utilities: utilities,
+	'Web Showcases': webShowcases,
+} = categorizeProjects(projects, projectTypes);
 ---
 
 <Layout cover="/projects.png" description={descriptions.projects} title={title} type="website">
-	<ContentLayout title="Projects" />
+	<ContentLayout title="Projects">
+		<div class="projects">
+			{
+				webShowcases.length > 0 && (
+					<ProjectSection title="Web Showcases">
+						<ProjectList projects={webShowcases} />
+
+						<span class="web-showcases-glow">
+							<Glow />
+						</span>
+					</ProjectSection>
+				)
+			}
+
+			{
+				utilities.length > 0 && (
+					<ProjectSection title="Utilities">
+						<ProjectList projects={utilities} />
+
+						<span class="utilities-glow">
+							<Glow />
+						</span>
+					</ProjectSection>
+				)
+			}
+
+			{
+				developerTools.length > 0 && (
+					<ProjectSection title="Developer Tools">
+						<ProjectList projects={developerTools} />
+
+						<span class="developer-tools-glow">
+							<Glow />
+						</span>
+					</ProjectSection>
+				)
+			}
+		</div>
+	</ContentLayout>
 </Layout>
+
+<style>
+	.projects {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+
+		@media (width >= 768px) {
+			gap: 60px;
+		}
+	}
+
+	.web-showcases-glow,
+	.utilities-glow,
+	.developer-tools-glow {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		bottom: 50%;
+		width: 100vw;
+	}
+
+	.web-showcases-glow {
+		margin-left: calc(50% + 50vw);
+	}
+
+	.utilities-glow {
+		margin-left: calc(50% - 50vw);
+	}
+
+	.developer-tools-glow {
+		margin-left: calc(50%);
+	}
+</style>

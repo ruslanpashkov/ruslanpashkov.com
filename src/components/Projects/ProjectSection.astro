@@ -1,0 +1,30 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<section class="project-section">
+	<h2 class="project-section__title">{title}</h2>
+
+	<slot />
+</section>
+
+<style>
+	.project-section {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.project-section__title {
+		font-size: 1.875rem;
+
+		@media (width >= 768px) {
+			font-size: 2.5rem;
+		}
+	}
+</style>
