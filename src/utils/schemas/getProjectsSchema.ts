@@ -17,6 +17,7 @@ export function getProjectsSchema(website: URL): WithContext<WebPage> {
 
 	return {
 		'@context': 'https://schema.org',
+		'@id': website.href,
 		'@type': 'WebPage',
 		creator: {
 			'@type': 'Person',
