@@ -8,15 +8,8 @@ export default defineConfig({
 	integrations: [
 		sitemap({ changefreq: 'weekly' }),
 		icon({ iconDir: 'src/assets/svg' }),
-		Compress(),
+		Compress({ CSS: false }),
 	],
 	output: 'static',
-	redirects: {
-		'/home': {
-			destination: '/',
-			status: 301,
-		},
-	},
 	site: 'https://ruslanpashkov.com',
-	trailingSlash: 'never',
 });

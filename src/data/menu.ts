@@ -7,14 +7,14 @@ export const menu: Link[] = [
 	},
 	{
 		title: 'Blog',
-		url: '/blog',
+		url: '/blog/',
 	},
 	{
 		title: 'Projects',
-		url: '/projects',
+		url: '/projects/',
 	},
 	{
 		title: 'About',
-		url: '/about',
+		url: '/about/',
 	},
 ];

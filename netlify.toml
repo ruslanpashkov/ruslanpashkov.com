@@ -1,7 +1,6 @@
-[[redirects]]
-  from = "/*/"
-  to = "/:splat"
-  status = 301
+[build]
+  publish = "dist"
+  command = "bun run build"
 
 [[headers]]
   for = "/*"
@@ -19,12 +18,12 @@
   """
 
 [[headers]]
-  for = "/fonts/*"
+  for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/_astro/*"
+  for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

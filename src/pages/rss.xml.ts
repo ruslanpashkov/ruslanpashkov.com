@@ -1,8 +1,10 @@
+import type { APIContext } from 'astro';
+
 import { global } from '@/data/global';
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
-export async function GET(context) {
+export async function GET(context: APIContext) {
 	const blog = await getCollection('blog');
 
 	return rss({
@@ -11,12 +13,11 @@ export async function GET(context) {
 			categories: post.data.categories,
 			description: post.data.description,
 			link: `/blog/${post.slug}/`,
-			pubDate: post.data.pubDate,
+			pubDate: new Date(post.data.pubDate),
 			title: post.data.title,
 		})),
-		site: context.site,
+		site: context.site!,
 		stylesheet: '/rss/styles.xsl',
 		title: `${global.author}'s Blog`,
-		trailingSlash: false,
 	});
 }

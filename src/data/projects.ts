@@ -48,6 +48,6 @@ export const projects: Project[] = [
 		tags: ['HTML5', 'JavaScript', 'SCSS', 'BEM', 'AOS'],
 		title: 'MET Landing Page',
 		type: 'Web Showcases',
-		url: 'https://met-landing-page.vercel.app/',
+		url: 'https://met-landing-page.vercel.app',
 	},
 ];
