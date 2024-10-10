@@ -11,6 +11,12 @@ export default defineConfig({
 		Compress(),
 	],
 	output: 'static',
+	redirects: {
+		'/home': {
+			destination: '/',
+			status: 301,
+		},
+	},
 	site: 'https://ruslanpashkov.com',
 	trailingSlash: 'never',
 });

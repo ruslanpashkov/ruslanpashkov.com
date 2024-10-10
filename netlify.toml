@@ -1,8 +1,7 @@
 [[redirects]]
-  from = "/home"
-  to = "/"
+  from = "/*/"
+  to = "/:splat"
   status = 301
-  force = true
 
 [[headers]]
   for = "/*"
