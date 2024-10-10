@@ -35,7 +35,7 @@ const { cover, description, schemas = [], title, type } = props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const previewImageURL = new URL('/images/previews' + cover, Astro.site);
-const rssURL = new URL('/rss/', Astro.site);
+const rssURL = new URL('/rss.xml', Astro.site);
 
 const generator = Astro.generator;
 ---
