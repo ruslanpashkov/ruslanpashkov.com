@@ -1,8 +1,0 @@
-.card {
-	position: relative;
-	padding: 20px;
-	background-color: var(--color-transparent);
-	backdrop-filter: blur(10px);
-	border: 1px solid var(--color-secondary);
-	border-radius: 12px;
-}

@@ -14,7 +14,7 @@ const { projects } = Astro.props;
 	{
 		projects.map(({ tags, title, url }) => (
 			<li>
-				<article class="card project-card">
+				<article class="project-card">
 					<a
 						aria-label={`Visit project: ${title}`}
 						class="project-card__link"
@@ -64,10 +64,16 @@ const { projects } = Astro.props;
 	}
 
 	.project-card {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
 		height: 100%;
+		padding: 20px;
+		background-color: var(--color-transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
 
 		&:focus-within {
 			outline: 2px solid var(--color-focus);
