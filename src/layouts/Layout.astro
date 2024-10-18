@@ -13,7 +13,7 @@ import lightStyles from '@/styles/light.css?raw';
 import { ViewTransitions } from 'astro:transitions';
 
 interface DefaultProps {
-	cover: `/${string}`;
+	cover: string;
 	description: string;
 	schemas?: WithContext<Thing>[];
 	title: string;
@@ -34,7 +34,7 @@ const props = Astro.props;
 const { cover, description, schemas = [], title, type } = props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const previewImageURL = new URL('/images/previews' + cover, Astro.site);
+const previewImageURL = new URL(`/images/previews/${cover}`, Astro.site);
 const rssURL = new URL('/rss.xml', Astro.site);
 
 const generator = Astro.generator;
