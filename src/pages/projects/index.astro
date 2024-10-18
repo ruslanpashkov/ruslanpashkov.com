@@ -22,7 +22,7 @@ const {
 	'Web Showcases': webShowcases,
 } = categorizeProjects(sortedProjects, projectTypes);
 
-const projectsSchema = getProjectsSchema(Astro.url);
+const projectsSchema = getProjectsSchema(Astro.url, projects);
 ---
 
 <Layout

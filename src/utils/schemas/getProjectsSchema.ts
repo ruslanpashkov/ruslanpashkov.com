@@ -4,11 +4,10 @@ import type { CreativeWork, ListItem, WebPage, WithContext } from 'schema-dts';
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
-import { projects } from '@/data/projects';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { sortProjectsByType } from '@/utils/sortProjectsByType';
 
-export function getProjectsSchema(website: URL): WithContext<WebPage> {
+export function getProjectsSchema(website: URL, projects: Project[]): WithContext<WebPage> {
 	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
 	const title = getPageTitle('Projects');
 	const sortedProjects = sortProjectsByType(projects);
