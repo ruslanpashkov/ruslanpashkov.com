@@ -1,0 +1,55 @@
+---
+import ArticleList from '@/components/Blog/ArticleList.astro';
+import Glow from '@/components/Glow.astro';
+import { descriptions } from '@/data/descriptions';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Layout from '@/layouts/Layout.astro';
+import { getPageTitle } from '@/utils/getPageTitle';
+import { getArticlesSchema } from '@/utils/schemas/getArticlesSchema';
+import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
+import { getCollection } from 'astro:content';
+
+const title = getPageTitle('Blog');
+
+const articles = await getCollection('blog');
+
+const sortedArticles = sortArticlesByDate(articles);
+
+const articlesSchema = getArticlesSchema(Astro.url, sortedArticles);
+---
+
+<Layout
+	cover="blog.png"
+	description={descriptions.articles}
+	schemas={[articlesSchema]}
+	title={title}
+	type="website"
+>
+	<ContentLayout title="Blog">
+		{
+			sortedArticles.length > 0 && (
+				<div class="articles">
+					<ArticleList articles={sortedArticles} />
+
+					<span class="articles-glow">
+						<Glow />
+					</span>
+				</div>
+			)
+		}
+	</ContentLayout>
+</Layout>
+
+<style>
+	.articles {
+		position: relative;
+	}
+
+	.articles-glow {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		bottom: 50%;
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+	}
+</style>

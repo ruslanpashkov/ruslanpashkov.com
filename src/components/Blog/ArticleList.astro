@@ -1,0 +1,35 @@
+---
+import type { Article } from '@/types/Article';
+
+import ArticleCard from '@/components/Blog/ArticleCard.astro';
+
+interface Props {
+	articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<ul class="article-list">
+	{
+		articles.map((article) => (
+			<li>
+				<ArticleCard article={article} />
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.article-list {
+		--column-size: minmax(0, 1fr);
+
+		display: grid;
+		grid-template-columns: repeat(1, var(--column-size));
+		gap: 20px;
+
+		@media (width >= 1024px) {
+			grid-template-columns: repeat(2, var(--column-size));
+		}
+	}
+</style>

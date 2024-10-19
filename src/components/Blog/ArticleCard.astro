@@ -1,0 +1,113 @@
+---
+import type { Article } from '@/types/Article';
+
+import { formatDate } from '@/utils/formatDate';
+
+interface Props {
+	article: Article;
+}
+
+const { article } = Astro.props;
+
+const {
+	data: { categories, description, pubDate, title, topic },
+	slug,
+} = article;
+---
+
+<article class="article-card">
+	<header class="article-card__header">
+		<time class="article-card__date" datetime={pubDate}>
+			{formatDate(pubDate)}
+		</time>
+
+		<span class="article-card__topic">{topic}</span>
+	</header>
+
+	<a
+		aria-label={`Read full article: ${title}`}
+		class="article-card__link"
+		draggable="false"
+		href={`/blog/${slug}/`}
+	>
+		<h3 class="article-card__title">{title}</h3>
+	</a>
+
+	<p>{description}</p>
+
+	<ul class="article-tags">
+		{categories.map((category) => <li class="article-tags__item">{category}</li>)}
+	</ul>
+</article>
+
+<style>
+	.article-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		height: 100%;
+		padding: 20px;
+		background-color: var(--color-transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
+
+		&:focus-within {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
+	}
+
+	.article-card__header {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.article-card__topic {
+		padding: 2px 8px;
+		font-size: 0.875rem;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+
+	.article-card__link {
+		outline: none;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+		}
+	}
+
+	.article-card__title {
+		font-size: 1.5rem;
+
+		@media (width >= 768px) {
+			font-size: 1.875rem;
+		}
+	}
+
+	.article-card__description {
+		@media (width >= 768px) {
+			font-size: 1.125rem;
+		}
+	}
+
+	.article-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: start;
+	}
+
+	.article-tags__item {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+</style>
