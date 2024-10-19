@@ -10,7 +10,7 @@ export const contacts: Contact[] = [
 	{
 		icon: 'x',
 		label: 'X',
-		title: '@ruslanpashkovd',
+		title: '@ruslanpashkov',
 		url: 'https://x.com/ruslanpashkovd',
 	},
 	{
