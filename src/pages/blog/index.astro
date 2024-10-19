@@ -27,13 +27,24 @@ const articlesSchema = getArticlesSchema(Astro.url, sortedArticles);
 >
 	<ContentLayout title="Blog">
 		{
-			sortedArticles.length > 0 && (
+			sortedArticles.length > 0 ? (
 				<div class="articles">
 					<ArticleList articles={sortedArticles} />
 
 					<span class="articles-glow">
 						<Glow />
 					</span>
+				</div>
+			) : (
+				<div class="no-articles">
+					<h2 class="no-articles__title">There are no articles yet.</h2>
+
+					<p class="no-articles__subtitle">
+						But you still can check out my projects on
+						<a class="no-articles__projects-link" href="/projects/">
+							the projects page!
+						</a>
+					</p>
 				</div>
 			)
 		}
@@ -43,6 +54,30 @@ const articlesSchema = getArticlesSchema(Astro.url, sortedArticles);
 <style>
 	.articles {
 		position: relative;
+	}
+
+	.no-articles {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.no-articles__title {
+		font-size: 1.5rem;
+
+		@media (width >= 768px) {
+			font-size: 2.25rem;
+		}
+	}
+
+	.no-articles__subtitle {
+		@media (width >= 768px) {
+			font-size: 1.125rem;
+		}
+	}
+
+	.no-articles__projects-link {
+		text-decoration: underline;
 	}
 
 	.articles-glow {
