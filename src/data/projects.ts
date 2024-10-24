@@ -7,7 +7,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'Next.js', 'Fastify', 'Tailwind CSS', 'Neon DB', 'Prisma ORM'],
 		title: 'User Dashboard',
 		type: 'Web Showcases',
-		url: 'https://ui-user-dashboard.vercel.app',
+		url: '/user-dashboard/',
 	},
 	{
 		description:
@@ -15,7 +15,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'Material UI'],
 		title: 'Password Generator',
 		type: 'Utilities',
-		url: 'https://mui-password-generator.vercel.app',
+		url: '/password-generator/',
 	},
 	{
 		description:
@@ -32,7 +32,7 @@ export const projects: Project[] = [
 		],
 		title: 'Product Catalog',
 		type: 'Web Showcases',
-		url: 'https://react-product-catalog.vercel.app',
+		url: '/product-catalog/',
 	},
 	{
 		description:
@@ -40,7 +40,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'React Router', 'SCSS', 'Node.js', 'Fastify'],
 		title: 'TodoMVC Clone',
 		type: 'Web Showcases',
-		url: 'https://todomvc-application.vercel.app',
+		url: '/todomvc-clone/',
 	},
 	{
 		description:
@@ -48,6 +48,6 @@ export const projects: Project[] = [
 		tags: ['HTML5', 'JavaScript', 'SCSS', 'BEM', 'AOS'],
 		title: 'MET Landing Page',
 		type: 'Web Showcases',
-		url: 'https://met-landing-page.vercel.app',
+		url: '/met-landing-page/',
 	},
 ];
