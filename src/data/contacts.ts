@@ -8,10 +8,10 @@ export const contacts: Contact[] = [
 		url: 'mailto:hi@ruslanpashkov.com',
 	},
 	{
-		icon: 'x',
-		label: 'X',
-		title: '@ruslanpashkov',
-		url: 'https://x.com/ruslanpashkovd',
+		icon: 'bluesky',
+		label: 'Bluesky',
+		title: '@ruslanpashkov.com',
+		url: 'https://bsky.app/profile/ruslanpashkov.com',
 	},
 	{
 		icon: 'mastodon',
