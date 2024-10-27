@@ -11,7 +11,7 @@ export const global = {
 	},
 	languages: ['English', 'Russian', 'Ukrainian'],
 	phone: '+380 96 011 66 00',
-	skills: [
+	proficiencies: [
 		'JavaScript',
 		'TypeScript',
 		'Frontend Engineering',

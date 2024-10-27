@@ -23,7 +23,7 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 		givenName: firstName,
 		image: portraitURL.href,
 		jobTitle: global.job.position,
-		knowsAbout: global.skills,
+		knowsAbout: global.proficiencies,
 		knowsLanguage: knownLanguages,
 		name: global.author,
 		nationality: {
