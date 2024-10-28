@@ -7,7 +7,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'Next.js', 'Fastify', 'Tailwind CSS', 'Neon DB', 'Prisma ORM'],
 		title: 'User Dashboard',
 		type: 'Web Showcases',
-		url: '/user-dashboard/',
+		url: '/projects/user-dashboard/',
 	},
 	{
 		description:
@@ -15,7 +15,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'Material UI'],
 		title: 'Password Generator',
 		type: 'Utilities',
-		url: '/password-generator/',
+		url: '/projects/password-generator/',
 	},
 	{
 		description:
@@ -32,7 +32,7 @@ export const projects: Project[] = [
 		],
 		title: 'Product Catalog',
 		type: 'Web Showcases',
-		url: '/product-catalog/',
+		url: '/projects/product-catalog/',
 	},
 	{
 		description:
@@ -40,7 +40,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'React Router', 'SCSS', 'Node.js', 'Fastify'],
 		title: 'TodoMVC Clone',
 		type: 'Web Showcases',
-		url: '/todomvc-clone/',
+		url: '/projects/todomvc-clone/',
 	},
 	{
 		description:
@@ -48,6 +48,6 @@ export const projects: Project[] = [
 		tags: ['HTML5', 'JavaScript', 'SCSS', 'BEM', 'AOS'],
 		title: 'MET Landing Page',
 		type: 'Web Showcases',
-		url: '/met-landing-page/',
+		url: '/projects/met-landing-page/',
 	},
 ];
