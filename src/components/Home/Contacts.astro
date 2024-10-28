@@ -12,21 +12,29 @@ const { contacts } = Astro.props;
 
 <ul class="contact-list">
 	{
-		contacts.map(({ icon, label, title, url }) => (
-			<li class="contact-list__item">
-				<a
-					aria-label={label && `Contact via ${label}`}
-					class="contact-list__link hover"
-					href={url}
-					rel="noopener noreferrer"
-					target="_blank"
-				>
-					<Icon aria-hidden="true" class="contact-list__icon" name={icon} />
+		contacts.map(({ icon, label, title, url }) => {
+			const isPhoneLink = url.startsWith('tel:');
+			const isMailLink = url.startsWith('mailto:');
+			const isStandardLink = !isPhoneLink && !isMailLink;
+			const rel = isStandardLink ? 'noopener noreferrer' : null;
+			const target = isStandardLink ? '_blank' : null;
 
-					{title}
-				</a>
-			</li>
-		))
+			return (
+				<li class="contact-list__item">
+					<a
+						aria-label={label && `Contact via ${label}`}
+						class="contact-list__link hover"
+						href={url}
+						rel={rel}
+						target={target}
+					>
+						<Icon aria-hidden="true" class="contact-list__icon" name={icon} />
+
+						{title}
+					</a>
+				</li>
+			);
+		})
 	}
 </ul>
 

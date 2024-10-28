@@ -11,11 +11,12 @@ const currentPath = Astro.url.pathname;
 			{
 				menu.map(({ title, url }) => {
 					const isSelected = url === currentPath;
+					const ariaCurrent = isSelected ? 'page' : null;
 
 					return (
 						<li>
 							<a
-								aria-current={isSelected ? 'page' : null}
+								aria-current={ariaCurrent}
 								class:list={[
 									'menu__link',
 									{ 'menu__link--selected': isSelected },
