@@ -6,3 +6,6 @@ node_modules/
 
 # Generated types
 .astro/
+
+# Platform specific files
+.netlify/
