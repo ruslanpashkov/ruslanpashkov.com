@@ -20,8 +20,10 @@ export default [
 		languageOptions: {
 			globals: {
 				...globals.browser,
-				...globals.node,
 			},
+		},
+		rules: {
+			'perfectionist/sort-modules': 'off',
 		},
 	},
 	{
@@ -55,12 +57,6 @@ export default [
 				extraFileExtensions: ['.astro'],
 				parser: '@typescript-eslint/parser',
 			},
-		},
-	},
-	{
-		files: ['**/*.astro'],
-		rules: {
-			'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 		},
 	},
 	{

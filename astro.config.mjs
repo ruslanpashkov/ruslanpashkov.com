@@ -1,8 +1,8 @@
 import netlify from '@astrojs/netlify';
 import sitemap from '@astrojs/sitemap';
 import Compress from '@playform/compress';
-import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
+import { defineConfig } from 'astro/config';
 
 import redirects from './redirects';
 
