@@ -10,7 +10,6 @@ export const global = {
 		position: 'Lead Frontend Engineer',
 	},
 	languages: ['English', 'Russian', 'Ukrainian'],
-	phone: '+380 96 011 66 00',
 	proficiencies: [
 		'JavaScript',
 		'TypeScript',

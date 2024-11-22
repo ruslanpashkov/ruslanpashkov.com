@@ -31,7 +31,6 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 			name: global.country,
 		},
 		sameAs: otherContacts,
-		telephone: global.phone,
 		url: website.href,
 		worksFor: {
 			'@type': 'Organization',
