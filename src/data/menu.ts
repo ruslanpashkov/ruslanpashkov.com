@@ -13,8 +13,4 @@ export const menu: Link[] = [
 		title: 'Projects',
 		url: '/projects/',
 	},
-	{
-		title: 'About',
-		url: '/about/',
-	},
 ];
