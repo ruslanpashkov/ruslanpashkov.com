@@ -3,41 +3,32 @@ import type { Project } from '@/types/Project';
 export const projects: Project[] = [
 	{
 		description:
-			"User dashboard with authentication, user profile and settings. Verified users can also access the image editor under the home page. Don't ask me why I made it on Next.js.",
-		tags: ['TypeScript', 'Next.js', 'Fastify', 'Tailwind CSS', 'Neon DB', 'Prisma ORM'],
-		title: 'User Dashboard',
+			"What is recursion? Well, it's simple - just click this button to find out what recursion is. The answer leads to more questions. And more.. And more...",
+		tags: ['HTML', 'CSS', 'JavaScript'],
+		title: 'Just One More',
 		type: 'Web Showcases',
-		url: '/projects/user-dashboard/',
+		url: '/projects/just-one-more/',
 	},
 	{
 		description:
-			'Password generator with a variety of options to customize the generated password. The password can be copied to the clipboard and stored in the browser. Strict mode is insane.',
-		tags: ['TypeScript', 'React', 'Material UI'],
-		title: 'Password Generator',
+			"Password generator that actually works! Browser extension for those who are tired of using '123456' as their password. Generate strong passwords with just one click.",
+		tags: ['TypeScript', 'React', 'Material UI', 'Zustand', 'WXT'],
+		title: 'NovaPass',
 		type: 'Utilities',
-		url: '/projects/password-generator/',
+		url: '/projects/novapass/',
 	},
 	{
 		description:
-			"Product catalog with Apple products and a shopping cart. Do we need a user verification system and more new IPhones in database? I don't think so.",
-		tags: [
-			'TypeScript',
-			'React',
-			'SCSS',
-			'Express.js',
-			'PostgreSQL',
-			'Sequelize',
-			'SWC',
-			'Vite',
-		],
-		title: 'Product Catalog',
+			"Product catalog with Apple products and a shopping cart. Do we need more new iPhones in database? I don't think so. Simple but stylish.",
+		tags: ['TypeScript', 'React', 'SCSS', 'Express.js', 'PostgreSQL', 'Sequelize'],
+		title: 'Nice Gadgets',
 		type: 'Web Showcases',
-		url: '/projects/product-catalog/',
+		url: '/projects/nice-gadgets/',
 	},
 	{
 		description:
 			"Just TODO. Nothing more. Nothing less. I also made a cute Fastify server to handle the API requests. It was fun to make in 2022, but now it's fun to look at it.",
-		tags: ['TypeScript', 'React', 'React Router', 'SCSS', 'Node.js', 'Fastify'],
+		tags: ['TypeScript', 'React', 'React Router', 'SCSS', 'Fastify'],
 		title: 'TodoMVC Clone',
 		type: 'Web Showcases',
 		url: '/projects/todomvc-clone/',
@@ -45,9 +36,9 @@ export const projects: Project[] = [
 	{
 		description:
 			'MET? MET! Simple Landing page for the MET Museum. It was my first serious project that I have worked on. AOS animations are cool, right?',
-		tags: ['HTML5', 'JavaScript', 'SCSS', 'BEM', 'AOS'],
-		title: 'MET Landing Page',
+		tags: ['HTML', 'SCSS', 'BEM', 'JavaScript', 'AOS'],
+		title: 'MET Gallery',
 		type: 'Web Showcases',
-		url: '/projects/met-landing-page/',
+		url: '/projects/met-gallery/',
 	},
 ];
