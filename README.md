@@ -1,9 +1,8 @@
 # Ruslan Pashkov's Website
 
-[![Lint](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/lint.yml)
-[![HTML Validate](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)](https://github.com/0o22/ruslanpashkov.com/actions/workflows/html-validate.yml)
-[![Last Commit](https://img.shields.io/github/last-commit/0o22/ruslanpashkov.com)](https://github.com/0o22/ruslanpashkov.com/commit/HEAD)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/902b1df2-a4b3-43c9-9f71-847966860a06/deploy-status)](https://app.netlify.com/sites/ruslanpashkov/deploys)
+[![Lint](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lint.yml)
+[![HTML Validate](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/html-validate.yml)
+[![Last Commit](https://img.shields.io/github/last-commit/ruslanpashkov/ruslanpashkov.com)](https://github.com/ruslanpashkov/ruslanpashkov.com/commit/HEAD)
 
 This is the source code for my personal website, [ruslanpashkov.com](https://ruslanpashkov.com). It's built with [Astro](https://astro.build), a static site generator, and hosted on [Netlify](https://www.netlify.com).
 
@@ -18,7 +17,7 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 
 ## Contributing
 
-If you find a bug or have a feature request, please [open an issue](https://github.com/0o22/ruslanpashkov.com/issues). If you want to contribute, please [fork the repository](https://github.com/0o22/ruslanpashkov.com/fork) and make changes as you'd like. Pull requests are warmly welcome.
+If you find a bug or have a feature request, please [open an issue](https://github.com/ruslanpashkov/ruslanpashkov.com/issues). If you want to contribute, please [fork the repository](https://github.com/ruslanpashkov/ruslanpashkov.com/fork) and make changes as you'd like. Pull requests are warmly welcome.
 
 ## License
 

@@ -4,7 +4,7 @@ export const credits: Link[] = [
 	{
 		label: 'GitHub',
 		title: 'Created by me',
-		url: 'https://github.com/0o22/ruslanpashkov.com',
+		url: 'https://github.com/ruslanpashkov/ruslanpashkov.com',
 	},
 	{
 		label: 'Astro',
