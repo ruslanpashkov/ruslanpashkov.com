@@ -3,7 +3,7 @@ import Menu from '@/components/Menu.astro';
 import { Icon } from 'astro-icon/components';
 ---
 
-<header class="grain header header--animation" id="header">
+<header class="header header--animation" id="header">
 	<div class="header__content container">
 		<a aria-label="Home" class="header__logo" href="/">
 			<Icon aria-hidden="true" height={32} name="logo" width={32} />
@@ -52,14 +52,6 @@ import { Icon } from 'astro-icon/components';
 			animation-fill-mode: var(--fill-mode);
 			animation-timeline: var(--timeline);
 			animation-range: var(--range);
-
-			&::before {
-				animation-name: grain-scroll;
-				animation-timing-function: var(--timing-function);
-				animation-fill-mode: var(--fill-mode);
-				animation-timeline: var(--timeline);
-				animation-range: var(--range);
-			}
 		}
 	}
 

@@ -27,13 +27,3 @@
 		border-bottom-color: var(--color-secondary);
 	}
 }
-
-@keyframes grain-scroll {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 0.1;
-	}
-}
