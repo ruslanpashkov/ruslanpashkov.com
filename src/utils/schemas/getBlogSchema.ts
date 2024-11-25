@@ -1,5 +1,5 @@
 import type { Article } from '@/types/Article';
-import type { Blog, BlogPosting, WebPageElement, WithContext } from 'schema-dts';
+import type { Blog, BlogPosting, WithContext } from 'schema-dts';
 
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
@@ -8,7 +8,7 @@ import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
 
-export function getArticlesSchema(website: URL, articles: Article[]): WithContext<Blog> {
+export function getBlogSchema(website: URL, articles: Article[]): WithContext<Blog> {
 	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
 	const title = getPageTitle('Blog');
 	const sortedArticles = sortArticlesByDate(articles);
@@ -43,10 +43,9 @@ export function getArticlesSchema(website: URL, articles: Article[]): WithContex
 function buildBlogPostSchema(article: Article): BlogPosting {
 	const {
 		body,
-		data: { categories, description, pubDate, title, toc = [], topic },
+		data: { categories, description, pubDate, title, topic },
 		slug,
 	} = article;
-	const articleParts = toc.map(buildWebPageElementSchema);
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
 	const datePublished = formatDate(pubDate);
@@ -66,7 +65,6 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 		},
 		datePublished: datePublished,
 		description: description,
-		hasPart: articleParts,
 		headline: title,
 		image: {
 			'@type': 'ImageObject',
@@ -85,12 +83,5 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 			name: global.author,
 		},
 		url: articleURL.href,
-	};
-}
-
-function buildWebPageElementSchema(content: string): WebPageElement {
-	return {
-		'@type': 'WebPageElement',
-		name: content,
 	};
 }

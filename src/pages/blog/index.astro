@@ -5,7 +5,7 @@ import { descriptions } from '@/data/descriptions';
 import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
 import { getPageTitle } from '@/utils/getPageTitle';
-import { getArticlesSchema } from '@/utils/schemas/getArticlesSchema';
+import { getBlogSchema } from '@/utils/schemas/getBlogSchema';
 import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
 import { getCollection } from 'astro:content';
 
@@ -15,13 +15,13 @@ const articles = await getCollection('blog');
 
 const sortedArticles = sortArticlesByDate(articles);
 
-const articlesSchema = getArticlesSchema(Astro.url, sortedArticles);
+const blogSchema = getBlogSchema(Astro.url, sortedArticles);
 ---
 
 <Layout
 	cover="blog.png"
 	description={descriptions.articles}
-	schemas={[articlesSchema]}
+	schemas={[blogSchema]}
 	title={title}
 	type="website"
 >
