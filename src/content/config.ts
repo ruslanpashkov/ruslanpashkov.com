@@ -6,7 +6,6 @@ const blog = defineCollection({
 		description: z.string(),
 		pubDate: z.string(),
 		title: z.string(),
-		toc: z.optional(z.array(z.string())),
 		topic: z.string(),
 	}),
 	type: 'content',
