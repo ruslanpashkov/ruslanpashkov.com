@@ -4,17 +4,15 @@ import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 import { Image } from 'astro:assets';
 
-const sizeConditions = ['(max-width: 360px) 320px', '440px'];
+const sizeConditions = ['(max-width: 360px) 320px', '(max-width: 480px) 100vw', '440px'];
 
 const imageSizeRules = sizeConditions.join(', ');
 
 const imageWidths = [
 	320, // 1x mobile
 	640, // 2x mobile
-	960, // 3x mobile
 	440, // 1x desktop
 	880, // 2x desktop
-	1320, // 3x desktop
 ].sort((widthA, widthB) => widthA - widthB);
 ---
 
