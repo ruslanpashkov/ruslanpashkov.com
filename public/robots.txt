@@ -1,8 +1,4 @@
 User-agent: *
-Disallow: /projects/*/
-Disallow: /*.json$
-Disallow: /*.xml$
-Allow: /sitemap-index.xml$
 Allow: /
 
 Sitemap: https://ruslanpashkov.com/sitemap-index.xml
