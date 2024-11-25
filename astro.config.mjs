@@ -14,6 +14,22 @@ export default defineConfig({
 		icon({ iconDir: 'src/assets/svg' }),
 		Compress({ CSS: false }),
 	],
+	markdown: {
+		shikiConfig: {
+			themes: {
+				dark: 'github-dark',
+				light: 'github-light',
+			},
+			transformers: [
+				{
+					pre(node) {
+						node.properties.style = 'tab-size: 2;';
+						return node;
+					},
+				},
+			],
+		},
+	},
 	output: 'static',
 	redirects,
 	site: 'https://ruslanpashkov.com',
