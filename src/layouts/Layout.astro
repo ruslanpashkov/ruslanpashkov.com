@@ -113,7 +113,10 @@ const generator = Astro.generator;
 			type === 'article' && (
 				<>
 					<meta content={global.author} property="article:author" />
-					<meta content={props.article.data.pubDate} property="article:published_time" />
+					<meta
+						content={props.article.data.publishedAt}
+						property="article:published_time"
+					/>
 					<meta content={props.article.data.topic} property="article:section" />
 
 					{props.article.data.categories.map((category) => (

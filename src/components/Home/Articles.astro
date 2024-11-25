@@ -16,8 +16,8 @@ const { articles } = Astro.props;
 		articles.map(({ data, slug }) => (
 			<li>
 				<article class="article-card">
-					<time class="article-card__date" datetime={data.pubDate}>
-						{formatDate(data.pubDate)}
+					<time class="article-card__date" datetime={data.publishedAt}>
+						{formatDate(data.publishedAt)}
 					</time>
 
 					<h3 class="article-card__title">{data.title}</h3>

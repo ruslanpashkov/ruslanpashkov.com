@@ -43,12 +43,12 @@ export function getBlogSchema(website: URL, articles: Article[]): WithContext<Bl
 function buildBlogPostSchema(article: Article): BlogPosting {
 	const {
 		body,
-		data: { categories, description, pubDate, title, topic },
+		data: { categories, description, publishedAt, title, topic },
 		slug,
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
-	const datePublished = formatDate(pubDate);
+	const datePublished = formatDate(publishedAt);
 	const keywords = categories.join(', ');
 
 	return {

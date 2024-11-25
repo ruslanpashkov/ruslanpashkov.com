@@ -76,8 +76,8 @@
                   </h3>
                   <p class="mb-1 text-small">
                     Published:
-                    <time datetime="{pubDate}">
-                      <xsl:value-of select="pubDate" />
+                    <time datetime="{publishedAt}">
+                      <xsl:value-of select="publishedAt" />
                     </time>
                   </p>
                   <xsl:if test="category">
