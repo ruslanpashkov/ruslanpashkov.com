@@ -4,14 +4,18 @@ import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 import { Image } from 'astro:assets';
 
-const sizeConditions = [
-	'(max-width: 767px) 320px',
-	'(max-width: 1023px) 400px',
-	'(max-width: 1535px) 440px',
-	`${myImage.width}px`,
-];
+const sizeConditions = ['(max-width: 360px) 320px', '440px'];
 
 const imageSizeRules = sizeConditions.join(', ');
+
+const imageWidths = [
+	320, // 1x mobile
+	640, // 2x mobile
+	960, // 3x mobile
+	440, // 1x desktop
+	880, // 2x desktop
+	1320, // 3x desktop
+].sort((widthA, widthB) => widthA - widthB);
 ---
 
 <header class="hero">
@@ -29,7 +33,7 @@ const imageSizeRules = sizeConditions.join(', ');
 			quality="max"
 			sizes={imageSizeRules}
 			src={myImage}
-			widths={[320, 400, 440, myImage.width]}
+			widths={imageWidths}
 		/>
 
 		<span class="hero__image-glow">
@@ -93,18 +97,10 @@ const imageSizeRules = sizeConditions.join(', ');
 	}
 
 	.hero__image {
-		width: 320px;
-		height: 400px;
-
-		@media (width >= 768px) {
-			width: 400px;
-			height: 500px;
-		}
-
-		@media (width >= 1024px) {
-			width: 440px;
-			height: 550px;
-		}
+		aspect-ratio: 4/5;
+		width: clamp(320px, 100%, 440px);
+		height: auto;
+		object-fit: cover;
 	}
 
 	.hero__image-glow {
