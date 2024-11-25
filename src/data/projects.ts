@@ -37,8 +37,8 @@ export const projects: Project[] = [
 		description:
 			'MET? MET! Simple Landing page for the MET Museum. It was my first serious project that I have worked on. AOS animations are cool, right?',
 		tags: ['HTML', 'SCSS', 'BEM', 'JavaScript', 'AOS'],
-		title: 'MET Gallery',
+		title: 'MET Exhibition',
 		type: 'Web Showcases',
-		url: '/projects/met-gallery/',
+		url: '/projects/met-exhibition/',
 	},
 ];
