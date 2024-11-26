@@ -9,12 +9,12 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 
 ## Scripts
 
--   `bun run dev`: Start the development server
--   `bun run build`: Build the production-ready site
--   `bun run preview`: Preview the built site
--   `bun run lint`: Run ESLint and Stylelint
--   `bun run format`: Format code with Prettier
--   `bun run html-validate`: Validate HTML using W3C validator
+- `bun run dev`: Start the development server
+- `bun run build`: Build the production-ready site
+- `bun run preview`: Preview the built site
+- `bun run lint`: Run ESLint and Stylelint
+- `bun run format`: Format code with Prettier
+- `bun run html-validate`: Validate HTML using W3C validator
 
 ## Contributing
 
@@ -24,8 +24,8 @@ If you find a bug or have a feature request, please [open an issue](https://gith
 
 This project is licensed under the following licenses:
 
--   **Source Code**: [MIT License](LICENSE.md)
--   **Website Content**: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
--   **Fira Code & Montserrat Fonts**: [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
+- **Source Code**: [MIT License](LICENSE.md)
+- **Website Content**: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+- **Fira Code & Montserrat Fonts**: [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
 
 You can use, modify and share the source code with the license. Website content is for non-commercial use with credit, and changes must follow the same terms. Fonts are free to use but can’t be sold by themselves.
