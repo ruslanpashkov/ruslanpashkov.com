@@ -7,6 +7,7 @@ import { global } from '@/data/global';
 import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
+import removeMarkdown from 'remove-markdown';
 
 export function getBlogSchema(website: URL, articles: Article[]): WithContext<Blog> {
 	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
@@ -50,6 +51,7 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
 	const datePublished = formatDate(publishedAt);
 	const keywords = categories.join(', ');
+	const cleanContent = removeMarkdown(body);
 
 	return {
 		'@type': 'BlogPosting',
@@ -57,7 +59,7 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 			'@type': 'Thing',
 			name: topic,
 		},
-		articleBody: body,
+		articleBody: cleanContent,
 		articleSection: categories,
 		author: {
 			'@type': 'Person',
