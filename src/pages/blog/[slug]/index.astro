@@ -26,7 +26,10 @@ interface Props {
 
 const { article } = Astro.props;
 
-const { categories, description, publishedAt, title, topic, updatedAt } = article.data;
+const {
+	data: { categories, description, publishedAt, title, topic, updatedAt },
+	slug,
+} = article;
 
 const { Content, headings } = await article.render();
 
@@ -39,7 +42,7 @@ const [email] = contacts;
 
 <Layout
 	article={article}
-	cover={`${title}.png`}
+	cover={`${slug}.png`}
 	description={description}
 	schemas={[articleSchema]}
 	title={pageTitle}
