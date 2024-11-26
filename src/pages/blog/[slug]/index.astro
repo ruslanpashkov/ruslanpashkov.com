@@ -205,6 +205,11 @@ const [email] = contacts;
 		backdrop-filter: blur(10px);
 		border: 1px solid var(--color-secondary);
 		border-radius: 12px;
+
+		&:has(> .table-of-contents__toggle:focus-visible) {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
 	}
 
 	.table-of-contents__content {
@@ -217,11 +222,7 @@ const [email] = contacts;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		padding-top: 12px;
-	}
-
-	.table-of-contents__item {
-		width: max-content;
+		padding: 20px 8px;
 	}
 
 	.table-of-contents__item--2 {
@@ -238,6 +239,7 @@ const [email] = contacts;
 
 	.table-of-contents__toggle {
 		width: 100%;
+		outline: none;
 	}
 
 	.table-of-contents__toggle[aria-expanded='false'] {
@@ -271,21 +273,25 @@ const [email] = contacts;
 		font-size: 1.125rem;
 		line-height: 1.75;
 
+		& h2,
+		& h3,
+		& h4 {
+			scroll-margin-top: 100px;
+			font-weight: bold;
+		}
+
 		& h2 {
 			margin: 40px 0 20px;
 			font-size: 1.875rem;
-			font-weight: bold;
 		}
 
 		& h3 {
 			margin: 20px 0 12px;
 			font-size: 1.25rem;
-			font-weight: bold;
 		}
 
 		& h4 {
 			margin: 12px 0 8px;
-			font-weight: bold;
 		}
 
 		& p {
@@ -402,15 +408,14 @@ const [email] = contacts;
 		& th {
 			font-weight: bold;
 			background-color: var(--color-transparent);
-			backdrop-filter: blur(10px);
 		}
 
 		& blockquote {
 			margin-block: 20px;
-			padding: 12px 20px;
+			padding: 8px 20px;
 			font-style: italic;
 			background-color: var(--color-transparent);
-			border-left: 4px solid var(--color-primary);
+			border-left: 2px solid var(--color-secondary);
 		}
 
 		& blockquote p {
