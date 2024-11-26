@@ -1,0 +1,501 @@
+---
+import Glow from '@/components/Glow.astro';
+import { contacts } from '@/data/contacts';
+import Layout from '@/layouts/Layout.astro';
+import { formatDate } from '@/utils/formatDate';
+import { getPageTitle } from '@/utils/getPageTitle';
+import { getArticleSchema } from '@/utils/schemas/getArticleSchema';
+import { Icon } from 'astro-icon/components';
+import { type CollectionEntry, getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+	const articles = await getCollection('blog');
+
+	return articles.map((article) => ({
+		params: { slug: article.slug },
+		props: { article },
+	}));
+}
+
+interface Props {
+	article: CollectionEntry<'blog'>;
+}
+
+const { article } = Astro.props;
+
+const {
+	data: { categories, description, publishedAt, title, topic, updatedAt },
+	slug,
+} = article;
+
+const { Content, headings } = await article.render();
+
+const articleSchema = getArticleSchema(Astro.url, article);
+
+const pageTitle = getPageTitle(title);
+
+const [email] = contacts;
+---
+
+<Layout
+	article={article}
+	cover={`${slug}.png`}
+	description={description}
+	schemas={[articleSchema]}
+	title={pageTitle}
+	type="article"
+>
+	<article class="article container container--spaced">
+		<header class="article__header">
+			<h1 class="article__title">{title}</h1>
+
+			<aside class="article__meta">
+				<div class="article__dates">
+					<time class="article__published-at" datetime={publishedAt}>
+						{formatDate(publishedAt)}
+					</time>
+
+					{
+						updatedAt && (
+							<time class="article__updated-at" datetime={updatedAt}>
+								(updated at {formatDate(updatedAt)})
+							</time>
+						)
+					}
+				</div>
+
+				<p class="article__topic">{topic}</p>
+
+				<span class="article__glow article__glow--start">
+					<Glow />
+				</span>
+			</aside>
+		</header>
+
+		{
+			headings.length > 0 && (
+				<nav class="table-of-contents">
+					<button
+						aria-controls="toc-content"
+						aria-expanded="true"
+						aria-label="Toggle Table of Contents"
+						class="table-of-contents__toggle"
+						type="button"
+					>
+						<h2 class="table-of-contents__title">
+							Table of Contents
+							<Icon
+								aria-hidden="true"
+								class="table-of-contents__icon"
+								name="chevron-down"
+							/>
+						</h2>
+					</button>
+
+					<div class="table-of-contents__content" id="toc-content">
+						<ul class="table-of-contents__list">
+							{headings.map((heading) => (
+								<li
+									class:list={[
+										'table-of-contents__item',
+										`table-of-contents__item--${heading.depth}`,
+									]}
+								>
+									<a class="hover" href={`#${heading.slug}`}>
+										{heading.text}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				</nav>
+			)
+		}
+
+		<div class="article__content">
+			<Content />
+		</div>
+
+		<div class="article__divider" role="presentation"></div>
+
+		<footer class="article__footer">
+			<ul class="article-tags">
+				{categories.map((category) => <li class="article-tags__item">{category}</li>)}
+			</ul>
+
+			<section class="article__contact">
+				<p class="article__contact-text">
+					Got questions or feedback? Feel free to reach out!
+				</p>
+
+				<a class="article__contact-link hover" href={email.url}>
+					<Icon aria-hidden="true" class="article__contact-icon" name="contact" />
+
+					{email.title}
+				</a>
+			</section>
+
+			<span class="article__glow article__glow--end">
+				<Glow />
+			</span>
+		</footer>
+	</article>
+</Layout>
+
+<style is:global>
+	.article {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		max-width: 800px;
+	}
+
+	.article__header {
+		position: relative;
+	}
+
+	.article__title {
+		margin-bottom: 20px;
+		font-size: 1.875rem;
+		line-height: 1.2;
+		text-align: center;
+
+		@media (width >= 768px) {
+			font-size: 2.25rem;
+		}
+
+		@media (width >= 1024px) {
+			font-size: 3rem;
+		}
+	}
+
+	.article__meta {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__dates {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.article__published-at {
+		font-size: 1.25rem;
+	}
+
+	.article__updated-at {
+		font-size: 1.125rem;
+		font-style: italic;
+	}
+
+	.article__topic {
+		place-self: end;
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+
+	.table-of-contents {
+		padding: 20px;
+		background-color: var(--color-transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
+	}
+
+	.table-of-contents__content {
+		overflow: hidden;
+		height: var(--content-height);
+		transition: height var(--motion-duration) ease-in-out;
+	}
+
+	.table-of-contents__list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding-top: 12px;
+	}
+
+	.table-of-contents__item {
+		width: max-content;
+	}
+
+	.table-of-contents__item--2 {
+		margin-left: 0;
+	}
+
+	.table-of-contents__item--3 {
+		margin-left: 20px;
+	}
+
+	.table-of-contents__item--4 {
+		margin-left: 40px;
+	}
+
+	.table-of-contents__toggle {
+		width: 100%;
+	}
+
+	.table-of-contents__toggle[aria-expanded='false'] {
+		& .table-of-contents__content {
+			height: 0;
+		}
+
+		& [data-icon='chevron-down'] {
+			transform: rotate(-180deg);
+		}
+	}
+
+	.table-of-contents__title {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 1.25rem;
+	}
+
+	.table-of-contents__icon {
+		--icon-size: 24px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+		transition: transform var(--motion-duration) ease-in-out;
+	}
+
+	.article__content {
+		max-width: 70ch;
+		font-size: 1.125rem;
+		line-height: 1.75;
+
+		& h2 {
+			margin: 40px 0 20px;
+			font-size: 1.875rem;
+			font-weight: bold;
+		}
+
+		& h3 {
+			margin: 20px 0 12px;
+			font-size: 1.25rem;
+			font-weight: bold;
+		}
+
+		& h4 {
+			margin: 12px 0 8px;
+			font-weight: bold;
+		}
+
+		& p {
+			margin-block: 20px;
+		}
+
+		& strong {
+			font-weight: bold;
+		}
+
+		& em {
+			font-style: italic;
+		}
+
+		& del {
+			text-decoration: line-through;
+		}
+
+		& a {
+			text-decoration: underline;
+		}
+
+		& pre {
+			position: relative;
+			overflow-x: auto;
+			margin-block: 20px;
+			padding: 20px;
+			background-color: var(--color-transparent);
+			backdrop-filter: blur(10px);
+			border: 1px solid var(--color-secondary);
+			border-radius: 12px;
+		}
+
+		& code {
+			font-family: 'Fira Code', monospace;
+		}
+
+		& :not(pre) > code {
+			padding: 2px 6px;
+			font-size: 0.875em;
+			background-color: var(--color-secondary);
+			border: 1px solid var(--color-secondary);
+			border-radius: 4px;
+		}
+
+		& ul,
+		& ol {
+			margin-block: 20px;
+			padding-left: 20px;
+		}
+
+		& ol {
+			list-style: decimal;
+		}
+
+		& ul {
+			list-style: disc;
+		}
+
+		& ul ul {
+			list-style: circle;
+		}
+
+		& ul ul,
+		& ul ol,
+		& ol ul,
+		& ol ol {
+			margin-block: 8px;
+		}
+
+		& ul ul ul {
+			list-style: square;
+		}
+
+		& ul li,
+		& ol li {
+			margin-block: 8px;
+		}
+
+		& ul:has(li > input[type='checkbox']) {
+			padding-left: 0;
+			list-style: none;
+		}
+
+		& li:has(> input[type='checkbox']) {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+			padding-left: 0;
+			list-style: none;
+		}
+
+		& input[type='checkbox'] {
+			width: 16px;
+			height: 16px;
+			margin: 0;
+		}
+
+		& table {
+			overflow: auto;
+			display: block;
+			border-collapse: collapse;
+			margin-block: 20px;
+			word-wrap: break-word;
+		}
+
+		& th,
+		& td {
+			padding: 12px;
+			text-align: left;
+			border: 1px solid var(--color-secondary);
+		}
+
+		& th {
+			font-weight: bold;
+			background-color: var(--color-transparent);
+			backdrop-filter: blur(10px);
+		}
+
+		& blockquote {
+			margin-block: 20px;
+			padding: 12px 20px;
+			font-style: italic;
+			background-color: var(--color-transparent);
+			border-left: 4px solid var(--color-primary);
+		}
+
+		& blockquote p {
+			margin: 0;
+		}
+
+		& :is(p, ul, ol, blockquote):last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.article__divider {
+		height: 1px;
+		background-color: var(--color-contrast);
+	}
+
+	.article__footer {
+		position: relative;
+	}
+
+	.article-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: start;
+		margin-bottom: 40px;
+	}
+
+	.article-tags__item {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+
+	.article__contact {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		align-items: center;
+		text-align: center;
+	}
+
+	.article__contact-text {
+		font-size: 1.125rem;
+		color: var(--color-neutral);
+	}
+
+	.article__contact-link {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		font-size: 1.125rem;
+		text-decoration: underline;
+	}
+
+	.article__contact-icon {
+		--icon-size: 20px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+
+	.article__glow {
+		position: absolute;
+		z-index: var(--z-index-glow);
+	}
+
+	.article__glow--start {
+		bottom: 0;
+		left: 0;
+	}
+
+	.article__glow--end {
+		right: 0;
+		bottom: 0;
+	}
+
+	html[data-theme='dark'] .astro-code,
+	html[data-theme='dark'] .astro-code span {
+		font-weight: var(--shiki-dark-font-weight) !important;
+		font-style: var(--shiki-dark-font-style) !important;
+		color: var(--shiki-dark) !important;
+		text-decoration: var(--shiki-dark-text-decoration) !important;
+		background-color: var(--shiki-dark-bg) !important;
+	}
+</style>
+
+<script src="../../../scripts/toc.ts"></script>
