@@ -27,6 +27,14 @@ export default [
 		},
 	},
 	{
+		ignores: ['src/**/*'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+			},
+		},
+	},
+	{
 		files: ['**/*.ts'],
 		languageOptions: {
 			parser: typescriptParser,
