@@ -1,0 +1,119 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav class="table-of-contents">
+	<button
+		aria-controls="toc-content"
+		aria-expanded="true"
+		aria-label="Toggle Table of Contents"
+		class="table-of-contents__toggle"
+		type="button"
+	>
+		<h2 class="table-of-contents__title">
+			Table of Contents
+
+			<Icon aria-hidden="true" class="table-of-contents__icon" name="chevron-down" />
+		</h2>
+	</button>
+
+	<div class="table-of-contents__content" id="toc-content">
+		<ul class="table-of-contents__list">
+			{
+				headings.map((heading) => (
+					<li
+						class:list={[
+							'table-of-contents__item',
+							`table-of-contents__item--${heading.depth}`,
+						]}
+					>
+						<a class="hover" href={`#${heading.slug}`}>
+							{heading.text}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</nav>
+
+<style>
+	.table-of-contents {
+		padding: 20px;
+		background-color: var(--color-transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
+
+		&:has(> .table-of-contents__toggle:focus-visible) {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
+		}
+	}
+
+	.table-of-contents__content {
+		overflow: hidden;
+		height: var(--content-height);
+		transition: height var(--motion-duration) ease-in-out;
+	}
+
+	.table-of-contents__list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 20px 8px;
+	}
+
+	.table-of-contents__item--2 {
+		margin-left: 0;
+	}
+
+	.table-of-contents__item--3 {
+		margin-left: 20px;
+	}
+
+	.table-of-contents__item--4 {
+		margin-left: 40px;
+	}
+
+	.table-of-contents__toggle {
+		width: 100%;
+		outline: none;
+	}
+
+	.table-of-contents__toggle[aria-expanded='false'] {
+		& .table-of-contents__content {
+			height: 0;
+		}
+
+		& [data-icon='chevron-down'] {
+			transform: rotate(-180deg);
+		}
+	}
+
+	.table-of-contents__title {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 1.25rem;
+	}
+
+	.table-of-contents__icon {
+		--icon-size: 24px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+		transition: transform var(--motion-duration) ease-in-out;
+	}
+</style>
+
+<script src="../../scripts/toc.ts"></script>

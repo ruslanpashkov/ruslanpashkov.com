@@ -1,4 +1,5 @@
 ---
+import TableOfContents from '@/components/Article/TableOfContents.astro';
 import Glow from '@/components/Glow.astro';
 import { contacts } from '@/data/contacts';
 import Layout from '@/layouts/Layout.astro';
@@ -72,47 +73,9 @@ const [email] = contacts;
 			</aside>
 		</header>
 
-		{
-			headings.length > 0 && (
-				<nav class="table-of-contents">
-					<button
-						aria-controls="toc-content"
-						aria-expanded="true"
-						aria-label="Toggle Table of Contents"
-						class="table-of-contents__toggle"
-						type="button"
-					>
-						<h2 class="table-of-contents__title">
-							Table of Contents
-							<Icon
-								aria-hidden="true"
-								class="table-of-contents__icon"
-								name="chevron-down"
-							/>
-						</h2>
-					</button>
+		{headings.length > 0 && <TableOfContents headings={headings} />}
 
-					<div class="table-of-contents__content" id="toc-content">
-						<ul class="table-of-contents__list">
-							{headings.map((heading) => (
-								<li
-									class:list={[
-										'table-of-contents__item',
-										`table-of-contents__item--${heading.depth}`,
-									]}
-								>
-									<a class="hover" href={`#${heading.slug}`}>
-										{heading.text}
-									</a>
-								</li>
-							))}
-						</ul>
-					</div>
-				</nav>
-			)
-		}
-
-		<div class="article__content">
+		<div class="article__content markdown">
 			<Content />
 		</div>
 
@@ -142,7 +105,7 @@ const [email] = contacts;
 	</article>
 </Layout>
 
-<style is:global>
+<style>
 	.article {
 		display: flex;
 		flex-direction: column;
@@ -199,232 +162,8 @@ const [email] = contacts;
 		border-radius: 24px;
 	}
 
-	.table-of-contents {
-		padding: 20px;
-		background-color: var(--color-transparent);
-		backdrop-filter: blur(10px);
-		border: 1px solid var(--color-secondary);
-		border-radius: 12px;
-
-		&:has(> .table-of-contents__toggle:focus-visible) {
-			outline: 2px solid var(--color-focus);
-			outline-offset: 2px;
-		}
-	}
-
-	.table-of-contents__content {
-		overflow: hidden;
-		height: var(--content-height);
-		transition: height var(--motion-duration) ease-in-out;
-	}
-
-	.table-of-contents__list {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 20px 8px;
-	}
-
-	.table-of-contents__item--2 {
-		margin-left: 0;
-	}
-
-	.table-of-contents__item--3 {
-		margin-left: 20px;
-	}
-
-	.table-of-contents__item--4 {
-		margin-left: 40px;
-	}
-
-	.table-of-contents__toggle {
-		width: 100%;
-		outline: none;
-	}
-
-	.table-of-contents__toggle[aria-expanded='false'] {
-		& .table-of-contents__content {
-			height: 0;
-		}
-
-		& [data-icon='chevron-down'] {
-			transform: rotate(-180deg);
-		}
-	}
-
-	.table-of-contents__title {
-		display: flex;
-		gap: 8px;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 1.25rem;
-	}
-
-	.table-of-contents__icon {
-		--icon-size: 24px;
-
-		width: var(--icon-size);
-		height: var(--icon-size);
-		transition: transform var(--motion-duration) ease-in-out;
-	}
-
 	.article__content {
-		max-width: 70ch;
-		font-size: 1.125rem;
-		line-height: 1.75;
-
-		& h2,
-		& h3,
-		& h4 {
-			scroll-margin-top: 100px;
-			font-weight: bold;
-		}
-
-		& h2 {
-			margin: 40px 0 20px;
-			font-size: 1.875rem;
-		}
-
-		& h3 {
-			margin: 20px 0 12px;
-			font-size: 1.25rem;
-		}
-
-		& h4 {
-			margin: 12px 0 8px;
-		}
-
-		& p {
-			margin-block: 20px;
-		}
-
-		& strong {
-			font-weight: bold;
-		}
-
-		& em {
-			font-style: italic;
-		}
-
-		& del {
-			text-decoration: line-through;
-		}
-
-		& a {
-			text-decoration: underline;
-		}
-
-		& pre {
-			position: relative;
-			overflow-x: auto;
-			margin-block: 20px;
-			padding: 20px;
-			background-color: var(--color-transparent);
-			backdrop-filter: blur(10px);
-			border: 1px solid var(--color-secondary);
-			border-radius: 12px;
-		}
-
-		& code {
-			font-family: 'Fira Code', monospace;
-		}
-
-		& :not(pre) > code {
-			padding: 2px 6px;
-			font-size: 0.875em;
-			background-color: var(--color-secondary);
-			border: 1px solid var(--color-secondary);
-			border-radius: 4px;
-		}
-
-		& ul,
-		& ol {
-			margin-block: 20px;
-			padding-left: 20px;
-		}
-
-		& ol {
-			list-style: decimal;
-		}
-
-		& ul {
-			list-style: disc;
-		}
-
-		& ul ul {
-			list-style: circle;
-		}
-
-		& ul ul,
-		& ul ol,
-		& ol ul,
-		& ol ol {
-			margin-block: 8px;
-		}
-
-		& ul ul ul {
-			list-style: square;
-		}
-
-		& ul li,
-		& ol li {
-			margin-block: 8px;
-		}
-
-		& ul:has(li > input[type='checkbox']) {
-			padding-left: 0;
-			list-style: none;
-		}
-
-		& li:has(> input[type='checkbox']) {
-			display: flex;
-			gap: 8px;
-			align-items: center;
-			padding-left: 0;
-			list-style: none;
-		}
-
-		& input[type='checkbox'] {
-			width: 16px;
-			height: 16px;
-			margin: 0;
-		}
-
-		& table {
-			overflow: auto;
-			display: block;
-			border-collapse: collapse;
-			margin-block: 20px;
-			word-wrap: break-word;
-		}
-
-		& th,
-		& td {
-			padding: 12px;
-			text-align: left;
-			border: 1px solid var(--color-secondary);
-		}
-
-		& th {
-			font-weight: bold;
-			background-color: var(--color-transparent);
-		}
-
-		& blockquote {
-			margin-block: 20px;
-			padding: 8px 20px;
-			font-style: italic;
-			background-color: var(--color-transparent);
-			border-left: 2px solid var(--color-secondary);
-		}
-
-		& blockquote p {
-			margin: 0;
-		}
-
-		& :is(p, ul, ol, blockquote):last-child {
-			margin-bottom: 0;
-		}
+		position: relative;
 	}
 
 	.article__divider {
@@ -492,15 +231,4 @@ const [email] = contacts;
 		right: 0;
 		bottom: 0;
 	}
-
-	html[data-theme='dark'] .astro-code,
-	html[data-theme='dark'] .astro-code span {
-		font-weight: var(--shiki-dark-font-weight) !important;
-		font-style: var(--shiki-dark-font-style) !important;
-		color: var(--shiki-dark) !important;
-		text-decoration: var(--shiki-dark-text-decoration) !important;
-		background-color: var(--shiki-dark-bg) !important;
-	}
 </style>
-
-<script src="../../../scripts/toc.ts"></script>

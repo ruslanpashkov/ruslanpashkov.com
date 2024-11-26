@@ -1,0 +1,158 @@
+.markdown {
+	max-width: 70ch;
+	font-size: 1.125rem;
+	line-height: 1.75;
+
+	& h2,
+	& h3,
+	& h4 {
+		scroll-margin-top: 100px;
+		font-weight: bold;
+	}
+
+	& h2 {
+		margin: 40px 0 20px;
+		font-size: 1.875rem;
+	}
+
+	& h3 {
+		margin: 20px 0 12px;
+		font-size: 1.25rem;
+	}
+
+	& h4 {
+		margin: 12px 0 8px;
+	}
+
+	& p {
+		margin-block: 20px;
+	}
+
+	& strong {
+		font-weight: bold;
+	}
+
+	& em {
+		font-style: italic;
+	}
+
+	& del {
+		text-decoration: line-through;
+	}
+
+	& a {
+		text-decoration: underline;
+	}
+
+	& pre {
+		position: relative;
+		overflow-x: auto;
+		margin-block: 20px;
+		padding: 20px;
+		background-color: var(--color-transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
+	}
+
+	& code {
+		font-family: "Fira Code", monospace;
+	}
+
+	& :not(pre) > code {
+		padding: 2px 6px;
+		font-size: 0.875em;
+		background-color: var(--color-secondary);
+		border: 1px solid var(--color-secondary);
+		border-radius: 4px;
+	}
+
+	& ul,
+	& ol {
+		margin-block: 20px;
+		padding-left: 20px;
+	}
+
+	& ol {
+		list-style: decimal;
+	}
+
+	& ul {
+		list-style: disc;
+	}
+
+	& ul ul {
+		list-style: circle;
+	}
+
+	& ul ul,
+	& ul ol,
+	& ol ul,
+	& ol ol {
+		margin-block: 8px;
+	}
+
+	& ul ul ul {
+		list-style: square;
+	}
+
+	& ul li,
+	& ol li {
+		margin-block: 8px;
+	}
+
+	& ul:has(li > input[type="checkbox"]) {
+		padding-left: 0;
+		list-style: none;
+	}
+
+	& li:has(> input[type="checkbox"]) {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		padding-left: 0;
+		list-style: none;
+	}
+
+	& input[type="checkbox"] {
+		width: 16px;
+		height: 16px;
+		margin: 0;
+	}
+
+	& table {
+		overflow: auto;
+		display: block;
+		border-collapse: collapse;
+		margin-block: 20px;
+		word-wrap: break-word;
+	}
+
+	& th,
+	& td {
+		padding: 12px;
+		text-align: left;
+		border: 1px solid var(--color-secondary);
+	}
+
+	& th {
+		font-weight: bold;
+		background-color: var(--color-transparent);
+	}
+
+	& blockquote {
+		margin-block: 20px;
+		padding: 8px 20px;
+		font-style: italic;
+		background-color: var(--color-transparent);
+		border-left: 2px solid var(--color-secondary);
+	}
+
+	& blockquote p {
+		margin: 0;
+	}
+
+	& :is(p, ul, ol, blockquote):last-child {
+		margin-bottom: 0;
+	}
+}

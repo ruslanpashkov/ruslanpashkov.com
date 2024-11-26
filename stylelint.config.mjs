@@ -12,14 +12,6 @@ export default {
 		{
 			extends: ['stylelint-config-html'],
 			files: ['*.astro'],
-			rules: {
-				'selector-pseudo-class-no-unknown': [
-					true,
-					{
-						ignorePseudoClasses: ['global'],
-					},
-				],
-			},
 		},
 	],
 	plugins: ['stylelint-prettier'],
