@@ -1,4 +1,6 @@
 ---
+import type { Article } from '@/types/Article';
+
 import TableOfContents from '@/components/Article/TableOfContents.astro';
 import Glow from '@/components/Glow.astro';
 import { contacts } from '@/data/contacts';
@@ -7,7 +9,7 @@ import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { getArticleSchema } from '@/utils/schemas/getArticleSchema';
 import { Icon } from 'astro-icon/components';
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
 	const articles = await getCollection('blog');
@@ -19,15 +21,12 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-	article: CollectionEntry<'blog'>;
+	article: Article;
 }
 
 const { article } = Astro.props;
 
-const {
-	data: { categories, description, publishedAt, title, topic, updatedAt },
-	slug,
-} = article;
+const { categories, description, publishedAt, title, topic, updatedAt } = article.data;
 
 const { Content, headings } = await article.render();
 
@@ -40,7 +39,7 @@ const [email] = contacts;
 
 <Layout
 	article={article}
-	cover={`${slug}.png`}
+	cover={`${title}.png`}
 	description={description}
 	schemas={[articleSchema]}
 	title={pageTitle}

@@ -15,7 +15,7 @@ export function getArticleSchema(website: URL, article: Article): WithContext<Bl
 		slug,
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, website);
-	const previewImageURL = new URL(`/images/previews/${slug}.png`, website);
+	const previewImageURL = new URL(`/images/previews/${title}.png`, website);
 	const datePublished = formatDate(publishedAt);
 	const keywords = categories.join(', ');
 	const pageTitle = getPageTitle(title);

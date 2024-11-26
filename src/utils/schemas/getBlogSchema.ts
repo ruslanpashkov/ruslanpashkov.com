@@ -48,7 +48,7 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 		slug,
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
-	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
+	const previewImageURL = new URL(`/images/previews/${title}.png`, import.meta.env.SITE);
 	const datePublished = formatDate(publishedAt);
 	const keywords = categories.join(', ');
 	const cleanContent = removeMarkdown(body);
