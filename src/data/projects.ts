@@ -19,7 +19,7 @@ export const projects: Project[] = [
 	},
 	{
 		description:
-			"Led a team of 5 devs to build a product catalog for Apple stuff with a cart. Another iPhone model? Please, we already have enough in our DB.",
+			'Led a team of 5 devs to build a product catalog for Apple stuff with a cart. Another iPhone model? Please, we already have enough in our DB.',
 		tags: ['TypeScript', 'React', 'SCSS', 'Express.js', 'PostgreSQL', 'Sequelize'],
 		title: 'Nice Gadgets',
 		type: 'Web Showcases',
