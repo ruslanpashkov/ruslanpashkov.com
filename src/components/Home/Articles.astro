@@ -1,7 +1,6 @@
 ---
 import type { Article } from '@/types/Article';
 
-import { formatDate } from '@/utils/formatDate';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -16,28 +15,25 @@ const { articles } = Astro.props;
 		articles.map(({ data, slug }) => (
 			<li>
 				<article class="article-card">
-					<time class="article-card__date" datetime={data.publishedAt}>
-						{formatDate(data.publishedAt)}
-					</time>
-
-					<h3 class="article-card__title">{data.title}</h3>
-
-					<p>{data.description}</p>
-
 					<a
 						aria-label={`Read full article: ${data.title}`}
 						class="article-card__link"
 						draggable="false"
 						href={`/blog/${slug}/`}
 					>
-						More
-						<Icon
-							aria-hidden="true"
-							class="article-card__navigation-icon"
-							name="arrow-short"
-							width={20}
-						/>
+						<h3 class="article-card__title">
+							{data.title}
+
+							<Icon
+								aria-hidden="true"
+								class="article-card__navigation-icon"
+								name="arrow-default"
+								width={40}
+							/>
+						</h3>
 					</a>
+
+					<p>{data.description}</p>
 				</article>
 			</li>
 		))
@@ -79,18 +75,7 @@ const { articles } = Astro.props;
 		}
 	}
 
-	.article-card__date {
-		font-size: 0.875rem;
-	}
-
-	.article-card__title {
-		font-size: 1.5rem;
-	}
-
 	.article-card__link {
-		display: flex;
-		gap: 8px;
-		align-items: center;
 		outline: none;
 
 		&::before {
@@ -100,7 +85,13 @@ const { articles } = Astro.props;
 		}
 	}
 
+	.article-card__title {
+		font-size: 1.5rem;
+	}
+
 	.article-card__navigation-icon {
 		min-width: max-content;
+		margin-left: 8px;
+		font-size: 1rem;
 	}
 </style>
