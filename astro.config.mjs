@@ -3,6 +3,9 @@ import sitemap from '@astrojs/sitemap';
 import Compress from '@playform/compress';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeSlug from 'rehype-slug';
 
 import redirects from './redirects';
 
@@ -15,6 +18,27 @@ export default defineConfig({
 		Compress({ CSS: false }),
 	],
 	markdown: {
+		rehypePlugins: [
+			rehypeSlug,
+			[
+				rehypeExternalLinks,
+				{
+					rel: ['nofollow', 'noopener', 'noreferrer'],
+					target: '_blank',
+				},
+			],
+			[
+				rehypeAutolinkHeadings,
+				{
+					behavior: 'append',
+					properties: {
+						ariaHidden: 'true',
+						className: ['heading-link'],
+						tabIndex: -1,
+					},
+				},
+			],
+		],
 		shikiConfig: {
 			themes: {
 				dark: 'github-dark',
