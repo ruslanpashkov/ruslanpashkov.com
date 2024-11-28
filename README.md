@@ -28,4 +28,4 @@ This project is licensed under the following licenses:
 - **Website Content**: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 - **Fira Code & Montserrat Fonts**: [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
 
-You can use, modify and share the source code with the license. Website content is for non-commercial use with credit, and changes must follow the same terms. Fonts are free to use but can’t be sold by themselves.
+You can use, modify and share the source code with the license. Website content is for non-commercial use with credit, and changes must follow the same terms. The project's design, layout, and visual elements may not be copied or reused. Fonts are free to use but can't be sold by themselves.
