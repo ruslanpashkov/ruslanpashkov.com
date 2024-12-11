@@ -10,7 +10,7 @@ import { global } from '@/data/global';
 import darkStyles from '@/styles/dark.css?raw';
 import '@/styles/global.css';
 import lightStyles from '@/styles/light.css?raw';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 
 interface DefaultProps {
 	cover: string;
@@ -144,7 +144,7 @@ const generator = Astro.generator;
 		<style id="style-media-dark" media="(prefers-color-scheme: dark)" set:html={darkStyles}
 		></style>
 
-		<ViewTransitions />
+		<ClientRouter />
 
 		{
 			schemas.length > 0 &&
