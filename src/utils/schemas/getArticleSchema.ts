@@ -11,15 +11,14 @@ export function getArticleSchema(website: URL, article: Article): WithContext<Bl
 	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
 	const {
 		body,
-		data: { categories, description, publishedAt, title, topic },
-		slug,
+		data: { categories, description, publishedAt, slug, title, topic },
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, website);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, website);
-	const datePublished = formatDate(publishedAt);
+	const datePublished = new Date(formatDate(publishedAt)).toISOString();
 	const keywords = categories.join(', ');
 	const pageTitle = getPageTitle(title);
-	const cleanContent = removeMarkdown(body);
+	const cleanContent = removeMarkdown(body!);
 
 	return {
 		'@context': 'https://schema.org',
