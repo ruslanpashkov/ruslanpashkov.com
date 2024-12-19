@@ -45,7 +45,7 @@ async function getCollection(name) {
 	const { globby } = await import('globby');
 
 	try {
-		const paths = await globby(`${CONFIG.paths.content}/${name}/**/*.md`);
+		const paths = await globby(`${CONFIG.paths.content}/${name}/**/*.{md,mdx}`);
 
 		const articles = await Promise.all(
 			paths.map(async (path) => {
