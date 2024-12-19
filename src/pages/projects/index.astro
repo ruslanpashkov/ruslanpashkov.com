@@ -1,4 +1,6 @@
 ---
+import type { Crumb } from '@/types/Crumb';
+
 import Glow from '@/components/Glow.astro';
 import ProjectList from '@/components/Projects/ProjectList.astro';
 import ProjectSection from '@/components/Projects/ProjectSection.astro';
@@ -9,6 +11,7 @@ import Layout from '@/layouts/Layout.astro';
 import { projectTypes } from '@/types/Project';
 import { categorizeProjects } from '@/utils/categorizeProjects';
 import { getPageTitle } from '@/utils/getPageTitle';
+import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
 import { getProjectsSchema } from '@/utils/schemas/getProjectsSchema';
 import { sortProjectsByType } from '@/utils/sortProjectsByType';
 
@@ -22,17 +25,23 @@ const {
 	'Web Showcases': webShowcases,
 } = categorizeProjects(sortedProjects, projectTypes);
 
+const breadcrumbs: Crumb[] = [
+	{ label: 'Home', title: 'Go to the home page', url: '/' },
+	{ current: true, label: 'Projects', title: `You are currently on projects`, url: '/projects/' },
+];
+
 const projectsSchema = getProjectsSchema(Astro.url, sortedProjects);
+const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout
 	cover="projects.png"
 	description={descriptions.projects}
-	schemas={[projectsSchema]}
+	schemas={[projectsSchema, breadcrumbsSchema]}
 	title={title}
 	type="website"
 >
-	<ContentLayout title="Projects">
+	<ContentLayout breadcrumbs={breadcrumbs} title="Projects">
 		<div class="projects">
 			{
 				webShowcases.length > 0 && (

@@ -1,4 +1,6 @@
 ---
+import type { Crumb } from '@/types/Crumb';
+
 import ArticleList from '@/components/Blog/ArticleList.astro';
 import Glow from '@/components/Glow.astro';
 import { descriptions } from '@/data/descriptions';
@@ -6,6 +8,7 @@ import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { getBlogSchema } from '@/utils/schemas/getBlogSchema';
+import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
 import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
 import { getCollection } from 'astro:content';
 
@@ -15,17 +18,23 @@ const articles = await getCollection('blog');
 
 const sortedArticles = sortArticlesByDate(articles);
 
+const breadcrumbs: Crumb[] = [
+	{ label: 'Home', title: 'Go to the home page', url: '/' },
+	{ current: true, label: 'Blog', title: `You are currently on blog`, url: '/blog/' },
+];
+
 const blogSchema = getBlogSchema(Astro.url, sortedArticles);
+const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout
 	cover="blog.png"
 	description={descriptions.articles}
-	schemas={[blogSchema]}
+	schemas={[blogSchema, breadcrumbsSchema]}
 	title={title}
 	type="website"
 >
-	<ContentLayout title="Blog">
+	<ContentLayout breadcrumbs={breadcrumbs} title="Blog">
 		{
 			sortedArticles.length > 0 ? (
 				<div class="articles">

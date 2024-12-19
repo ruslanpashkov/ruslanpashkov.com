@@ -1,18 +1,14 @@
 ---
+import type { Crumb } from '@/types/Crumb';
+
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 
 interface Props {
+	breadcrumbs: Crumb[];
 	title: string;
 }
 
-const { title } = Astro.props;
-
-const currentPath = Astro.url.pathname;
-
-const breadcrumbs = [
-	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ current: true, label: title, title: `You are currently on ${title}`, url: currentPath },
-];
+const { breadcrumbs, title } = Astro.props;
 ---
 
 <div class="container container--spaced">

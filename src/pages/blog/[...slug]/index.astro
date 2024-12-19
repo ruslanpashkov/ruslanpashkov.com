@@ -1,5 +1,6 @@
 ---
 import type { Article } from '@/types/Article';
+import type { Crumb } from '@/types/Crumb';
 
 import TableOfContents from '@/components/Article/TableOfContents.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -9,6 +10,7 @@ import Layout from '@/layouts/Layout.astro';
 import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { getArticleSchema } from '@/utils/schemas/getArticleSchema';
+import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
 import { Icon } from 'astro-icon/components';
 import { getCollection, render } from 'astro:content';
 
@@ -35,26 +37,27 @@ const {
 	remarkPluginFrontmatter: { minutesRead },
 } = await render(article);
 
-const articleSchema = getArticleSchema(Astro.url, article);
-
 const pageTitle = getPageTitle(title);
 
 const currentPath = Astro.url.pathname;
 
-const breadcrumbs = [
+const [email, ...socialLinks] = contacts;
+
+const breadcrumbs: Crumb[] = [
 	{ label: 'Home', title: 'Go to the homepage', url: '/' },
 	{ label: 'Blog', title: 'Go to the blog', url: '/blog/' },
 	{ current: true, label: title, title: `You are currently reading ${title}`, url: currentPath },
 ];
 
-const [email, ...socialLinks] = contacts;
+const articleSchema = getArticleSchema(Astro.url, article);
+const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout
 	article={article}
 	cover={`${slug}.png`}
 	description={description}
-	schemas={[articleSchema]}
+	schemas={[articleSchema, breadcrumbsSchema]}
 	title={pageTitle}
 	type="article"
 >
