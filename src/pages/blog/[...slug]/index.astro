@@ -42,9 +42,9 @@ const pageTitle = getPageTitle(title);
 const currentPath = Astro.url.pathname;
 
 const breadcrumbs = [
-	{ href: '/', label: 'Home' },
-	{ href: '/blog/', label: 'Blog' },
-	{ current: true, href: currentPath, label: title },
+	{ label: 'Home', title: 'Go to the homepage', url: '/' },
+	{ label: 'Blog', title: 'Go to the blog', url: '/blog/' },
+	{ current: true, label: title, title: `You are currently reading ${title}`, url: currentPath },
 ];
 
 const [email, ...socialLinks] = contacts;

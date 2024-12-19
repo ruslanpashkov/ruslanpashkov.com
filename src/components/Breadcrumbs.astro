@@ -17,8 +17,9 @@ const { breadcrumbs } = Astro.props;
 				<li class="breadcrumbs__item">
 					<a
 						aria-current={crumb.current ? 'page' : null}
+						aria-label={crumb.title}
 						class="breadcrumbs__link hover"
-						href={crumb.href}
+						href={crumb.url}
 						tabindex={crumb.current ? '-1' : '0'}
 					>
 						{crumb.label}

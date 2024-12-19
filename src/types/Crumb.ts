@@ -1,5 +1,5 @@
-export interface Crumb {
+import type { Link } from '@/types/Link';
+
+export interface Crumb extends Link {
 	current?: boolean;
-	href: string;
-	label: string;
 }
