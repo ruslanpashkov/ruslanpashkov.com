@@ -44,6 +44,19 @@
 		text-decoration: underline;
 	}
 
+	/* Styles for auto-generated anchor links next to headings */
+	& .heading-link {
+		margin-left: 12px;
+		text-decoration: none;
+	}
+
+	& img {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		border-radius: 12px;
+	}
+
 	& pre {
 		position: relative;
 		overflow-x: auto;
