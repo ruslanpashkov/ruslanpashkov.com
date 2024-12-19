@@ -1,0 +1,72 @@
+---
+import type { Crumb } from '@/types/Crumb';
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	breadcrumbs: Crumb[];
+}
+
+const { breadcrumbs } = Astro.props;
+---
+
+<nav aria-label="Breadcrumbs" class="breadcrumbs">
+	<ol class="breadcrumbs__list">
+		{
+			breadcrumbs.map((crumb, index) => (
+				<li class="breadcrumbs__item">
+					<a
+						aria-current={crumb.current ? 'page' : null}
+						class="breadcrumbs__link hover"
+						href={crumb.href}
+						tabindex={crumb.current ? '-1' : '0'}
+					>
+						{crumb.label}
+					</a>
+
+					{index < breadcrumbs.length - 1 && (
+						<Icon
+							aria-hidden="true"
+							class="breadcrumbs__separator"
+							name="chevron-down"
+						/>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>
+
+<style>
+	.breadcrumbs {
+		width: 100%;
+	}
+
+	.breadcrumbs__list {
+		display: flex;
+		align-items: center;
+	}
+
+	.breadcrumbs__item {
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+	}
+
+	.breadcrumbs__link {
+		padding-block: 8px;
+		font-size: 1.125rem;
+	}
+
+	.breadcrumbs__link[aria-current='page'] {
+		pointer-events: none;
+		color: var(--color-contast);
+	}
+
+	.breadcrumbs__separator {
+		transform: rotate(-90deg);
+		max-width: max-content;
+		margin-inline: 12px;
+		color: var(--color-neutral);
+	}
+</style>

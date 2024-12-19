@@ -2,6 +2,7 @@
 import type { Article } from '@/types/Article';
 
 import TableOfContents from '@/components/Article/TableOfContents.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Glow from '@/components/Glow.astro';
 import { contacts } from '@/data/contacts';
 import Layout from '@/layouts/Layout.astro';
@@ -38,6 +39,14 @@ const articleSchema = getArticleSchema(Astro.url, article);
 
 const pageTitle = getPageTitle(title);
 
+const currentPath = Astro.url.pathname;
+
+const breadcrumbs = [
+	{ href: '/', label: 'Home' },
+	{ href: '/blog/', label: 'Blog' },
+	{ current: true, href: currentPath, label: title },
+];
+
 const [email, ...socialLinks] = contacts;
 ---
 
@@ -49,97 +58,101 @@ const [email, ...socialLinks] = contacts;
 	title={pageTitle}
 	type="article"
 >
-	<article class="article container container--spaced">
-		<header class="article__header">
-			<h1 class="article__title">{title}</h1>
+	<div class="container container--spaced">
+		<Breadcrumbs breadcrumbs={breadcrumbs} />
 
-			<aside class="article__meta">
-				<div class="article__dates">
-					<time class="article__published-at" datetime={publishedAt}>
-						{formatDate(publishedAt)}
-					</time>
+		<article class="article">
+			<header class="article__header">
+				<h1 class="article__title">{title}</h1>
 
-					{
-						updatedAt && (
-							<time class="article__updated-at" datetime={updatedAt}>
-								(updated at {formatDate(updatedAt)})
-							</time>
-						)
-					}
-				</div>
+				<aside class="article__meta">
+					<div class="article__dates">
+						<time class="article__published-at" datetime={publishedAt}>
+							{formatDate(publishedAt)}
+						</time>
 
-				<div class="article__info">
-					<p class="article__reading-time">
-						{minutesRead}
-					</p>
+						{
+							updatedAt && (
+								<time class="article__updated-at" datetime={updatedAt}>
+									(updated at {formatDate(updatedAt)})
+								</time>
+							)
+						}
+					</div>
 
-					<p class="article__topic">{topic}</p>
-				</div>
+					<div class="article__info">
+						<p class="article__reading-time">
+							{minutesRead}
+						</p>
 
-				<span class="article__glow article__glow--start">
+						<p class="article__topic">{topic}</p>
+					</div>
+
+					<span class="article__glow article__glow--start">
+						<Glow />
+					</span>
+				</aside>
+			</header>
+
+			{headings.length > 0 && <TableOfContents headings={headings} />}
+
+			<div class="article__content markdown">
+				<Content />
+			</div>
+
+			<div class="article__divider" role="presentation"></div>
+
+			<footer class="article__footer">
+				<ul class="article-tags">
+					{categories.map((category) => <li class="article-tags__item">{category}</li>)}
+				</ul>
+
+				<section class="article__contacts">
+					<div class="article__contact">
+						<p class="article__contact-text">
+							Got questions or feedback? Feel free to reach out!
+						</p>
+
+						<a class="article__contact-link hover" href={email.url}>
+							<Icon
+								aria-hidden="true"
+								class="article__contact-icon"
+								name="email-outlined"
+							/>
+
+							{email.title}
+						</a>
+					</div>
+
+					<ul class="article__social">
+						{
+							socialLinks.map(({ icon, label, url }) => (
+								<li>
+									<a
+										aria-label={label && `Contact via ${label}`}
+										class="article__social-link hover"
+										href={url}
+										rel="noopener noreferrer"
+										target="_blank"
+									>
+										<Icon
+											aria-hidden="true"
+											class="article__social-icon"
+											name={`${icon}-outlined`}
+										/>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</section>
+
+				<span class="article__glow article__glow--end">
 					<Glow />
 				</span>
-			</aside>
-		</header>
-
-		{headings.length > 0 && <TableOfContents headings={headings} />}
-
-		<div class="article__content markdown">
-			<Content />
-		</div>
-
-		<div class="article__divider" role="presentation"></div>
-
-		<footer class="article__footer">
-			<ul class="article-tags">
-				{categories.map((category) => <li class="article-tags__item">{category}</li>)}
-			</ul>
-
-			<section class="article__contacts">
-				<div class="article__contact">
-					<p class="article__contact-text">
-						Got questions or feedback? Feel free to reach out!
-					</p>
-
-					<a class="article__contact-link hover" href={email.url}>
-						<Icon
-							aria-hidden="true"
-							class="article__contact-icon"
-							name="email-outlined"
-						/>
-
-						{email.title}
-					</a>
-				</div>
-
-				<ul class="article__social">
-					{
-						socialLinks.map(({ icon, label, url }) => (
-							<li>
-								<a
-									aria-label={label && `Contact via ${label}`}
-									class="article__social-link hover"
-									href={url}
-									rel="noopener noreferrer"
-									target="_blank"
-								>
-									<Icon
-										aria-hidden="true"
-										class="article__social-icon"
-										name={`${icon}-outlined`}
-									/>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-
-			<span class="article__glow article__glow--end">
-				<Glow />
-			</span>
-		</footer>
-	</article>
+			</footer>
+		</article>
+	</div>
 </Layout>
 
 <style>
@@ -148,6 +161,8 @@ const [email, ...socialLinks] = contacts;
 		flex-direction: column;
 		gap: 20px;
 		max-width: 800px;
+		margin-inline: auto;
+		padding-block: 20px;
 	}
 
 	.article__header {
