@@ -121,3 +121,5 @@ const cleanup = () => {
 document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:after-swap', init);
 document.addEventListener('astro:page-load', init);
+
+export { cleanup, init };

@@ -1,6 +1,7 @@
 ---
 import type { MarkdownHeading } from 'astro';
 
+import { removeTrailingHash } from '@/utils/removeTrailingHash';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -36,7 +37,7 @@ const { headings } = Astro.props;
 						]}
 					>
 						<a class="hover" href={`#${heading.slug}`}>
-							{heading.text}
+							{removeTrailingHash(heading.text)}
 						</a>
 					</li>
 				))

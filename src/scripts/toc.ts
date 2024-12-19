@@ -8,6 +8,7 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
+let currentTransitionHandler: ((event: TransitionEvent) => void) | null = null;
 
 const getStoredState = () => window.localStorage.getItem(STORAGE_KEY) === 'true';
 
@@ -16,23 +17,60 @@ const storeState = (isCollapsed: boolean) =>
 
 const setHeight = (height: number) => (refs.content.style.height = `${height}px`);
 
+const setVisibility = (isVisible: boolean) => {
+	refs.content.style.visibility = isVisible ? 'visible' : 'hidden';
+	refs.content.setAttribute('aria-hidden', (!isVisible).toString());
+};
+
 const setToggleExpanded = (isExpanded: boolean) =>
 	refs.toggle.setAttribute('aria-expanded', isExpanded.toString());
 
 const isExpanded = () => refs.toggle.getAttribute('aria-expanded') === 'true';
 
+const cleanupTransition = () => {
+	if (currentTransitionHandler) {
+		refs.content.removeEventListener('transitionend', currentTransitionHandler);
+		currentTransitionHandler = null;
+	}
+};
+
+const expandContent = (height: number) => {
+	cleanupTransition();
+	setVisibility(true);
+	setHeight(height);
+	setToggleExpanded(true);
+};
+
+const collapseContent = (immediate = false) => {
+	cleanupTransition();
+	setHeight(0);
+	setToggleExpanded(false);
+
+	if (immediate) {
+		setVisibility(false);
+	}
+};
+
 const expand = () => {
 	const height = refs.list.offsetHeight;
 
-	setHeight(height);
-	setToggleExpanded(true);
+	expandContent(height);
 	storeState(false);
 };
 
 const collapse = () => {
-	setHeight(0);
-	setToggleExpanded(false);
+	collapseContent();
 	storeState(true);
+
+	const handleTransitionEnd = (event: TransitionEvent) => {
+		if (event.propertyName === 'height') {
+			setVisibility(false);
+			cleanupTransition();
+		}
+	};
+
+	currentTransitionHandler = handleTransitionEnd;
+	refs.content.addEventListener('transitionend', handleTransitionEnd);
 };
 
 const handleTocToggle = () => {
@@ -53,12 +91,10 @@ const initState = () => {
 	const isCollapsed = getStoredState();
 	const height = refs.list.offsetHeight;
 
-	setHeight(height);
-
 	if (isCollapsed) {
-		collapse();
+		collapseContent(true);
 	} else {
-		expand();
+		expandContent(height);
 	}
 };
 
@@ -78,6 +114,8 @@ const init = () => {
 };
 
 const cleanup = () => {
+	cleanupTransition();
+
 	refs.toggle.removeEventListener('click', handleTocToggle);
 	window.removeEventListener('resize', handleResize);
 };
@@ -85,3 +123,5 @@ const cleanup = () => {
 document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:after-swap', init);
 document.addEventListener('astro:page-load', init);
+
+export { cleanup, init };
