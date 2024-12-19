@@ -9,13 +9,13 @@ import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
 import { getArticleSchema } from '@/utils/schemas/getArticleSchema';
 import { Icon } from 'astro-icon/components';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
 	const articles = await getCollection('blog');
 
 	return articles.map((article) => ({
-		params: { slug: article.slug },
+		params: { slug: article.data.slug },
 		props: { article },
 	}));
 }
@@ -26,18 +26,19 @@ interface Props {
 
 const { article } = Astro.props;
 
-const {
-	data: { categories, description, publishedAt, title, topic, updatedAt },
-	slug,
-} = article;
+const { categories, description, publishedAt, slug, title, topic, updatedAt } = article.data;
 
-const { Content, headings } = await article.render();
+const {
+	Content,
+	headings,
+	remarkPluginFrontmatter: { minutesRead },
+} = await render(article);
 
 const articleSchema = getArticleSchema(Astro.url, article);
 
 const pageTitle = getPageTitle(title);
 
-const [email] = contacts;
+const [email, ...socialLinks] = contacts;
 ---
 
 <Layout
@@ -67,7 +68,13 @@ const [email] = contacts;
 					}
 				</div>
 
-				<p class="article__topic">{topic}</p>
+				<div class="article__info">
+					<p class="article__reading-time">
+						{minutesRead}
+					</p>
+
+					<p class="article__topic">{topic}</p>
+				</div>
 
 				<span class="article__glow article__glow--start">
 					<Glow />
@@ -88,16 +95,44 @@ const [email] = contacts;
 				{categories.map((category) => <li class="article-tags__item">{category}</li>)}
 			</ul>
 
-			<section class="article__contact">
-				<p class="article__contact-text">
-					Got questions or feedback? Feel free to reach out!
-				</p>
+			<section class="article__contacts">
+				<div class="article__contact">
+					<p class="article__contact-text">
+						Got questions or feedback? Feel free to reach out!
+					</p>
 
-				<a class="article__contact-link hover" href={email.url}>
-					<Icon aria-hidden="true" class="article__contact-icon" name="contact" />
+					<a class="article__contact-link hover" href={email.url}>
+						<Icon
+							aria-hidden="true"
+							class="article__contact-icon"
+							name="email-outlined"
+						/>
 
-					{email.title}
-				</a>
+						{email.title}
+					</a>
+				</div>
+
+				<ul class="article__social">
+					{
+						socialLinks.map(({ icon, label, url }) => (
+							<li>
+								<a
+									aria-label={label && `Contact via ${label}`}
+									class="article__social-link hover"
+									href={url}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									<Icon
+										aria-hidden="true"
+										class="article__social-icon"
+										name={`${icon}-outlined`}
+									/>
+								</a>
+							</li>
+						))
+					}
+				</ul>
 			</section>
 
 			<span class="article__glow article__glow--end">
@@ -157,8 +192,20 @@ const [email] = contacts;
 		font-style: italic;
 	}
 
+	.article__info {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.article__reading-time {
+		font-size: 1.125rem;
+		font-style: italic;
+	}
+
 	.article__topic {
-		place-self: end;
 		padding: 2px 8px;
 		border: 1px solid var(--color-contrast);
 		border-radius: 24px;
@@ -191,10 +238,16 @@ const [email] = contacts;
 		border-radius: 24px;
 	}
 
+	.article__contacts {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
 	.article__contact {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 20px;
 		align-items: center;
 		text-align: center;
 	}
@@ -219,6 +272,26 @@ const [email] = contacts;
 		height: var(--icon-size);
 	}
 
+	.article__social {
+		display: flex;
+		gap: 24px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__social-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__social-icon {
+		--icon-size: 28px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+
 	.article__glow {
 		position: absolute;
 		z-index: var(--z-index-glow);
@@ -234,3 +307,5 @@ const [email] = contacts;
 		bottom: 0;
 	}
 </style>
+
+<script src="../../../scripts/scroll.ts"></script>
