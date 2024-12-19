@@ -9,10 +9,7 @@ interface Props {
 
 const { article } = Astro.props;
 
-const {
-	data: { categories, description, publishedAt, title, topic },
-	slug,
-} = article;
+const { categories, description, publishedAt, slug, title, topic } = article.data;
 ---
 
 <article class="article-card">
