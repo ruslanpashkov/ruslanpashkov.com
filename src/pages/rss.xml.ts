@@ -9,12 +9,12 @@ export async function GET(context: APIContext) {
 
 	return rss({
 		description: global.about,
-		items: blog.map((post) => ({
-			categories: post.data.categories,
-			description: post.data.description,
+		items: blog.map(({ data: post }) => ({
+			categories: post.categories,
+			description: post.description,
 			link: `/blog/${post.slug}/`,
-			publishedAt: new Date(post.data.publishedAt),
-			title: post.data.title,
+			pubDate: new Date(post.publishedAt),
+			title: post.title,
 		})),
 		site: context.site!,
 		stylesheet: '/rss/styles.xsl',

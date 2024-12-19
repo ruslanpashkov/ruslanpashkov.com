@@ -76,8 +76,9 @@
                   </h3>
                   <p class="mb-1 text-small">
                     Published:
-                    <time datetime="{publishedAt}">
-                      <xsl:value-of select="publishedAt" />
+                    <time datetime="{pubDate}">
+                      <!-- Extract the first 16 characters of pubDate which gives us "Day, DD MMM YYYY" format -->
+                      <xsl:value-of select="substring(pubDate, 1, 16)" />
                     </time>
                   </p>
                   <xsl:if test="category">
