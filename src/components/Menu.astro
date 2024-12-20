@@ -41,7 +41,12 @@ const currentPath = Astro.url.pathname;
 		<span class="action__label">RSS</span>
 	</a>
 
-	<button class="action menu__theme-toggler" id="theme-toggler" type="button">
+	<button
+		aria-label="Toggle theme"
+		class="action menu__theme-toggler"
+		id="theme-toggler"
+		type="button"
+	>
 		<span class="action__icon">
 			<Icon aria-hidden="true" name="sun" size={22} />
 		</span>
