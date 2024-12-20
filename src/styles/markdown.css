@@ -46,6 +46,7 @@
 
 	/* Styles for auto-generated anchor links next to headings */
 	& .heading-link {
+		user-select: none;
 		margin-left: 12px;
 		text-decoration: none;
 	}
