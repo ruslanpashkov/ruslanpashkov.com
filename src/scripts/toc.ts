@@ -10,6 +10,8 @@ const getRefs = () => ({
 let refs: ReturnType<typeof getRefs>;
 let currentTransitionHandler: ((event: TransitionEvent) => void) | null = null;
 
+const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
+
 const getStoredState = () => window.localStorage.getItem(STORAGE_KEY) === 'true';
 
 const storeState = (isCollapsed: boolean) =>
@@ -109,14 +111,15 @@ const initEventListeners = () => {
 const init = () => {
 	refs = getRefs();
 
-	initState();
-	initEventListeners();
+	if (hasRefs(refs)) {
+		initState();
+		initEventListeners();
+	}
 };
 
 const cleanup = () => {
 	cleanupTransition();
-
-	refs.toggle.removeEventListener('click', handleTocToggle);
+	refs.toggle?.removeEventListener('click', handleTocToggle);
 	window.removeEventListener('resize', handleResize);
 };
 
