@@ -15,25 +15,24 @@ const { articles } = Astro.props;
 		articles.map(({ data }) => (
 			<li>
 				<article class="article-card">
+					<h3 class="article-card__title">{data.title}</h3>
+
+					<p>{data.description}</p>
+
 					<a
 						aria-label={`Read full article: ${data.title}`}
 						class="article-card__link"
 						draggable="false"
 						href={`/blog/${data.slug}/`}
 					>
-						<h3 class="article-card__title">
-							{data.title}
-
-							<Icon
-								aria-hidden="true"
-								class="article-card__navigation-icon"
-								name="arrow-default"
-								width={40}
-							/>
-						</h3>
+						Read article
+						<Icon
+							aria-hidden="true"
+							class="article-card__navigation-icon"
+							name="arrow-default"
+							width={40}
+						/>
 					</a>
-
-					<p>{data.description}</p>
 				</article>
 			</li>
 		))
@@ -76,6 +75,9 @@ const { articles } = Astro.props;
 	}
 
 	.article-card__link {
+		display: flex;
+		gap: 8px;
+		align-items: center;
 		outline: none;
 
 		&::before {
