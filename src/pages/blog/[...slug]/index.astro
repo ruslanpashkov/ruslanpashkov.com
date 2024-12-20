@@ -90,11 +90,11 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 
 						<p class="article__topic">{topic}</p>
 					</div>
-
-					<span class="article__glow article__glow--start">
-						<Glow />
-					</span>
 				</aside>
+
+				<span class="article__glow article__glow--start">
+					<Glow />
+				</span>
 			</header>
 
 			{headings.length > 0 && <TableOfContents headings={headings} />}

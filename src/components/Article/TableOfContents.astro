@@ -36,7 +36,11 @@ const { headings } = Astro.props;
 							`table-of-contents__item--${heading.depth}`,
 						]}
 					>
-						<a class="hover" href={`#${heading.slug}`}>
+						<a
+							aria-label={removeTrailingHash(heading.text)}
+							class="hover"
+							href={`#${heading.slug}`}
+						>
 							{removeTrailingHash(heading.text)}
 						</a>
 					</li>

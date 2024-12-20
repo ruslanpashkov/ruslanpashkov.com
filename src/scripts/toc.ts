@@ -31,7 +31,7 @@ const isExpanded = () => refs.toggle.getAttribute('aria-expanded') === 'true';
 
 const cleanupTransition = () => {
 	if (currentTransitionHandler) {
-		refs.content.removeEventListener('transitionend', currentTransitionHandler);
+		refs.content?.removeEventListener('transitionend', currentTransitionHandler);
 		currentTransitionHandler = null;
 	}
 };
