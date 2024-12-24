@@ -1,6 +1,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import Compress from '@playform/compress';
+import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
@@ -8,15 +9,17 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 
-import redirects from './redirects';
+import { expressiveCodeOptions } from './code-styles.mjs';
+import redirects from './redirects.ts';
 import { remarkReadingTime } from './remark-reading-time.mjs';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
-		mdx(),
 		sitemap({ changefreq: 'weekly' }),
 		icon({ iconDir: 'src/assets/svg' }),
+		expressiveCode(expressiveCodeOptions),
+		mdx(),
 		Compress({ CSS: false }),
 	],
 	markdown: {
@@ -48,20 +51,6 @@ export default defineConfig({
 			],
 		],
 		remarkPlugins: [remarkReadingTime],
-		shikiConfig: {
-			themes: {
-				dark: 'github-dark',
-				light: 'github-light',
-			},
-			transformers: [
-				{
-					pre(node) {
-						node.properties.style = 'tab-size: 2;';
-						return node;
-					},
-				},
-			],
-		},
 	},
 	output: 'static',
 	redirects,
