@@ -1,5 +1,4 @@
 import mdx from '@astrojs/mdx';
-import netlify from '@astrojs/netlify';
 import sitemap from '@astrojs/sitemap';
 import Compress from '@playform/compress';
 import icon from 'astro-icon';
@@ -14,7 +13,6 @@ import { remarkReadingTime } from './remark-reading-time.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-	adapter: netlify(),
 	integrations: [
 		mdx(),
 		sitemap({ changefreq: 'weekly' }),
