@@ -38,18 +38,14 @@ export default defineConfig({
 					behavior: 'append',
 					content: {
 						children: [{ type: 'text', value: '#' }],
-						properties: {
-							'aria-hidden': 'true',
-							className: ['heading-link-icon'],
-						},
 						tagName: 'span',
 						type: 'element',
 					},
-					properties: (heading) => ({
-						'aria-label': `Navigate to ${heading.children[0].value}`,
+					properties: {
+						ariaHidden: 'true',
 						className: ['heading-link', 'hover'],
 						tabIndex: -1,
-					}),
+					},
 				},
 			],
 		],
