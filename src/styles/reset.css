@@ -9,6 +9,14 @@ ol {
 	list-style: none;
 }
 
+blockquote {
+	margin: 0;
+}
+
+pre {
+	margin-block: 0;
+}
+
 h1,
 h2,
 h3,

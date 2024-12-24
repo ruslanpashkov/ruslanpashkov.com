@@ -19,12 +19,12 @@
 	}
 
 	& h3 {
-		margin-top: 16px;
+		margin-top: 12px;
 		font-size: 1.25rem;
 	}
 
 	& h4 {
-		margin-top: 12px;
+		margin-top: 8px;
 	}
 
 	& p {
@@ -50,8 +50,12 @@
 	/* Styles for auto-generated anchor links next to headings */
 	& .heading-link {
 		user-select: none;
-		margin-left: 12px;
+		margin-left: 8px;
 		text-decoration: none;
+
+		@media (width >= 768px) {
+			margin-left: 12px;
+		}
 	}
 
 	& img,
@@ -61,11 +65,16 @@
 		margin-inline: auto;
 	}
 
+	& img,
+	& video {
+		border: 1px solid var(--color-secondary);
+		border-radius: 12px;
+	}
+
 	& img {
 		max-width: 100%;
 		height: auto;
 		object-fit: contain;
-		border-radius: 12px;
 	}
 
 	& video {
@@ -75,13 +84,12 @@
 
 	& audio {
 		width: 100%;
-		max-width: 40ch;
+		max-width: 440px;
 	}
 
 	& pre {
 		position: relative;
 		overflow-x: auto;
-		margin-block: 20px;
 		padding: 20px;
 		background-color: var(--color-transparent);
 		backdrop-filter: blur(10px);
@@ -103,7 +111,9 @@
 
 	& ul,
 	& ol {
-		margin-block: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 		padding-left: 20px;
 	}
 
@@ -119,20 +129,8 @@
 		list-style: circle;
 	}
 
-	& ul ul,
-	& ul ol,
-	& ol ul,
-	& ol ol {
-		margin-block: 8px;
-	}
-
 	& ul ul ul {
 		list-style: square;
-	}
-
-	& ul li,
-	& ol li {
-		margin-block: 8px;
 	}
 
 	& ul:has(li > input[type="checkbox"]) {
@@ -151,15 +149,15 @@
 	& input[type="checkbox"] {
 		width: 16px;
 		height: 16px;
-		margin: 0;
 	}
 
 	& table {
 		overflow: auto;
 		display: block;
 		border-collapse: collapse;
-		margin-block: 20px;
-		word-wrap: break-word;
+		width: 100%;
+		margin-inline: auto;
+		white-space: nowrap;
 	}
 
 	& th,
@@ -171,22 +169,17 @@
 
 	& th {
 		font-weight: bold;
-		background-color: var(--color-transparent);
+		background-color: var(--color-secondary);
 	}
 
 	& blockquote {
-		margin-block: 20px;
 		padding: 8px 20px;
 		font-style: italic;
 		background-color: var(--color-transparent);
 		border-left: 2px solid var(--color-secondary);
-	}
 
-	& blockquote p {
-		margin: 0;
-	}
-
-	& :is(p, ul, ol, blockquote):last-child {
-		margin-bottom: 0;
+		@media (width >= 768px) {
+			margin-inline: 40px;
+		}
 	}
 }
