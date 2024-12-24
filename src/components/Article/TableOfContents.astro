@@ -12,19 +12,19 @@ const { headings } = Astro.props;
 ---
 
 <nav class="table-of-contents">
-	<button
-		aria-controls="toc-content"
-		aria-expanded="true"
-		aria-label="Toggle Table of Contents"
-		class="table-of-contents__toggle"
-		type="button"
-	>
-		<h2 class="table-of-contents__title">
+	<h2 class="table-of-contents__title">
+		<button
+			aria-controls="toc-content"
+			aria-expanded="true"
+			aria-label="Toggle Table of Contents"
+			class="table-of-contents__toggle"
+			type="button"
+		>
 			Table of Contents
 
 			<Icon aria-hidden="true" class="table-of-contents__icon" name="chevron-down" />
-		</h2>
-	</button>
+		</button>
+	</h2>
 
 	<div class="table-of-contents__content" id="toc-content">
 		<ul class="table-of-contents__list">
@@ -66,7 +66,6 @@ const { headings } = Astro.props;
 
 	.table-of-contents__content {
 		overflow: hidden;
-		height: var(--content-height);
 		transition: height var(--motion-duration) ease-in-out;
 	}
 
@@ -90,6 +89,10 @@ const { headings } = Astro.props;
 	}
 
 	.table-of-contents__toggle {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: space-between;
 		width: 100%;
 		outline: none;
 	}
@@ -105,10 +108,6 @@ const { headings } = Astro.props;
 	}
 
 	.table-of-contents__title {
-		display: flex;
-		gap: 8px;
-		align-items: center;
-		justify-content: space-between;
 		font-size: 1.25rem;
 	}
 
