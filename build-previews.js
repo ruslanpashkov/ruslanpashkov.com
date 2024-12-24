@@ -47,7 +47,7 @@ async function getCollection(name) {
 	try {
 		const paths = await globby(`${CONFIG.paths.content}/${name}/**/*.{md,mdx}`);
 
-		const articles = await Promise.all(
+		return await Promise.all(
 			paths.map(async (path) => {
 				const content = await readFile(path, 'utf-8');
 				const { data: article } = matter(content);
@@ -62,8 +62,6 @@ async function getCollection(name) {
 				};
 			}),
 		);
-
-		return articles;
 	} catch (error) {
 		console.error(`Error getting collection ${name}:`, error);
 		throw error;
@@ -72,8 +70,13 @@ async function getCollection(name) {
 
 function getTemplate(article) {
 	return `<!DOCTYPE html>
-	<html>
+	<html lang="en">
 		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+			<title>${article.title}</title>
+
 			<link href="${CONFIG.template.font.url}" rel="stylesheet">
 
 			<style>
@@ -236,4 +239,4 @@ async function buildPreviews() {
 	}
 }
 
-buildPreviews();
+await buildPreviews();
