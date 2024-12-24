@@ -14,7 +14,7 @@ export default {
 			},
 		},
 		{
-			files: ['*.json', '*.yml', '*toml', '*.webmanifest'],
+			files: ['*.json', '*.yml', '*.toml', '*.webmanifest'],
 			options: {
 				tabWidth: 2,
 				useTabs: false,
