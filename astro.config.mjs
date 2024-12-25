@@ -24,8 +24,18 @@ export default defineConfig({
 	],
 	markdown: {
 		rehypePlugins: [
-			rehypeAccessibleEmojis,
-			rehypeSlug,
+			[
+				rehypeAccessibleEmojis,
+				{
+					ignore: ['title', 'script', 'style', 'svg', 'math', 'code'],
+				},
+			],
+			[
+				rehypeSlug,
+				{
+					prefix: null,
+				},
+			],
 			[
 				rehypeExternalLinks,
 				{
