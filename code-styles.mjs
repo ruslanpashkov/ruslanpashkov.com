@@ -22,6 +22,7 @@ export const expressiveCodeOptions = {
 		codeBackground: 'var(--color-transparent)',
 		codeFontFamily: 'Fira Code, monospace',
 		codeFontSize: '1.125rem',
+		codeLineHeight: 1.65,
 		codePaddingBlock: '20px',
 		codePaddingInline: '20px',
 		focusBorder: 'var(--color-focus)',
