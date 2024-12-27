@@ -1,0 +1,926 @@
+---
+publishedAt: '2024-12-27'
+slug: 'beyond-breadcrumbs'
+title: 'Why Breadcrumbs Matter More Than You Think'
+description: 'Ever thought breadcrumbs were just a basic navigation feature? Let me show you how breadcrumbs make complex websites more powerful, accessible, and SEO-friendly.'
+categories: ['Web Development', 'Accessibility', 'Technical SEO', 'UX Design']
+topic: 'Frontend Development'
+---
+
+import { Image } from 'astro:assets';
+import googleSearchCentralBreadcrumbs from './google-search-central-breadcrumbs.png';
+import breadcrumbsBasicAudio from './breadcrumbs-screenreader-basic.mp3';
+import breadcrumbsAccessibleAudio from './breadcrumbs-screenreader-accessible.mp3';
+import googleBreadcrumbsExample from './google-breadcrumbs-example.png';
+import styledBreadcrumbsFoundation from './styled-breadcrumbs-foundation.png';
+import breadcrumbsExpandExample from './breadcrumbs-expand-example.gif';
+import focusedBreadcrumbsPreview from './focused-breadcrumbs-preview.png';
+import mobileBreadcrumbsWithMask from './mobile-breadcrumbs-with-mask.gif';
+
+I've been wanting to write my first technical article for quite some time. I knew right away that I wanted to write about [breadcrumbs](https://en.wikipedia.org/wiki/Breadcrumb_navigation)—after working on a real estate project, I discovered that they're way more interesting than they might seem at first glance.
+
+Funny enough, while preparing to write this article, I realized my personal blog didn't even have breadcrumbs... Well, now it does! And I'm excited to share my first article about breadcrumbs with you. 🙂
+
+## Why Do We Even Need These Crumbs?
+
+For a long time, I thought that breadcrumbs were just a formality that people added because _"that's how it's done"_. However, when I started working on a real estate project, I realized how important they are for users.
+
+Imagine this situation: someone is looking for an apartment, moving from district to district, comparing layouts, prices... And this is where breadcrumbs become not just navigation but a real helper. They help you not get lost in the pile of information and quickly return to the section you need.
+
+But let's go in order—we could stop at my revelations, but let's instead look at what types of breadcrumbs exist, how to implement them properly _(spoiler: it's not just a list with slashes)_, and why they're important for [SEO](https://developer.mozilla.org/en-US/docs/Glossary/SEO) and accessibility.
+
+## Not All Crumbs Are Created Equal
+
+Here's something interesting I discovered while working with breadcrumbs: there are actually several different ways to implement them, each serving a specific purpose:
+
+1. Navigation history: `Home » Catalog » Two-bedroom`. Sounds simple, but there's a catch—these breadcrumbs become useless if the user arrives via a direct link or from search.
+
+2. Site structure. Works great for real estate: `Home » New Buildings » Green Quarter Complex » Apartment 57, 2-bedroom`. Users immediately see their position in the site hierarchy.
+
+3. Attribute-based breadcrumbs. Useful when a page belongs to multiple categories: `Real Estate » New Buildings + Under 300k + 2-bedroom`. Instead of hierarchy, we show object characteristics.
+
+Each business chooses an approach based on their needs, but we'll look at structural breadcrumbs—a reliable pattern that suits most websites and fully complies with [SEO requirements](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb) and [accessibility standards](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/).
+
+## The Anatomy of Better Breadcrumbs
+
+Everyone's already practicing semantic markup, right? But here's a question: how do you implement breadcrumbs? If you're using just a list with separators, that's not quite right.
+
+The key thing about breadcrumbs is that they **must** be a navigation region, not just a list. For this, we use the `<nav>` element, or the `role="navigation"` attribute, which tells search engines and screen readers that this is specifically a navigation section.
+
+> It's recommended to use the `<nav>` element specifically for marking up breadcrumbs, as the [HTML Living Standard](https://html.spec.whatwg.org/multipage/sections.html#the-nav-element) defines it as the primary way to mark up navigation, while ARIA roles are considered a fallback option.
+
+There's also an interesting point about lists and separators. According to the [W3C specification](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element), lists can **only** contain `<li>` elements _(actually, also `<script>` and `<template>`, but that's a topic for another day)_. This tells us that our separators must be inside the list items, not between them, even though, from a purely academic standpoint, a separator isn't a content part of the list item. Also, worth noting that the **last list item shouldn't contain a separator**.
+
+The most attentive might have noticed that in the W3C specification mention, I linked specifically to the ordered list. Why that?
+
+The thing is, breadcrumbs are a hierarchical path where each subsequent element is a child relative to the previous one. When a user sees `Home » Catalog » Products`, they understand that `Products` is inside `Catalog`, which is inside `Home`.
+
+That's exactly why it's semantically correct to use `<ol>`—it explicitly tells browsers and search engines, "Hey, I've got a strict order here!". While `<ul>` is suitable for cases where order doesn't matter. Small detail, but what a difference it makes for accessibility, right?
+
+By the way, while [Google Search Central documentation](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb) recommends using `<ol>` for breadcrumbs, if you inspect their own website, you'll find they use `<ul>` instead. Do as I say, not as I do, right, Google? 😄
+
+<Image
+	src={googleSearchCentralBreadcrumbs}
+	alt="Screenshot of Google Search Central breadcrumbs showing 'Home > Search Central > Documentation' with DevTools inspector revealing unordered list (ul) implementation"
+	sizes={`(max-width: 768px) 100vw, ${googleSearchCentralBreadcrumbs.width}px`}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+In the end, our breadcrumbs structure looks something like this:
+
+```html
+<nav>
+	<ol>
+		<li>
+			<a href="/">Home</a>
+			<span>»</span>
+		</li>
+		<li>
+			<a href="/new-buildings">New Buildings</a>
+			<span>»</span>
+		</li>
+		<li>
+			<a href="/new-buildings/green-quarter">Green Quarter Complex</a>
+		</li>
+	</ol>
+</nav>
+```
+
+Sure, we've figured out how to properly markup breadcrumbs, but for screen readers (in our case—[VoiceOver](https://support.apple.com/guide/voiceover/welcome/mac)), our construction currently sounds something like this:
+
+<audio
+	controls
+	preload="metadata"
+	title="Screen reader demonstration of unoptimized breadcrumbs"
+	aria-label="Demonstration of how screen reader announces breadcrumb navigation without proper ARIA attributes"
+>
+	<source src={breadcrumbsBasicAudio} type="audio/mpeg" />
+	<a href={breadcrumbsBasicAudio}>Download audio</a>
+</audio>
+
+And this is where it gets interesting—it's time to teach screen readers how to properly read our breadcrumbs!
+
+## Breadcrumbs That Speak ARIA
+
+Now that we've all become enlightened about HTML5 semantics _(or at least realized it's important)_, it's time to learn how to make our breadcrumbs accessible. And here's where [WAI-ARIA](https://www.w3.org/WAI/standards-guidelines/aria/) comes in—another specification that helps us tell browsers and assistive technologies exactly what our elements do and how they behave.
+
+First, we should label our navigation—it's not enough to just mark it as a navigation section. As we could hear in our example, the screen reader didn't announce this as navigation. Since our page might have multiple navigation elements, we want screen readers to know exactly what kind of navigation this is:
+
+```html ins="aria-label="Breadcrumbs""
+<nav aria-label="Breadcrumbs">
+	<ol>
+		<!-- our breadcrumbs items -->
+	</ol>
+</nav>
+```
+
+Next, we need to hide our separators from screen readers to avoid cluttering the audio experience, as they serve only a visual purpose:
+
+```html ins="aria-hidden="true""
+<li>
+	<a href="/">Home</a>
+	<span aria-hidden="true">»</span>
+</li>
+```
+
+And for the final touch—we want to tell users which page they're currently on. Just like we highlight the current link visually for regular users, we want screen readers to announce it for people with disabilities. That's what `aria-current="page"` is for:
+
+```html ins="aria-current="page""
+<li>
+	<a href="/new-buildings/green-quarter" aria-current="page"> Green Quarter Complex </a>
+</li>
+```
+
+Let's put all these improvements together:
+
+```html
+<nav aria-label="Breadcrumbs">
+	<ol>
+		<li>
+			<a href="/">Home</a>
+			<span aria-hidden="true">»</span>
+		</li>
+		<li>
+			<a href="/new-buildings">New Buildings</a>
+			<span aria-hidden="true">»</span>
+		</li>
+		<li>
+			<a href="/new-buildings/green-quarter" aria-current="page"> Green Quarter Complex </a>
+		</li>
+	</ol>
+</nav>
+```
+
+Now our breadcrumbs sound much better to screen readers:
+
+<audio
+	controls
+	preload="metadata"
+	title="Screen reader demonstration of optimized breadcrumbs"
+	aria-label="Demonstration of how screen reader announces breadcrumb navigation with proper ARIA attributes"
+>
+	<source src={breadcrumbsAccessibleAudio} type="audio/mpeg" />
+	<a href={breadcrumbsAccessibleAudio}>Download audio</a>
+</audio>
+
+One final note on accessibility: if you're using a custom separator (like an SVG icon), make sure it has sufficient [color contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)—at least **4.5:1** ratio. Though hidden from screen readers, these visual markers help partially sighted users understand content structure.
+
+## Adding Meaning with Structured Data
+
+Now that we've made our breadcrumbs accessible for humans, let's make them equally comprehensible for machines. This is where [structured data](https://schema.org/BreadcrumbList) comes in—a standardized way to describe your content's hierarchy to search engines.
+
+There are two main ways to implement structured data for breadcrumbs: [JSON-LD](https://json-ld.org) and [Microdata](https://schema.org/docs/gs.html). Let's explore both approaches to understand their strengths and use cases.
+
+### JSON-LD: Clean and Separated
+
+**JSON-LD** (JavaScript Object Notation for Linked Data) keeps our structured data separate from the HTML markup. This separation of concerns makes it **easier to maintain and modify** without risking breaking the visual part of our breadcrumbs.
+
+You can place the JSON-LD script in either `<head>` or `<body>` elements of your page. What's great about JSON-LD is that it can even be [dynamically injected](https://developers.google.com/search/docs/appearance/structured-data/generate-structured-data-with-javascript) into your page with JavaScript—a flexibility you won't find with other formats.
+
+Also, JSON-LD lets you have multiple structured data scripts on your page, each describing different content types like [breadcrumbs](https://schema.org/BreadcrumbList), [articles](https://schema.org/Article), [products](https://schema.org/Product), or [FAQs](https://schema.org/FAQPage).
+
+Now, about the URLs—while relative paths like `/new-buildings` work fine in HTML, they might cause issues in structured data. It's recommended to use absolute URLs to avoid validation warnings. Here's how it should look:
+
+```javascript {"Tells search engines we're using Schema.org vocabulary":3-4} "https://example.com"
+<script type="application/ld+json">
+{
+
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [
+		{
+			"@type": "ListItem",
+			"position": 1,
+			"name": "Home",
+			"item": "https://example.com/"
+		},
+		{
+			"@type": "ListItem",
+			"position": 2,
+			"name": "New Buildings",
+			"item": "https://example.com/new-buildings"
+		}
+	]
+}
+</script>
+```
+
+Using relative paths in JSON-LD will cause validation warnings:
+
+```json del={"Warning: Invalid URL in field "id"":5-6} ins={7}
+{
+	"@type": "ListItem",
+	"position": 2,
+	"name": "New Buildings",
+
+	"item": "/new-buildings",
+	"item": "https://example.com/new-buildings"
+}
+```
+
+One more thing to note: if the breadcrumb is the last item in the breadcrumb trail, item is **not required**. If item isn't included for the last item, Google **uses the URL of the containing page**.
+
+> Always validate your structured data using [Google's Rich Results Test](https://search.google.com/test/rich-results) or [Schema Markup Validator](https://validator.schema.org). These tools will help you catch common mistakes before they affect your SEO.
+
+### Microdata: Markup in the Wild
+
+[Microdata](https://html.spec.whatwg.org/multipage/microdata.html) takes a different approach by enhancing our accessible HTML structure directly with additional attributes. Remember our semantic breadcrumbs from earlier? Here's how they'd look with Microdata:
+
+```html ins="itemscope" ins=/itemtype="[^"]+"/ ins=/itemprop="[^"]+"/ ins=/<meta\s+[^>]+>/
+<nav aria-label="Breadcrumbs">
+	<ol itemscope itemtype="https://schema.org/BreadcrumbList">
+		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<a itemprop="item" href="/">
+				<span itemprop="name">Home</span>
+			</a>
+			<meta itemprop="position" content="1" />
+			<span aria-hidden="true">»</span>
+		</li>
+		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<a itemprop="item" href="/new-buildings">
+				<span itemprop="name">New Buildings</span>
+			</a>
+			<meta itemprop="position" content="2" />
+			<span aria-hidden="true">»</span>
+		</li>
+		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<a itemprop="item" href="/new-buildings/green-quarter" aria-current="page">
+				<span itemprop="name">Green Quarter Complex</span>
+			</a>
+			<meta itemprop="position" content="3" />
+		</li>
+	</ol>
+</nav>
+```
+
+Let's break down the key parts here:
+
+- The `itemscope` and `itemtype` on `<ol>` tell search engines that this list represents a [BreadcrumbList](https://schema.org/BreadcrumbList)
+- Each `<li>` needs `itemscope` and `itemprop="itemListElement"` to mark it as a part of our breadcrumbs list
+- Inside each item, we need three required properties:
+    - `itemprop="name"` for the text label
+    - `itemprop="item"` for the URL
+    - `itemprop="position"` for the numerical position
+
+And here's a nice bonus—unlike JSON-LD, you can safely use relative URLs here since Microdata works directly with your HTML markup, using the same URLs as your links.
+
+### Choosing Your Hero for Engines
+
+So which format should you choose? While both approaches get the job done, they each shine in different situations. There's also [RDFa](https://rdfa.info) (Resource Description Framework in Attributes), but it never gained traction since search engines preferred simpler formats and the semantic web vision it was built for didn't take off.
+
+**I'd strongly recommend sticking with JSON-LD**—sooner or later, you'll need to generate breadcrumbs using data from different pages or sources. When that happens, JSON-LD's _separated structure_ makes it much easier to update your structured data without touching the HTML.
+
+In addition, Google [recommends using JSON-LD](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data#structured-data-format) for structured data, as it's easier to implement and maintain. And while using both formats simultaneously is technically possible, it's best to stick with one to keep your code clean and maintainable.
+
+<Image
+	src={googleBreadcrumbsExample}
+	alt="Screenshot showing how breadcrumbs appear in Google search results, with each level separated by arrows"
+	sizes={`(max-width: 768px) 100vw, ${googleBreadcrumbsExample.width}px`}
+	widths={[400, 768, 1024]}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+A properly implemented breadcrumb structure (whether in JSON-LD or Microdata) turns into these helpful search snippets, letting users preview their path through your site right from Google's results page.
+
+## Making Breadcrumbs Beautiful
+
+So, we've made breadcrumbs accessible to screen readers and people with disabilities, but we seem to have forgotten about regular users? I think it's time to fix that! We're going to look at a few modern CSS approaches that can improve the user experience.
+
+Throughout my career as a Software Engineer, I've not only worked with various interfaces but also had the opportunity to design quite a few of them _(and even this website!)_. This journey has shown me how even the _smallest UI components_, like breadcrumbs, can make a **significant impact** when thoughtfully designed.
+
+Despite the fact that there are [dozens of different ways](https://dribbble.com/tags/breadcrumbs) to implement breadcrumbs in a convenient, clear and adaptive way—we'll look at the techniques that appealed to me the most.
+
+> ❗ The author of the article is not a professional designer and shares only his point of view. Thanks for keeping an open mind.
+
+### Setting Up the Foundation
+
+First, let's reset browser defaults and add some basic styles. We'll use our accessible markup from earlier, but with a few additional classes for styling and a new gallery page in our breadcrumb trail to make the example more complete:
+
+```html del={16} ins={17,20,22-30}
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+	<ol class="breadcrumbs-list">
+		<li class="breadcrumbs-item">
+			<a class="breadcrumbs-link" href="/">
+				Home
+			</a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<a class="breadcrumbs-link" href="/new-buildings">
+				New Buildings
+			</a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<a href="/new-buildings/green-quarter" aria-current="page">
+			<a class="breadcrumbs-link" href="/new-buildings/green-quarter">
+				Green Quarter Complex
+			</a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<a
+				class="breadcrumbs-link"
+				href="/new-buildings/green-quarter/gallery"
+				aria-current="page"
+			>
+				Gallery
+			</a>
+		</li>
+	</ol>
+</nav>
+```
+
+```css
+ol {
+	list-style: none;
+	margin-block: 0;
+	padding-inline-start: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.breadcrumbs {
+	--crumbs-spacing: 8px;
+}
+
+.breadcrumbs-list {
+	display: flex;
+	align-items: center;
+	column-gap: var(--crumbs-spacing);
+}
+
+.breadcrumbs-item {
+	display: flex;
+	align-items: center;
+	column-gap: var(--crumbs-spacing);
+}
+
+.breadcrumbs-link {
+	font-family: system-ui, sans-serif;
+	font-size: 0.875rem;
+	color: #666;
+	white-space: nowrap;
+	transition: color 0.2s;
+}
+
+@media (hover: hover) {
+	.breadcrumbs-link:hover {
+		color: #0095ff;
+	}
+}
+
+.breadcrumbs-link:active {
+	color: #0080ff;
+}
+
+.breadcrumbs-link[aria-current='page'] {
+	pointer-events: none;
+	font-weight: 500;
+	color: #000;
+}
+
+.breadcrumbs-separator {
+	color: #999;
+}
+```
+
+Speaking of small details – notice those `8px` gaps between items? That's not a random number. Making separators too cramped or too sparse can really mess with readability.
+
+Also, it would be better to extend the clickable area of the links to make them easier to interact with:
+
+```css ins={2}
+.breadcrumbs-link {
+	padding: 4px 8px;
+	font-family: system-ui, sans-serif;
+	font-size: 0.875rem;
+	color: #666;
+	white-space: nowrap;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+```
+
+Now, we have such simple, but already quite nice-looking, breadcrumbs:
+
+<Image
+	src={styledBreadcrumbsFoundation}
+	alt="Styled breadcrumbs with Home, New Buildings, Green Quarter Complex, and Gallery links"
+	sizes={`(max-width: 768px) 100vw, ${styledBreadcrumbsFoundation.width}px`}
+	widths={[400, 768, 1024]}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+By the way, we should make the current page link inaccessible for mouse and keyboard users while keeping it readable for screen readers. We can do this by adding `tabindex="-1"` and `pointer-events: none` to the link with `aria-current="page"`:
+
+```html ins={5}
+<a
+	class="breadcrumbs-link"
+	href="/new-buildings/green-quarter/gallery"
+	aria-current="page"
+	tabindex="-1"
+>
+	Gallery
+</a>
+```
+
+```css ins={2}
+.breadcrumbs-link[aria-current='page'] {
+	pointer-events: none;
+	font-weight: 500;
+	color: #000;
+}
+```
+
+Everything looks great so far! Well... at least until someone decides to name their page _"The Most Amazing Real Estate Complex That Will Change Your Life Forever"_. Or when marketing asks to add [five more levels](https://imgur.com/a/0WGgTBz) to your navigation hierarchy. And we haven't even mentioned responsiveness yet...
+
+But don't worry—we love solving problems that shouldn't exist in the first place. Let's see how we can handle these challenges with style. 😎
+
+### Truncation for Long Paths
+
+When dealing with deep navigation structures, showing every breadcrumb item can quickly become overwhelming. Let's implement a collapsible system that preserves context while saving space:
+
+```html ins={9-20} ins=/hidden(?=>)/ {"Add hidden attribute to items between first and last two":21-22}
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+	<ol class="breadcrumbs-list">
+		<li class="breadcrumbs-item">
+			<a class="breadcrumbs-link" href="/"> Home </a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<button
+				id="breadcrumbs-expand"
+				class="breadcrumbs-link"
+				type="button"
+				aria-expanded="false"
+				aria-label="Show hidden breadcrumbs"
+			>
+				...
+			</button>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+
+		<li class="breadcrumbs-item" hidden>
+			<a class="breadcrumbs-link" href="/new-buildings"> New Buildings </a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<a class="breadcrumbs-link" href="/new-buildings/green-quarter">
+				Green Quarter Complex
+			</a>
+			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
+		</li>
+		<li class="breadcrumbs-item">
+			<a
+				class="breadcrumbs-link"
+				href="/new-buildings/green-quarter/gallery"
+				aria-current="page"
+			>
+				Gallery
+			</a>
+		</li>
+	</ol>
+</nav>
+```
+
+And the corresponding CSS to hide the items:
+
+```css
+.breadcrumbs-item[hidden] {
+	display: none;
+}
+```
+
+\* _Also, let's add some reset styles for the `<button>`_:
+
+```css
+button {
+	font-family: inherit;
+	padding: 0;
+	background: none;
+	border: none;
+}
+
+button:hover {
+	cursor: pointer;
+}
+```
+
+Now, let's add some JavaScript to handle the expansion:
+
+```javascript
+const initBreadcrumbsNavigation = () => {
+	const breadcrumbs = document.querySelector('.breadcrumbs');
+	const breadcrumbItems = breadcrumbs?.querySelectorAll('.breadcrumbs-item');
+	const expandButton = breadcrumbs?.querySelector('#breadcrumbs-expand');
+
+	if (!breadcrumbs || !breadcrumbItems || !expandButton) {
+		return;
+	}
+
+	const showAllItems = () => {
+		breadcrumbItems.forEach((crumb) => crumb.removeAttribute('hidden'));
+		expandButton.closest('.breadcrumbs-item').remove();
+	};
+
+	// If we have 4 or fewer items (including expand button),
+	// we don't need collapsing at all
+	if (breadcrumbItems.length <= 4) {
+		showAllItems();
+		return;
+	}
+
+	expandButton.addEventListener('click', showAllItems);
+	expandButton.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			showAllItems();
+		}
+	});
+};
+
+document.addEventListener('DOMContentLoaded', initBreadcrumbsNavigation);
+```
+
+> ❗ Note: These breadcrumbs rely on JavaScript for expanding functionality. Make sure to handle no-JS scenarios by keeping all items visible when JavaScript is disabled. [See David Bushell's approach →](https://dbushell.com/2024/06/22/no-no-javascript/)
+
+Nice! Now, our breadcrumbs will collapse when there are too many items, showing only the first and last two. Users can expand the full path by clicking the ellipsis button:
+
+<Image
+	src={breadcrumbsExpandExample}
+	alt="Breadcrumbs with an ellipsis button that expands the full path when clicked"
+	sizes={`(max-width: 768px) 100vw, ${breadcrumbsExpandExample.width}px`}
+	widths={[400, 768, 1024]}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+But we still have the issue with responsiveness—what if our breadcrumbs don't fit on smaller screens? Let's solve this problem with a few more CSS tricks.
+
+### Handling Horizontal Overflow
+
+For cases where we can't ~~or don't want to~~ truncate items, we can embrace horizontal scrolling with some fancy masking effects to improve navigation. Let's enhance our CSS with [scroll snapping](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap) and [CSS masking](https://developer.mozilla.org/en-US/docs/Web/CSS/mask):
+
+```css {"Adjust to match your page background color":15-16} ins={3-4,7-34,37-39,46}
+.breadcrumbs {
+	--crumbs-spacing: 8px;
+	position: relative;
+	overflow: hidden;
+}
+
+.breadcrumbs::before,
+.breadcrumbs::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	width: 48px;
+	height: 100%;
+	pointer-events: none;
+
+	background-color: white;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.breadcrumbs::before {
+	left: 0;
+	mask-image: linear-gradient(to left, transparent, black 90%);
+}
+
+.breadcrumbs::after {
+	right: 0;
+	mask-image: linear-gradient(to right, transparent, black 90%);
+}
+
+.breadcrumbs.show-start-fade::before,
+.breadcrumbs.show-end-fade::after {
+	opacity: 1;
+}
+
+.breadcrumbs-list {
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+	display: flex;
+	align-items: center;
+	column-gap: var(--crumbs-spacing);
+}
+
+.breadcrumbs-item {
+	scroll-snap-align: start;
+	display: flex;
+	align-items: center;
+	column-gap: var(--crumbs-spacing);
+}
+```
+
+Let's break down what's happening here:
+
+- Container prep: `position: relative` and `overflow: hidden` for our magic masks
+- Smooth fading edges with CSS Masks and `mask-image` ([Baseline 2023](https://developer.mozilla.org/en-US/docs/Web/CSS/mask-image))
+- Snappy scrolling with `scroll-snap-type: x mandatory` ([since 2020](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type))
+- Clean look with `scrollbar-width: none` ([Baseline 2024](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-width))—bye-bye, scrollbar!
+
+By the way, since we used `overflow: hidden`, we need to add a small negative offset to our focus styles to ensure they remain visible when using keyboard navigation:
+
+```css
+.breadcrumbs-link:focus-visible {
+	outline-offset: -2px;
+}
+```
+
+<Image
+	src={focusedBreadcrumbsPreview}
+	alt="Focused 'New Buldings' link with a negative outline offset to ensure visibility when using keyboard navigation"
+	sizes={`(max-width: 768px) 100vw, ${focusedBreadcrumbsPreview.width}px`}
+	widths={[400, 768, 1024]}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+And finally, let's add the JavaScript to handle our fancy scroll effects:
+
+```javascript
+const initBreadcrumbsScroll = () => {
+	const breadcrumbs = document.querySelector('.breadcrumbs');
+	const breadcrumbList = breadcrumbs?.querySelector('.breadcrumbs-list');
+
+	if (!breadcrumbs || !breadcrumbList) {
+		return;
+	}
+
+	const checkScroll = () => {
+		const isAtStart = breadcrumbList.scrollLeft <= 1;
+		const isAtEnd =
+			breadcrumbList.scrollLeft + breadcrumbList.clientWidth >=
+			breadcrumbList.scrollWidth - 1;
+
+		breadcrumbs.classList.toggle('show-start-fade', !isAtStart);
+		breadcrumbs.classList.toggle('show-end-fade', !isAtEnd);
+	};
+
+	breadcrumbList.addEventListener('scroll', checkScroll);
+	window.addEventListener('resize', () => {
+		requestAnimationFrame(checkScroll);
+	});
+
+	checkScroll();
+};
+
+document.addEventListener('DOMContentLoaded', initBreadcrumbsScroll);
+```
+
+And that's it! Now our breadcrumbs will scroll smoothly on smaller screens, with fancy fading edges to show the beginning and end of the path:
+
+<Image
+	src={mobileBreadcrumbsWithMask}
+	alt="Breadcrumbs with a fading mask effect on the left and right edges for horizontal scrolling"
+	sizes={`(max-width: 768px) 100vw, ${mobileBreadcrumbsWithMask.width}px`}
+	widths={[400, 768, 1024]}
+	decoding="async"
+	loading="lazy"
+	quality="max"
+/>
+
+In fact, we can add some more advanced enhancements, which we won't cover in this article, but you can keep in mind:
+
+- Truncating long words according to a given pattern with ellipsis
+- Adding arrow buttons for controlled navigation through breadcrumbs
+- Combining script initialization into a single `initBreadcrumbs` handler
+- Moving focus to the first revealed item after clicking the ellipsis button
+- Using [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) for... well, nesting styles
+
+Below you can see the final result of our implementation:
+
+<iframe
+	height="300"
+	style="width: 100%"
+	scrolling="no"
+	title="Beyond Breadcrumbs"
+	src="https://codepen.io/ruslanpashkov/embed/preview/ByBdZYa?default-tab=html%2Cresult&editable=true&theme-id=dark"
+	frameBorder="no"
+	loading="lazy"
+	allowTransparency="true"
+	allowFullScreen="true"
+>
+	See the Pen <a href="https://codepen.io/ruslanpashkov/pen/ByBdZYa">Beyond Breadcrumbs</a> by
+	Ruslan Pashkov (<a href="https://codepen.io/ruslanpashkov">@ruslanpashkov</a>) on{' '}
+	<a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+## What About the Frameworks?
+
+We need to accept a harsh reality—our community tends to overcomplicate many things. While we've explored building breadcrumbs from scratch, most developers work with frameworks and need practical solutions that integrate well with their tech stack.
+
+Let's see how we can adapt our implementation to modern frameworks, using TypeScript and Next.js as an example _(only because it's so trendy 🥲)_:
+
+```typescript title="types.ts"
+export interface Crumb {
+	label: string;
+	href: string;
+}
+```
+
+```typescript title="utils/schema.ts"
+import { Crumb } from '../types';
+
+export const generateBreadcrumbSchema = (crumbs: Crumb[]) => ({
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: crumbs.map((crumb, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: crumb.label,
+		item: crumb.href,
+	})),
+});
+```
+
+```css title="breadcrumbs.css"
+/* Don't think I'm going to rewrite our styles using Tailwind. */
+```
+
+```tsx title="BreadcrumbsClient.tsx"
+'use client';
+
+import './breadcrumbs.css';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { clsx } from 'clsx';
+import type { Crumb } from './types';
+
+interface Props {
+	crumbs: Crumb[];
+}
+
+interface FadeStatus {
+	start: boolean;
+	end: boolean;
+}
+
+const MAX_VISIBLE_ITEMS = 4;
+const EXPANDER_LABEL = '...';
+const SCROLL_THRESHOLD = 1;
+
+export function BreadcrumbsClient({ crumbs }: Props) {
+	const listRef = useRef<HTMLOListElement>(null);
+	const [fadeStatus, setFadeStatus] = useState<FadeStatus>({
+		start: false,
+		end: false,
+	});
+	const [isExpanded, setIsExpanded] = useState(crumbs.length < MAX_VISIBLE_ITEMS);
+
+	useEffect(() => {
+		const checkScroll = () => {
+			const list = listRef.current;
+
+			if (!list) {
+				return;
+			}
+
+			const isStartFadeVisible = list.scrollLeft > SCROLL_THRESHOLD;
+			const isEndFadeVisible =
+				list.scrollLeft + list.clientWidth < list.scrollWidth - SCROLL_THRESHOLD;
+
+			setFadeStatus({
+				start: isStartFadeVisible,
+				end: isEndFadeVisible,
+			});
+		};
+
+		const list = listRef.current;
+
+		if (list) {
+			list.addEventListener('scroll', checkScroll);
+			window.addEventListener('resize', checkScroll);
+			checkScroll();
+		}
+
+		return () => {
+			if (list) {
+				list.removeEventListener('scroll', checkScroll);
+				window.removeEventListener('resize', checkScroll);
+			}
+		};
+	}, []);
+
+	const visibleCrumbs = isExpanded
+		? crumbs
+		: [crumbs[0], { label: EXPANDER_LABEL, href: '#' }, ...crumbs.slice(-2)];
+
+	return (
+		<nav
+			className={clsx('breadcrumbs', {
+				'show-start-fade': fadeStatus.start,
+				'show-end-fade': fadeStatus.end,
+			})}
+			aria-label="Breadcrumbs"
+		>
+			<ol ref={listRef} className="breadcrumbs-list">
+				{visibleCrumbs.map((crumb, index) => {
+					const isExpander = crumb.label === EXPANDER_LABEL;
+					const isLast = index === visibleCrumbs.length - 1;
+
+					return (
+						<li key={crumb.href} className="breadcrumbs-item">
+							{isExpander ? (
+								<button
+									type="button"
+									className="breadcrumbs-link"
+									onClick={() => setIsExpanded(true)}
+									aria-expanded={false}
+									aria-label="Show hidden breadcrumbs"
+								>
+									{crumb.label}
+								</button>
+							) : (
+								<Link
+									href={crumb.href}
+									className="breadcrumbs-link"
+									aria-current={isLast ? 'page' : undefined}
+								>
+									{crumb.label}
+								</Link>
+							)}
+
+							{!isLast && (
+								<span className="breadcrumbs-separator" aria-hidden="true">
+									»
+								</span>
+							)}
+						</li>
+					);
+				})}
+			</ol>
+		</nav>
+	);
+}
+```
+
+```tsx title="Breadcrumbs.tsx"
+import { BreadcrumbsClient } from './BreadcrumbsClient';
+import { generateBreadcrumbSchema } from './utils/schema';
+import type { Crumb } from './types';
+
+interface Props {
+	crumbs: Crumb[];
+}
+
+export function Breadcrumbs({ crumbs }: Props) {
+	const schema = generateBreadcrumbSchema(crumbs);
+
+	return (
+		<>
+			<script
+				id="breadcrumbs-schema"
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+			/>
+
+			<BreadcrumbsClient crumbs={crumbs} />
+		</>
+	);
+}
+```
+
+```typescript title="index.ts"
+export * from './Breadcrumbs';
+export * from './types';
+```
+
+Let me break down what we built with just the right amount of detail:
+
+- Split into client/server parts because only interactive stuff needs JavaScript
+- Kept all our fancy animations, just _React-ified_ them with hooks and state
+- Made JSON-LD generation automatic because who writes that by hand
+- Added TypeScript to catch silly mistakes before they happen
+- Didn't get on the [dark side of Tailwind CSS](https://x.com/dev0cat/status/1753476315418591537)... _yet_
+
+And that's it! Same breadcrumbs, just framework-friendly. And if you're using a different framework _(I use [Astro](https://astro.build), btw)_, the same principles apply—keep your components simple, separate concerns, and make sure everything works together smoothly.
+
+**AND THE MOST IMPORTANT: DO NOT ADD BREADCRUMBS TO THE HOME PAGE.**
+
+## Wrapping Up
+
+What started as a simple tutorial about _"those things with arrows"_ turned into a deep dive into the world of breadcrumbs. From semantic HTML to fancy scroll masks, we've covered more ground than I initially expected ~~and probably wrote way too many words about breadcrumbs~~.
+
+But here's the thing—every small UI element matters. Breadcrumbs aren't just about showing users where they are; they're about creating a seamless experience that works for everyone:
+
+- They help lost users find their way back (we've all been there)
+- They make screen reader users feel at home on your site
+- They give search engines a map of your content
+- And yes, they can actually look pretty cool with some CSS magic
+
+Most importantly, they remind us that even the smallest components deserve attention to detail. Because at the end of the day, it's these little things that add up to create truly great user experiences.
+
+> "The details are not the details. They make the design." —Charles Eames
