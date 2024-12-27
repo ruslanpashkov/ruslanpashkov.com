@@ -12,5 +12,6 @@ with others.
 For full license text visit: https://openfontlicense.org/
 
 ## Covered Fonts:
+
 - Fira Code - Copyright 2014-2020 The Fira Code Project Authors (https://github.com/tonsky/FiraCode)
 - Montserrat - Copyright 2024 The Montserrat.Git Project Authors (https://github.com/JulietaUla/Montserrat.git)
