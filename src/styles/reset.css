@@ -38,14 +38,15 @@ a {
 button {
 	cursor: pointer;
 	padding: 0;
-	font-family: inherit;
-	font-size: inherit;
-	line-height: inherit;
+	font: inherit;
 	color: inherit;
+	letter-spacing: inherit;
+	word-spacing: inherit;
 	background: none;
 	border: none;
 }
 
 hr {
-	margin-block: 0;
+	margin: 0;
+	border: none;
 }

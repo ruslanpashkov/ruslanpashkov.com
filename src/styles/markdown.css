@@ -169,4 +169,16 @@
 			margin-inline: 40px;
 		}
 	}
+
+	& hr {
+		padding-top: 12px;
+		font-size: 1.875rem;
+		line-height: 1;
+		text-align: center;
+		word-spacing: 1em;
+
+		&::before {
+			content: "* * *";
+		}
+	}
 }
