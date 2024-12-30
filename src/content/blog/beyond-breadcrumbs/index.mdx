@@ -1,5 +1,6 @@
 ---
 publishedAt: '2024-12-27'
+updatedAt: '2024-12-30'
 slug: 'beyond-breadcrumbs'
 title: 'Why Breadcrumbs Matter More Than You Think'
 description: 'Ever thought breadcrumbs were just a basic navigation feature? Let me show you how breadcrumbs make complex websites more powerful, accessible, and SEO-friendly.'
@@ -82,12 +83,12 @@ In the end, our breadcrumbs structure looks something like this:
 			<a href="/new-buildings">New Buildings</a>
 			<span>»</span>
 		</li>
-		<li>
-			<a href="/new-buildings/green-quarter">Green Quarter Complex</a>
-		</li>
+		<li>Green Quarter Complex</li>
 	</ol>
 </nav>
 ```
+
+Note that the last breadcrumb item **isn't a link** since it represents the current page location—there's no need to navigate to where you already are.
 
 Sure, we've figured out how to properly markup breadcrumbs, but for screen readers (in our case—[VoiceOver](https://support.apple.com/guide/voiceover/welcome/mac)), our construction currently sounds something like this:
 
@@ -107,7 +108,7 @@ And this is where it gets interesting—it's time to teach screen readers how to
 
 Now that we've all become enlightened about HTML5 semantics _(or at least realized it's important)_, it's time to learn how to make our breadcrumbs accessible. And here's where [WAI-ARIA](https://www.w3.org/WAI/standards-guidelines/aria/) comes in—another specification that helps us tell browsers and assistive technologies exactly what our elements do and how they behave.
 
-First, we should label our navigation—it's not enough to just mark it as a navigation section. As we could hear in our example, the screen reader didn't announce this as navigation. Since our page might have multiple navigation elements, we want screen readers to know exactly what kind of navigation this is:
+First, we might want to label our navigation section. While screen readers can identify the navigation role from the `<nav>` element, in some contexts it may be helpful to specify the exact type of navigation:
 
 ```html ins="aria-label="Breadcrumbs""
 <nav aria-label="Breadcrumbs">
@@ -116,6 +117,8 @@ First, we should label our navigation—it's not enough to just mark it as a nav
 	</ol>
 </nav>
 ```
+
+However, as [Adrian Roselli notes](https://adrianroselli.com/2024/06/maybe-dont-name-that-landmark.html), this depends on the surrounding context—sometimes the purpose of navigation is clear without additional labeling.
 
 Next, we need to hide our separators from screen readers to avoid cluttering the audio experience, as they serve only a visual purpose:
 
@@ -126,14 +129,10 @@ Next, we need to hide our separators from screen readers to avoid cluttering the
 </li>
 ```
 
-And for the final touch—we want to tell users which page they're currently on. Just like we highlight the current link visually for regular users, we want screen readers to announce it for people with disabilities. That's what `aria-current="page"` is for:
+And for the final touch—we want to tell users which page they're currently on. Just like we highlight the current location visually for regular users, we want screen readers to announce it for people with disabilities. That's what `aria-current="page"` is for:
 
 ```html ins="aria-current="page""
-<li>
-	<a href="/new-buildings/green-quarter" aria-current="page">
-		Green Quarter Complex
-	</a>
-</li>
+<li aria-current="page">Green Quarter Complex</li>
 ```
 
 Let's put all these improvements together:
@@ -149,11 +148,7 @@ Let's put all these improvements together:
 			<a href="/new-buildings">New Buildings</a>
 			<span aria-hidden="true">»</span>
 		</li>
-		<li>
-			<a href="/new-buildings/green-quarter" aria-current="page">
-				Green Quarter Complex
-			</a>
-		</li>
+		<li aria-current="page">Green Quarter Complex</li>
 	</ol>
 </nav>
 ```
@@ -225,7 +220,7 @@ Using relative paths in JSON-LD will cause validation warnings:
 }
 ```
 
-One more thing to note: if the breadcrumb is the last item in the breadcrumb trail, item is **not required**. If item isn't included for the last item, Google **uses the URL of the containing page**.
+One more thing to note: if the breadcrumb is the last item in the breadcrumb trail, `item` is **not required**. If item isn't included for the last item, Google **uses the URL of the containing page**.
 
 > Always validate your structured data using [Google's Rich Results Test](https://search.google.com/test/rich-results) or [Schema Markup Validator](https://validator.schema.org). These tools will help you catch common mistakes before they affect your SEO.
 
@@ -250,10 +245,8 @@ One more thing to note: if the breadcrumb is the last item in the breadcrumb tra
 			<meta itemprop="position" content="2" />
 			<span aria-hidden="true">»</span>
 		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-			<a itemprop="item" href="/new-buildings/green-quarter" aria-current="page">
-				<span itemprop="name">Green Quarter Complex</span>
-			</a>
+		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+			<span itemprop="name">Green Quarter Complex</span>
 			<meta itemprop="position" content="3" />
 		</li>
 	</ol>
@@ -266,7 +259,7 @@ Let's break down the key parts here:
 - Each `<li>` needs `itemscope` and `itemprop="itemListElement"` to mark it as a part of our breadcrumbs list
 - Inside each item, we need three required properties:
     - `itemprop="name"` for the text label
-    - `itemprop="item"` for the URL
+    - `itemprop="item"` for the URL (omitted in the last item)
     - `itemprop="position"` for the numerical position
 
 And here's a nice bonus—unlike JSON-LD, you can safely use relative URLs here since Microdata works directly with your HTML markup, using the same URLs as your links.
@@ -305,36 +298,42 @@ Despite the fact that there are [dozens of different ways](https://dribbble.com/
 
 First, let's reset browser defaults and add some basic styles. We'll use our accessible markup from earlier, but with a few additional classes for styling and a new gallery page in our breadcrumb trail to make the example more complete:
 
-```html del={16} ins={17,20,22-30}
+```html del={21} ins={22-36}
 <nav class="breadcrumbs" aria-label="Breadcrumbs">
 	<ol class="breadcrumbs-list">
 		<li class="breadcrumbs-item">
-			<a class="breadcrumbs-link" href="/">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/"
+			>
 				Home
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
 		<li class="breadcrumbs-item">
-			<a class="breadcrumbs-link" href="/new-buildings">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/new-buildings"
+			>
 				New Buildings
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
+		<li aria-current="page">Green Quarter Complex</li>
 		<li class="breadcrumbs-item">
-			<a href="/new-buildings/green-quarter" aria-current="page">
-			<a class="breadcrumbs-link" href="/new-buildings/green-quarter">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/new-buildings/green-quarter"
+			>
 				Green Quarter Complex
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
-		<li class="breadcrumbs-item">
-			<a
-				class="breadcrumbs-link"
-				href="/new-buildings/green-quarter/gallery"
-				aria-current="page"
-			>
-				Gallery
-			</a>
+		<li
+			class="breadcrumbs-item breadcrumbs-label"
+			aria-current="page"
+		>
+			Gallery
 		</li>
 	</ol>
 </nav>
@@ -367,11 +366,19 @@ a {
 	column-gap: var(--crumbs-spacing);
 }
 
-.breadcrumbs-link {
+.breadcrumbs-item[aria-current="page"] {
+	font-weight: 500;
+	color: #000;
+}
+
+.breadcrumbs-label {
 	font-family: system-ui, sans-serif;
 	font-size: 0.875rem;
 	color: #666;
 	white-space: nowrap;
+}
+
+.breadcrumbs-link {
 	transition: color 0.2s;
 }
 
@@ -385,12 +392,6 @@ a {
 	color: #0080ff;
 }
 
-.breadcrumbs-link[aria-current='page'] {
-	pointer-events: none;
-	font-weight: 500;
-	color: #000;
-}
-
 .breadcrumbs-separator {
 	color: #999;
 }
@@ -398,17 +399,15 @@ a {
 
 Speaking of small details – notice those `8px` gaps between items? That's not a random number. Making separators too cramped or too sparse can really mess with readability.
 
-Also, it would be better to extend the clickable area of the links to make them easier to interact with:
+Also, it would be better to extend the clickable area of the links to make them easier to interact with. We use `em` for padding to ensure it scales proportionally with the font size, maintaining consistent spacing even when users adjust their browser's text size:
 
 ```css ins={2}
-.breadcrumbs-link {
-	padding: 4px 8px;
+.breadcrumbs-label {
+	padding: 0.25em 0.5em;
 	font-family: system-ui, sans-serif;
 	font-size: 0.875rem;
 	color: #666;
 	white-space: nowrap;
-	text-decoration: none;
-	transition: color 0.2s;
 }
 ```
 
@@ -424,27 +423,6 @@ Now, we have such simple, but already quite nice-looking, breadcrumbs:
 	quality="max"
 />
 
-By the way, we should make the current page link inaccessible for mouse and keyboard users while keeping it readable for screen readers. We can do this by adding `tabindex="-1"` and `pointer-events: none` to the link with `aria-current="page"`:
-
-```html ins={5}
-<a
-	class="breadcrumbs-link"
-	href="/new-buildings/green-quarter/gallery"
-	aria-current="page"
-	tabindex="-1"
->
-	Gallery
-</a>
-```
-
-```css ins={2}
-.breadcrumbs-link[aria-current='page'] {
-	pointer-events: none;
-	font-weight: 500;
-	color: #000;
-}
-```
-
 Everything looks great so far! Well... at least until someone decides to name their page _"The Most Amazing Real Estate Complex That Will Change Your Life Forever"_. Or when marketing asks to add [five more levels](https://imgur.com/a/0WGgTBz) to your navigation hierarchy. And we haven't even mentioned responsiveness yet...
 
 But don't worry—we love solving problems that shouldn't exist in the first place. Let's see how we can handle these challenges with style. 😎
@@ -453,19 +431,22 @@ But don't worry—we love solving problems that shouldn't exist in the first pla
 
 When dealing with deep navigation structures, showing every breadcrumb item can quickly become overwhelming. Let's implement a collapsible system that preserves context while saving space:
 
-```html ins={9-20} ins=/hidden(?=>)/ {"Add hidden attribute to items between first and last two":21-22}
+```html ins={12-23} ins=/hidden(?=>)/ {"Add hidden attribute to items between first and last two":24-25}
 <nav class="breadcrumbs" aria-label="Breadcrumbs">
 	<ol class="breadcrumbs-list">
 		<li class="breadcrumbs-item">
-			<a class="breadcrumbs-link" href="/">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/"
+			>
 				Home
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
 		<li class="breadcrumbs-item">
 			<button
-				id="breadcrumbs-expand"
-				class="breadcrumbs-link"
+				id="expand-button"
+				class="breadcrumbs-label breadcrumbs-link"
 				type="button"
 				aria-expanded="false"
 				aria-label="Show hidden breadcrumbs"
@@ -476,35 +457,41 @@ When dealing with deep navigation structures, showing every breadcrumb item can 
 		</li>
 
 		<li class="breadcrumbs-item" hidden>
-			<a class="breadcrumbs-link" href="/new-buildings">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/new-buildings"
+			>
 				New Buildings
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
 		<li class="breadcrumbs-item">
-			<a class="breadcrumbs-link" href="/new-buildings/green-quarter">
+			<a
+				class="breadcrumbs-label breadcrumbs-link"
+				href="/new-buildings/green-quarter"
+			>
 				Green Quarter Complex
 			</a>
 			<span class="breadcrumbs-separator" aria-hidden="true">»</span>
 		</li>
-		<li class="breadcrumbs-item">
-			<a
-				class="breadcrumbs-link"
-				href="/new-buildings/green-quarter/gallery"
-				aria-current="page"
-			>
-				Gallery
-			</a>
+		<li
+			class="breadcrumbs-item breadcrumbs-label"
+			aria-current="page"
+		>
+			Gallery
 		</li>
 	</ol>
 </nav>
 ```
 
-And the corresponding CSS to hide the items:
+And the corresponding CSS to prevent showing the hidden items:
 
-```css
-.breadcrumbs-item[hidden] {
-	display: none;
+```css del={1} ins={2}
+.breadcrumbs-item {
+.breadcrumbs-item:not([hidden]) {
+  display: flex;
+  align-items: center;
+  column-gap: var(--crumbs-spacing);
 }
 ```
 
@@ -512,7 +499,9 @@ And the corresponding CSS to hide the items:
 
 ```css
 button {
-	font-family: inherit;
+	font: inherit;
+	letter-spacing: inherit;
+	word-spacing: inherit;
 	padding: 0;
 	background: none;
 	border: none;
@@ -523,26 +512,61 @@ button:hover {
 }
 ```
 
+By the way, using `aria-label` for the expand button can still cause [problems with auto-translation](https://adrianroselli.com/2019/11/aria-label-does-not-translate.html). We can solve this issue by using [visually hidden](https://css-tricks.com/inclusively-hidden/) text that remains accessible to screen readers:
+
+```html del={6,8} ins={9-12}
+<button
+	id="expand-button"
+	class="breadcrumbs-label breadcrumbs-link"
+	type="button"
+	aria-expanded="false"
+	aria-label="Show hidden breadcrumbs"
+>
+	...
+	<span class="visually-hidden">
+		Show hidden breadcrumbs
+	</span>
+	<span aria-hidden="true">...<span>
+</button>
+```
+
+```css
+.visually-hidden {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	white-space: nowrap;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	border: none;
+}
+```
+
 Now, let's add some JavaScript to handle the expansion:
 
 ```javascript
 const initBreadcrumbsNavigation = () => {
 	const breadcrumbs = document.querySelector('.breadcrumbs');
-	const breadcrumbItems = breadcrumbs?.querySelectorAll('.breadcrumbs-item');
-	const expandButton = breadcrumbs?.querySelector('#breadcrumbs-expand');
+	const breadcrumbsItems = breadcrumbs?.querySelectorAll('.breadcrumbs-item');
+	const expandButton = breadcrumbs?.querySelector('#expand-button');
 
-	if (!breadcrumbs || !breadcrumbItems || !expandButton) {
+	if (!breadcrumbs || !breadcrumbsItems || !expandButton) {
 		return;
 	}
 
 	const showAllItems = () => {
-		breadcrumbItems.forEach((crumb) => crumb.removeAttribute('hidden'));
+		breadcrumbsItems.forEach(crumb => crumb.removeAttribute('hidden'));
 		expandButton.closest('.breadcrumbs-item').remove();
 	};
 
 	// If we have 4 or fewer items (including expand button),
 	// we don't need collapsing at all
-	if (breadcrumbItems.length <= 4) {
+	if (breadcrumbsItems.length <= 4) {
 		showAllItems();
 		return;
 	}
@@ -624,7 +648,7 @@ For cases where we can't ~~or don't want to~~ truncate items, we can embrace hor
 	column-gap: var(--crumbs-spacing);
 }
 
-.breadcrumbs-item {
+.breadcrumbs-item:not([hidden]) {
 	scroll-snap-align: start;
 	display: flex;
 	align-items: center;
@@ -662,23 +686,23 @@ And finally, let's add the JavaScript to handle our fancy scroll effects:
 ```javascript
 const initBreadcrumbsScroll = () => {
 	const breadcrumbs = document.querySelector('.breadcrumbs');
-	const breadcrumbList = breadcrumbs?.querySelector('.breadcrumbs-list');
+	const breadcrumbsList = document.querySelector('.breadcrumbs-list');
 
-	if (!breadcrumbs || !breadcrumbList) {
+	if (!breadcrumbs || !breadcrumbsList) {
 		return;
 	}
 
 	const checkScroll = () => {
-		const isAtStart = breadcrumbList.scrollLeft <= 1;
+		const isAtStart = breadcrumbsList.scrollLeft <= 1;
 		const isAtEnd =
-			breadcrumbList.scrollLeft + breadcrumbList.clientWidth >=
-			breadcrumbList.scrollWidth - 1;
+			breadcrumbsList.scrollLeft + breadcrumbsList.clientWidth
+				>= breadcrumbsList.scrollWidth - 1;
 
 		breadcrumbs.classList.toggle('show-start-fade', !isAtStart);
 		breadcrumbs.classList.toggle('show-end-fade', !isAtEnd);
 	};
 
-	breadcrumbList.addEventListener('scroll', checkScroll);
+	breadcrumbsList.addEventListener('scroll', checkScroll);
 	window.addEventListener('resize', () => {
 		requestAnimationFrame(checkScroll);
 	});
@@ -787,7 +811,9 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 		start: false,
 		end: false,
 	});
-	const [isExpanded, setIsExpanded] = useState(crumbs.length < MAX_VISIBLE_ITEMS);
+	const [isExpanded, setIsExpanded] = useState(
+		crumbs.length < MAX_VISIBLE_ITEMS
+	);
 
 	useEffect(() => {
 		const checkScroll = () => {
@@ -799,7 +825,8 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 
 			const isStartFadeVisible = list.scrollLeft > SCROLL_THRESHOLD;
 			const isEndFadeVisible =
-				list.scrollLeft + list.clientWidth < list.scrollWidth - SCROLL_THRESHOLD;
+				list.scrollLeft + list.clientWidth <
+					list.scrollWidth - SCROLL_THRESHOLD;
 
 			setFadeStatus({
 				start: isStartFadeVisible,
@@ -825,7 +852,11 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 
 	const visibleCrumbs = isExpanded
 		? crumbs
-		: [crumbs[0], { label: EXPANDER_LABEL, href: '#' }, ...crumbs.slice(-2)];
+		: [
+			crumbs[0],
+			{ label: EXPANDER_LABEL, href: '#' },
+			...crumbs.slice(-2)
+		];
 
 	return (
 		<nav
@@ -841,32 +872,47 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 					const isLast = index === visibleCrumbs.length - 1;
 
 					return (
-						<li key={crumb.href} className="breadcrumbs-item">
-							{isExpander ? (
+						<li
+							key={crumb.href}
+							className={clsx(
+								'breadcrumbs-item',
+								{ 'breadcrumbs-label': isLast }
+							)}
+							aria-current={isLast ? 'page' : undefined}
+						>
+							{isExpander && (
 								<button
 									type="button"
-									className="breadcrumbs-link"
+									className="breadcrumbs-label breadcrumbs-link"
 									onClick={() => setIsExpanded(true)}
 									aria-expanded={false}
-									aria-label="Show hidden breadcrumbs"
 								>
-									{crumb.label}
+									<span className="visually-hidden">
+										Show hidden breadcrumbs
+									</span>
+									<span aria-hidden="true">{crumb.label}</span>
 								</button>
-							) : (
+							)}
+
+							{!isExpander && !isLast && (
 								<Link
+									className="breadcrumbs-label breadcrumbs-link"
 									href={crumb.href}
-									className="breadcrumbs-link"
-									aria-current={isLast ? 'page' : undefined}
 								>
 									{crumb.label}
 								</Link>
 							)}
 
 							{!isLast && (
-								<span className="breadcrumbs-separator" aria-hidden="true">
+								<span
+									className="breadcrumbs-separator"
+									aria-hidden="true"
+								>
 									»
 								</span>
 							)}
+
+							{isLast && crumb.label}
 						</li>
 					);
 				})}
@@ -933,3 +979,7 @@ But here's the thing—every small UI element matters. Breadcrumbs aren't just a
 Most importantly, they remind us that even the smallest components deserve attention to detail. Because at the end of the day, it's these little things that add up to create truly great user experiences.
 
 > "The details are not the details. They make the design." —Charles Eames
+
+---
+
+Special thanks to [Adrian Roselli](https://adrianroselli.com) for reviewing this article and providing valuable feedback on accessibility and best practices.
