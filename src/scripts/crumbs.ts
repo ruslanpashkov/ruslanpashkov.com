@@ -1,22 +1,18 @@
 const getRefs = () => ({
-	endMask: document.querySelector('.breadcrumbs__mask--end') as HTMLElement,
+	breadcrumbs: document.querySelector('.breadcrumbs') as HTMLElement,
 	list: document.querySelector('.breadcrumbs__list') as HTMLOListElement,
-	startMask: document.querySelector('.breadcrumbs__mask--start') as HTMLElement,
 });
 
 let refs: ReturnType<typeof getRefs>;
 
 const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
 
-const setMaskOpacity = (mask: HTMLElement, opacity: string) => (mask.style.opacity = opacity);
-
 const checkScroll = () => {
-	const { endMask, list, startMask } = refs;
-	const isAtStart = list.scrollLeft <= 1;
-	const isAtEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 1;
+	const isAtStart = refs.list.scrollLeft <= 1;
+	const isAtEnd = refs.list.scrollLeft + refs.list.clientWidth >= refs.list.scrollWidth - 1;
 
-	setMaskOpacity(startMask, isAtStart ? '0' : '1');
-	setMaskOpacity(endMask, isAtEnd ? '0' : '1');
+	refs.breadcrumbs.classList.toggle('show-start-fade', !isAtStart);
+	refs.breadcrumbs.classList.toggle('show-end-fade', !isAtEnd);
 };
 
 const handleResize = () => {
