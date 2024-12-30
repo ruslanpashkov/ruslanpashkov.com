@@ -1,12 +1,35 @@
 ---
 import { copyright } from '@/data/copyright';
+import { global } from '@/data/global';
 ---
 
 <footer class="footer">
 	<div class="container footer__content">
 		<a class="footer__back-to-top" href="#body">Back to top</a>
 
-		<p class="footer__copyright">{copyright}</p>
+		<p class="footer__copyright">
+			© {copyright.year}
+			{global.author}.
+
+			{
+				copyright.licenses.map((license) => (
+					<>
+						{license.label}:
+						<span class="footer__license">
+							<a
+								class="footer__link"
+								href={license.url}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								{license.title}
+							</a>
+							.
+						</span>
+					</>
+				))
+			}
+		</p>
 	</div>
 </footer>
 
@@ -44,5 +67,14 @@ import { copyright } from '@/data/copyright';
 		@media (width >= 768px) {
 			font-size: 1.25rem;
 		}
+	}
+
+	.footer__license {
+		display: inline-flex;
+	}
+
+	.footer__link {
+		display: inline-block;
+		text-decoration: underline;
 	}
 </style>
