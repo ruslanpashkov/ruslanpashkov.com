@@ -17,7 +17,11 @@ const getStoredState = () => window.localStorage.getItem(STORAGE_KEY) === 'true'
 const storeState = (isCollapsed: boolean) =>
 	window.localStorage.setItem(STORAGE_KEY, isCollapsed.toString());
 
-const setHeight = (height: number) => (refs.content.style.height = `${height}px`);
+const setHeight = (height: number) => {
+	requestAnimationFrame(() => {
+		refs.content.style.height = `${height}px`;
+	});
+};
 
 const setVisibility = (isVisible: boolean) => {
 	refs.content.style.visibility = isVisible ? 'visible' : 'hidden';
@@ -39,18 +43,24 @@ const cleanupTransition = () => {
 const expandContent = (height: number) => {
 	cleanupTransition();
 	setVisibility(true);
-	setHeight(height);
-	setToggleExpanded(true);
+
+	requestAnimationFrame(() => {
+		setHeight(height);
+		setToggleExpanded(true);
+	});
 };
 
 const collapseContent = (immediate = false) => {
 	cleanupTransition();
-	setHeight(0);
-	setToggleExpanded(false);
 
 	if (immediate) {
 		setVisibility(false);
 	}
+
+	requestAnimationFrame(() => {
+		setHeight(0);
+		setToggleExpanded(false);
+	});
 };
 
 const expand = () => {
