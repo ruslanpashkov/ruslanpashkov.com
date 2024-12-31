@@ -20,5 +20,5 @@ export const licenses: Link[] = [
 
 export const copyright = {
 	licenses,
-	year: 2024,
+	year: 2025,
 };
