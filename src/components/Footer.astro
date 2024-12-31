@@ -7,29 +7,31 @@ import { global } from '@/data/global';
 	<div class="container footer__content">
 		<a class="footer__back-to-top" href="#body">Back to top</a>
 
-		<p class="footer__copyright">
-			© {copyright.year}
-			{global.author}.
+		<div class="footer__legal">
+			<small>© {copyright.year} {global.author}.</small>
 
-			{
-				copyright.licenses.map((license) => (
-					<>
-						{license.label}:
-						<span class="footer__license">
-							<a
-								class="footer__link"
-								href={license.url}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								{license.title}
-							</a>
-							.
-						</span>
-					</>
-				))
-			}
-		</p>
+			<dl class="license-list">
+				{
+					copyright.licenses.map((license) => (
+						<div class="license-list__item">
+							<dt class="license-list__term">{license.label}:</dt>
+
+							<dd class="license-list__desc">
+								<a
+									class="license-list__link"
+									href={license.url}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									{license.title}
+								</a>
+								.
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
 	</div>
 </footer>
 
@@ -60,21 +62,50 @@ import { global } from '@/data/global';
 		}
 	}
 
-	.footer__copyright {
+	.footer__legal {
+		--spacing-width: 0.4ch;
+
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 20px var(--spacing-width);
+		justify-content: center;
+		width: 100%;
+		font-size: 1.125rem;
 		text-align: center;
 		text-wrap: balance;
 
 		@media (width >= 768px) {
+			display: inline;
 			font-size: 1.25rem;
 		}
 	}
 
-	.footer__license {
+	.license-list {
+		display: flex;
+		flex-flow: column wrap;
+		column-gap: var(--spacing-width);
+		justify-content: center;
+
+		@media (width >= 768px) {
+			display: inline-flex;
+			flex-direction: row;
+		}
+	}
+
+	.license-list__item {
+		display: inline-flex;
+		column-gap: var(--spacing-width);
+	}
+
+	.license-list__term {
+		white-space: nowrap;
+	}
+
+	.license-list__desc {
 		display: inline-flex;
 	}
 
-	.footer__link {
-		display: inline-block;
+	.license-list__link {
 		text-decoration: underline;
 	}
 </style>

@@ -9,6 +9,14 @@ ol {
 	list-style: none;
 }
 
+dl {
+	margin-block: 0;
+}
+
+dd {
+	margin-inline-start: 0;
+}
+
 blockquote {
 	margin: 0;
 }
@@ -28,6 +36,10 @@ h4 {
 
 p {
 	margin-block: 0;
+}
+
+small {
+	font: inherit;
 }
 
 a {
