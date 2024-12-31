@@ -8,6 +8,8 @@ categories: ['Web Development', 'Accessibility', 'Technical SEO', 'UX Design']
 topic: 'Frontend Development'
 ---
 
+{/* snippet:start */}
+
 import { Image } from 'astro:assets';
 import googleSearchCentralBreadcrumbs from './google-search-central-breadcrumbs.png';
 import breadcrumbsBasicAudio from './breadcrumbs-screenreader-basic.mp3';
@@ -17,6 +19,8 @@ import styledBreadcrumbsFoundation from './styled-breadcrumbs-foundation.png';
 import breadcrumbsExpandExample from './breadcrumbs-expand-example.gif';
 import focusedBreadcrumbsPreview from './focused-breadcrumbs-preview.png';
 import mobileBreadcrumbsWithMask from './mobile-breadcrumbs-with-mask.gif';
+
+{/* snippet:end */}
 
 I've been wanting to write my first technical article for quite some time. I knew right away that I wanted to write about [breadcrumbs](https://en.wikipedia.org/wiki/Breadcrumb_navigation)—after working on a real estate project, I discovered that they're way more interesting than they might seem at first glance.
 
@@ -62,7 +66,7 @@ By the way, while [Google Search Central documentation](https://developers.googl
 
 <Image
 	src={googleSearchCentralBreadcrumbs}
-	alt="Screenshot of Google Search Central breadcrumbs showing 'Home > Search Central > Documentation' with DevTools inspector revealing unordered list (ul) implementation"
+	alt="Screenshot of Google Search Central breadcrumbs showing 'Home → Search Central → Documentation' with DevTools inspector revealing unordered list implementation"
 	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${googleSearchCentralBreadcrumbs.width}px`}
 	widths={[400, 800, 1200]}
 	decoding="async"

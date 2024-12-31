@@ -5,7 +5,7 @@ import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
 import { formatDate } from '@/utils/formatDate';
 import { getPageTitle } from '@/utils/getPageTitle';
-import removeMarkdown from 'remove-markdown';
+import { cleanMarkdown } from '@/utils/markdown/cleanMarkdown.ts';
 
 export function getArticleSchema(website: URL, article: Article): WithContext<BlogPosting> {
 	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
@@ -18,7 +18,7 @@ export function getArticleSchema(website: URL, article: Article): WithContext<Bl
 	const datePublished = new Date(formatDate(publishedAt)).toISOString();
 	const keywords = categories.join(', ');
 	const pageTitle = getPageTitle(title);
-	const cleanContent = removeMarkdown(body!);
+	const cleanContent = cleanMarkdown(body!);
 
 	return {
 		'@context': 'https://schema.org',
