@@ -20,7 +20,7 @@ export default defineConfig({
 		icon({ iconDir: 'src/assets/svg' }),
 		expressiveCode(expressiveCodeOptions),
 		mdx(),
-		Compress({ CSS: false }),
+		Compress({ CSS: false, HTML: false }),
 	],
 	markdown: {
 		rehypePlugins: [

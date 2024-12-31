@@ -8,7 +8,10 @@ import { global } from '@/data/global';
 		<a class="footer__back-to-top" href="#body">Back to top</a>
 
 		<div class="footer__legal">
-			<small>© {copyright.year} {global.author}.</small>
+			<small class="footer__copyright">
+				© {copyright.year}
+				{global.author}.
+			</small>
 
 			<dl class="license-list">
 				{
@@ -63,41 +66,41 @@ import { global } from '@/data/global';
 	}
 
 	.footer__legal {
-		--spacing-width: 0.4ch;
-
 		display: flex;
 		flex-direction: column-reverse;
-		gap: 20px var(--spacing-width);
+		gap: 20px;
 		justify-content: center;
 		width: 100%;
 		font-size: 1.125rem;
-		text-align: center;
 		text-wrap: balance;
 
 		@media (width >= 768px) {
 			display: inline;
 			font-size: 1.25rem;
+			text-align: center;
 		}
+	}
+
+	.footer__copyright {
+		text-align: center;
 	}
 
 	.license-list {
 		display: flex;
-		flex-flow: column wrap;
-		column-gap: var(--spacing-width);
-		justify-content: center;
+		flex-direction: column;
+		white-space: nowrap;
 
 		@media (width >= 768px) {
-			display: inline-flex;
-			flex-direction: row;
+			display: inline;
 		}
 	}
 
 	.license-list__item {
-		display: inline-flex;
-		column-gap: var(--spacing-width);
+		display: inline;
 	}
 
 	.license-list__term {
+		display: inline;
 		white-space: nowrap;
 	}
 
