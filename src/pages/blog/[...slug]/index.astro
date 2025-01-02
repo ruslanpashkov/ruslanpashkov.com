@@ -173,13 +173,15 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 	}
 
 	.article__title {
+		contain: layout;
 		margin-bottom: 20px;
 		font-size: 1.875rem;
+		font-display: swap;
 		line-height: 1.2;
-		text-align: center;
 
 		@media (width >= 768px) {
 			font-size: 2.25rem;
+			text-align: center;
 		}
 
 		@media (width >= 1024px) {
