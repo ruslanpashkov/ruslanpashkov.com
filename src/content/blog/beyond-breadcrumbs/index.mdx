@@ -1,6 +1,6 @@
 ---
 publishedAt: '2024-12-27'
-updatedAt: '2024-12-30'
+updatedAt: '2025-01-02'
 slug: 'beyond-breadcrumbs'
 title: 'Why Breadcrumbs Matter More Than You Think'
 description: 'Ever thought breadcrumbs were just a basic navigation feature? Let me show you how breadcrumbs make complex websites more powerful, accessible, and SEO-friendly.'
@@ -54,9 +54,9 @@ The key thing about breadcrumbs is that they **must** be a navigation region, no
 
 > It's recommended to use the `<nav>` element specifically for marking up breadcrumbs, as the [HTML Living Standard](https://html.spec.whatwg.org/multipage/sections.html#the-nav-element) defines it as the primary way to mark up navigation, while ARIA roles are considered a fallback option.
 
-There's also an interesting point about lists and separators. According to the [W3C specification](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element), lists can **only** contain `<li>` elements _(actually, also `<script>` and `<template>`, but that's a topic for another day)_. This tells us that our separators must be inside the list items, not between them, even though, from a purely academic standpoint, a separator isn't a content part of the list item. Also, worth noting that the **last list item shouldn't contain a separator**.
+There's also an interesting point about lists and separators. According to the [WHATWG specification](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element), lists can **only** contain `<li>` elements _(actually, also `<script>` and `<template>`, but that's a topic for another day)_. This tells us that our separators must be inside the list items, not between them, even though, from a purely academic standpoint, a separator isn't a content part of the list item. Also, worth noting that the **last list item shouldn't contain a separator**.
 
-The most attentive might have noticed that in the W3C specification mention, I linked specifically to the ordered list. Why that?
+The most attentive might have noticed that in the WHATWG specification mention, I linked specifically to the ordered list. Why that?
 
 The thing is, breadcrumbs are a hierarchical path where each subsequent element is a child relative to the previous one. When a user sees `Home » Catalog » Products`, they understand that `Products` is inside `Catalog`, which is inside `Home`.
 
