@@ -10,11 +10,18 @@
  * presentation of code snippets, enhancing readability and user experience.
  */
 
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+
 /** @type {import('astro-expressive-code').AstroExpressiveCodeOptions} */
 export const expressiveCodeOptions = {
 	customizeTheme: (theme) => {
 		theme.name = theme.type;
 	},
+	defaultProps: {
+		showLineNumbers: false,
+	},
+	plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
 	styleOverrides: {
 		borderColor: 'var(--color-secondary)',
 		borderRadius: '12px',

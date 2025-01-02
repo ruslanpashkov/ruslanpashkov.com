@@ -761,14 +761,14 @@ We need to accept a harsh reality—our community tends to overcomplicate many t
 
 Let's see how we can adapt our implementation to modern frameworks, using TypeScript and Next.js as an example _(only because it's so trendy 🥲)_:
 
-```typescript title="types.ts"
+```typescript title="types.ts" showLineNumbers
 export interface Crumb {
 	label: string;
 	href: string;
 }
 ```
 
-```typescript title="utils/schema.ts"
+```typescript title="utils/schema.ts" showLineNumbers
 import { Crumb } from '../types';
 
 export const generateBreadcrumbSchema = (crumbs: Crumb[]) => ({
@@ -783,11 +783,11 @@ export const generateBreadcrumbSchema = (crumbs: Crumb[]) => ({
 });
 ```
 
-```css title="breadcrumbs.css"
+```css title="breadcrumbs.css" showLineNumbers
 /* Don't think I'm going to rewrite our styles using Tailwind. */
 ```
 
-```tsx title="BreadcrumbsClient.tsx"
+```tsx title="BreadcrumbsClient.tsx" showLineNumbers
 'use client';
 
 import './breadcrumbs.css';
@@ -926,7 +926,7 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 }
 ```
 
-```tsx title="Breadcrumbs.tsx"
+```tsx title="Breadcrumbs.tsx" showLineNumbers
 import { BreadcrumbsClient } from './BreadcrumbsClient';
 import { generateBreadcrumbSchema } from './utils/schema';
 import type { Crumb } from './types';
@@ -952,7 +952,7 @@ export function Breadcrumbs({ crumbs }: Props) {
 }
 ```
 
-```typescript title="index.ts"
+```typescript title="index.ts" showLineNumbers
 export * from './Breadcrumbs';
 export * from './types';
 ```
