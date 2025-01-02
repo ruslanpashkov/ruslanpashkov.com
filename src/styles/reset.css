@@ -60,5 +60,6 @@ button {
 
 hr {
 	margin: 0;
+	color: inherit;
 	border: none;
 }
