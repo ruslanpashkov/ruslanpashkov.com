@@ -21,12 +21,7 @@ const { categories, description, publishedAt, slug, title, topic } = article.dat
 		<p class="article-card__topic">{topic}</p>
 	</header>
 
-	<a
-		aria-label={`Read full article: ${title}`}
-		class="article-card__link"
-		draggable="false"
-		href={`/blog/${slug}/`}
-	>
+	<a class="article-card__link" draggable="false" href={`/blog/${slug}/`}>
 		<h2 class="article-card__title">{title}</h2>
 	</a>
 
