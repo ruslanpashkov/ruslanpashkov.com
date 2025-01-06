@@ -19,12 +19,7 @@ const { articles } = Astro.props;
 
 					<p>{data.description}</p>
 
-					<a
-						aria-label={`Read full article: ${data.title}`}
-						class="article-card__link"
-						draggable="false"
-						href={`/blog/${data.slug}/`}
-					>
+					<a class="article-card__link" draggable="false" href={`/blog/${data.slug}/`}>
 						Read article
 						<Icon
 							aria-hidden="true"

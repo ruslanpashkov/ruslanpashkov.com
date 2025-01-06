@@ -132,7 +132,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 							socialLinks.map(({ icon, label, url }) => (
 								<li>
 									<a
-										aria-label={label && `Contact via ${label}`}
+										aria-label={label}
 										class="article__social-link hover"
 										href={url}
 										rel="noopener noreferrer"
