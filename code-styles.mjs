@@ -58,5 +58,8 @@ export const expressiveCodeOptions = {
 			tooltipSuccessBackground: 'var(--color-secondary)',
 			tooltipSuccessForeground: 'var(--color-contrast)',
 		},
+		lineNumbers: {
+			foreground: 'var(--color-neutral)',
+		},
 	},
 };
