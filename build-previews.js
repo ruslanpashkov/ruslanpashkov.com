@@ -183,6 +183,7 @@ async function generateOGImages(articles) {
 
 	try {
 		browser = await chromium.launch();
+
 		const page = await browser.newPage();
 
 		await page.setViewportSize(CONFIG.dimensions);
@@ -199,6 +200,7 @@ async function generateOGImages(articles) {
 			console.log(`  🖼 Generating: ${article.title}`);
 
 			const html = getTemplate(article);
+
 			await page.setContent(html, { waitUntil: 'networkidle' });
 
 			await mkdir(CONFIG.paths.output, { recursive: true });
@@ -207,6 +209,7 @@ async function generateOGImages(articles) {
 				path: outputPath,
 				type: 'png',
 			});
+
 			generatedCount++;
 		}
 
@@ -228,6 +231,7 @@ async function buildPreviews() {
 
 	try {
 		const articles = await getCollection('blog');
+
 		console.log(`📚 Found ${articles.length} articles`);
 
 		await generateOGImages(articles);
