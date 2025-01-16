@@ -63,6 +63,8 @@ const { projects } = Astro.props;
 	}
 
 	.project-card {
+		--border-rounding: 12px;
+
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -72,21 +74,24 @@ const { projects } = Astro.props;
 		background-color: var(--color-transparent);
 		backdrop-filter: blur(10px);
 		border: 1px solid var(--color-secondary);
-		border-radius: 12px;
-
-		&:focus-within {
-			outline: 2px solid var(--color-focus);
-			outline-offset: 2px;
-		}
+		border-radius: var(--border-rounding);
 	}
 
 	.project-card__link {
-		outline: none;
-
 		&::before {
 			content: '';
 			position: absolute;
 			inset: 0;
+			border-radius: var(--border-rounding);
+		}
+
+		&:focus-visible {
+			outline: none;
+		}
+
+		&:focus-visible::before {
+			outline: 2px solid var(--color-focus);
+			outline-offset: 2px;
 		}
 	}
 
