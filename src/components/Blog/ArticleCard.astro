@@ -1,7 +1,7 @@
 ---
 import type { Article } from '@/types/Article';
 
-import { formatDate } from '@/utils/formatDate';
+import { FormattingManager } from '@/utils/formatting';
 
 interface Props {
 	article: Article;
@@ -10,12 +10,14 @@ interface Props {
 const { article } = Astro.props;
 
 const { categories, description, publishedAt, slug, title, topic } = article.data;
+
+const publishedDate = FormattingManager.formatDate(publishedAt);
 ---
 
 <article class="article-card">
 	<header class="article-card__header">
 		<time class="article-card__date" datetime={publishedAt}>
-			{formatDate(publishedAt)}
+			{publishedDate}
 		</time>
 
 		<p class="article-card__topic">{topic}</p>

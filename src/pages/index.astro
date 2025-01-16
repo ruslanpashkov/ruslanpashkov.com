@@ -12,15 +12,15 @@ import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
 import { projects } from '@/data/projects';
 import Layout from '@/layouts/Layout.astro';
-import { getPersonSchema } from '@/utils/schemas/getPersonSchema';
-import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
+import { ArticleManager } from '@/utils/article';
+import { SEOManager } from '@/utils/seo';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('blog');
 
-const sortedArticles = sortArticlesByDate(articles);
+const sortedArticles = ArticleManager.sortByDate(articles);
 
-const personSchema = getPersonSchema(Astro.url);
+const personSchema = SEOManager.buildPersonSchema(Astro.url);
 ---
 
 <Layout

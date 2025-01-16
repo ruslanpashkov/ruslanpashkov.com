@@ -1,5 +1,5 @@
 ---
-import type { Crumb } from '@/types/Crumb';
+import type { Link } from '@/types/Link';
 
 import Glow from '@/components/Glow.astro';
 import ProjectList from '@/components/Projects/ProjectList.astro';
@@ -9,29 +9,26 @@ import { projects } from '@/data/projects';
 import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
 import { projectTypes } from '@/types/Project';
-import { categorizeProjects } from '@/utils/categorizeProjects';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
-import { getProjectsSchema } from '@/utils/schemas/getProjectsSchema';
-import { sortProjectsByType } from '@/utils/sortProjectsByType';
+import { ProjectManager } from '@/utils/project';
+import { SEOManager } from '@/utils/seo';
 
-const title = getPageTitle('Projects');
+const title = SEOManager.generatePageTitle('Projects');
 
-const sortedProjects = sortProjectsByType(projects);
+const sortedProjects = ProjectManager.sortByType(projects);
 
 const {
 	'Developer Tools': developerTools,
 	Utilities: utilities,
 	'Web Showcases': webShowcases,
-} = categorizeProjects(sortedProjects, projectTypes);
+} = ProjectManager.categorize(sortedProjects, projectTypes);
 
-const breadcrumbs: Crumb[] = [
+const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ current: true, label: 'Projects', title: `You are currently on projects`, url: '/projects/' },
+	{ label: 'Projects', title: `You are currently on projects`, url: '/projects/' },
 ];
 
-const projectsSchema = getProjectsSchema(Astro.url, sortedProjects);
-const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
+const projectsSchema = SEOManager.buildProjectsSchema(Astro.url, sortedProjects);
+const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout

@@ -4,15 +4,18 @@ import type { Blog, BlogPosting, WithContext } from 'schema-dts';
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
-import { formatDate } from '@/utils/formatDate';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
-import removeMarkdown from 'remove-markdown';
+import { ArticleManager } from '@/utils/article';
+import { ContactManager } from '@/utils/contact';
+import { FormattingManager } from '@/utils/formatting';
+import { MarkdownManager } from '@/utils/markdown';
+
+import { generateTitle } from '../generateTitle';
 
 export function getBlogSchema(website: URL, articles: Article[]): WithContext<Blog> {
-	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
-	const title = getPageTitle('Blog');
-	const sortedArticles = sortArticlesByDate(articles);
+	const email = ContactManager.findEmailURL(contacts);
+	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
+	const title = generateTitle('Blog');
+	const sortedArticles = ArticleManager.sortByDate(articles);
 	const posts = sortedArticles.map(buildBlogPostSchema);
 
 	return {
@@ -35,7 +38,7 @@ export function getBlogSchema(website: URL, articles: Article[]): WithContext<Bl
 			'@type': 'Person',
 			email: email,
 			name: global.author,
-			sameAs: otherContacts,
+			sameAs: onlineProfiles,
 			url: website.origin,
 		},
 	};
@@ -48,9 +51,9 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
-	const datePublished = new Date(formatDate(publishedAt)).toISOString();
+	const datePublished = new Date(FormattingManager.formatDate(publishedAt)).toISOString();
 	const keywords = categories.join(', ');
-	const cleanContent = removeMarkdown(body!);
+	const cleanContent = MarkdownManager.clean(body!);
 
 	return {
 		'@type': 'BlogPosting',

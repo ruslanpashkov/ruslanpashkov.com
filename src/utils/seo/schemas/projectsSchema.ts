@@ -4,15 +4,18 @@ import type { CollectionPage, CreativeWork, ListItem, WithContext } from 'schema
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { sortProjectsByType } from '@/utils/sortProjectsByType';
+import { ContactManager } from '@/utils/contact';
+import { ProjectManager } from '@/utils/project';
+
+import { generateTitle } from '../generateTitle';
 
 export function getProjectsSchema(website: URL, projects: Project[]): WithContext<CollectionPage> {
-	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
-	const title = getPageTitle('Projects');
-	const sortedProjects = sortProjectsByType(projects);
-	const creativeWorks: CreativeWork[] = sortedProjects.map(buildCreativeWorkSchema);
-	const projectItems: ListItem[] = creativeWorks.map(buildListItemSchema);
+	const email = ContactManager.findEmailURL(contacts);
+	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
+	const title = generateTitle('Projects');
+	const sortedProjects = ProjectManager.sortByType(projects);
+	const creativeWorks = sortedProjects.map(buildCreativeWorkSchema);
+	const projectItems = creativeWorks.map(buildListItemSchema);
 
 	return {
 		'@context': 'https://schema.org',
@@ -23,7 +26,7 @@ export function getProjectsSchema(website: URL, projects: Project[]): WithContex
 			email: email,
 			jobTitle: global.job.position,
 			name: global.author,
-			sameAs: otherContacts,
+			sameAs: onlineProfiles,
 		},
 		description: descriptions.projects,
 		mainEntity: {

@@ -1,7 +1,7 @@
 ---
 import type { Link } from '@/types/Link';
 
-import { slugify } from '@/utils/slugify';
+import { FormattingManager } from '@/utils/formatting';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 const { counter, link, title } = Astro.props;
 
-const slug = slugify(title);
+const slug = FormattingManager.slugify(title);
 ---
 
 <section aria-labelledby={slug} class="section">

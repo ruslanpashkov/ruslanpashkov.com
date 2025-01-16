@@ -1,5 +1,5 @@
 import { global } from '@/data/global';
 
-export function getPageTitle(title: string): string {
+export function generateTitle(title: string): string {
 	return `${title} | ${global.author}`;
 }

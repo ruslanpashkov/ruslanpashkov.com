@@ -2,13 +2,15 @@ import type { Language, Person, WithContext } from 'schema-dts';
 
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
-import { getLanguageCode } from '@/utils/getLanguageCode';
+import { ContactManager } from '@/utils/contact';
+import { FormattingManager } from '@/utils/formatting';
 
 export function getPersonSchema(website: URL): WithContext<Person> {
 	const [firstName, lastName] = global.author.split(' ');
-	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
+	const email = ContactManager.findEmailURL(contacts);
+	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
 	const portraitURL = new URL('/images/portrait.jpg', website);
-	const knownLanguages: Language[] = global.languages.map(buildLanguageSchema);
+	const knownLanguages = global.languages.map(buildLanguageSchema);
 
 	return {
 		'@context': 'https://schema.org',
@@ -30,7 +32,7 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 			'@type': 'Country',
 			name: global.country,
 		},
-		sameAs: otherContacts,
+		sameAs: onlineProfiles,
 		url: website.href,
 		worksFor: {
 			'@type': 'Organization',
@@ -40,9 +42,11 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 }
 
 function buildLanguageSchema(language: string): Language {
+	const languageCode = FormattingManager.shortenLanguage(language);
+
 	return {
 		'@type': 'Language',
-		alternateName: getLanguageCode(language),
+		alternateName: languageCode,
 		name: language,
 	};
 }

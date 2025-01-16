@@ -1,10 +1,10 @@
 ---
-import type { Crumb } from '@/types/Crumb';
+import type { Link } from '@/types/Link';
 
 import { Icon } from 'astro-icon/components';
 
 interface Props {
-	breadcrumbs: Crumb[];
+	breadcrumbs: Link[];
 }
 
 const { breadcrumbs } = Astro.props;
@@ -13,27 +13,31 @@ const { breadcrumbs } = Astro.props;
 <nav aria-label="Breadcrumbs" class="breadcrumbs">
 	<ol class="breadcrumbs__list">
 		{
-			breadcrumbs.map((crumb, index) => (
-				<li class="breadcrumbs__item">
-					{crumb.current ? (
-						<span aria-current="page" class="breadcrumbs__label">
-							{crumb.label}
-						</span>
-					) : (
-						<a class="breadcrumbs__label breadcrumbs__link hover" href={crumb.url}>
-							{crumb.label}
-						</a>
-					)}
+			breadcrumbs.map((crumb, index) => {
+				const isLast = index === breadcrumbs.length - 1;
 
-					{index < breadcrumbs.length - 1 && (
-						<Icon
-							aria-hidden="true"
-							class="breadcrumbs__separator"
-							name="chevron-down"
-						/>
-					)}
-				</li>
-			))
+				return (
+					<li class="breadcrumbs__item">
+						{isLast ? (
+							<span aria-current="page" class="breadcrumbs__label">
+								{crumb.label}
+							</span>
+						) : (
+							<a class="breadcrumbs__label breadcrumbs__link hover" href={crumb.url}>
+								{crumb.label}
+							</a>
+						)}
+
+						{!isLast && (
+							<Icon
+								aria-hidden="true"
+								class="breadcrumbs__separator"
+								name="chevron-down"
+							/>
+						)}
+					</li>
+				);
+			})
 		}
 	</ol>
 </nav>

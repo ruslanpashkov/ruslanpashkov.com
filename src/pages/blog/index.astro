@@ -1,30 +1,28 @@
 ---
-import type { Crumb } from '@/types/Crumb';
+import type { Link } from '@/types/Link';
 
 import ArticleList from '@/components/Blog/ArticleList.astro';
 import Glow from '@/components/Glow.astro';
 import { descriptions } from '@/data/descriptions';
 import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { getBlogSchema } from '@/utils/schemas/getBlogSchema';
-import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
-import { sortArticlesByDate } from '@/utils/sortArticlesByDate';
+import { ArticleManager } from '@/utils/article';
+import { SEOManager } from '@/utils/seo';
 import { getCollection } from 'astro:content';
 
-const title = getPageTitle('Blog');
+const title = SEOManager.generatePageTitle('Blog');
 
 const articles = await getCollection('blog');
 
-const sortedArticles = sortArticlesByDate(articles);
+const sortedArticles = ArticleManager.sortByDate(articles);
 
-const breadcrumbs: Crumb[] = [
+const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ current: true, label: 'Blog', title: `You are currently on blog`, url: '/blog/' },
+	{ label: 'Blog', title: `You are currently on blog`, url: '/blog/' },
 ];
 
-const blogSchema = getBlogSchema(Astro.url, sortedArticles);
-const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
+const blogSchema = SEOManager.buildBlogSchema(Astro.url, sortedArticles);
+const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout

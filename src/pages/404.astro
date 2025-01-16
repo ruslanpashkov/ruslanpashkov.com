@@ -2,10 +2,10 @@
 import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 import Layout from '@/layouts/Layout.astro';
-import { getPageTitle } from '@/utils/getPageTitle';
+import { SEOManager } from '@/utils/seo';
 import { Icon } from 'astro-icon/components';
 
-const title = getPageTitle('404');
+const title = SEOManager.generatePageTitle('404');
 
 const emailDetails = {
 	body: `I was trying to access the page at: ${Astro.url.href}`,
@@ -22,9 +22,9 @@ const githubIssueURL = 'https://github.com/ruslanpashkov/ruslanpashkov.com/issue
 
 <Layout cover="404.png" description="Page not found" title={title} type="website">
 	<div class="container container--gapped">
-		<section class="not-found">
+		<section aria-labelledby="not-found-title" class="not-found">
 			<div class="not-found__title-container">
-				<h1 class="not-found__title">Page not found</h1>
+				<h1 class="not-found__title" id="not-found-title">Page not found</h1>
 
 				<div class="not-found__divider" role="presentation"></div>
 			</div>

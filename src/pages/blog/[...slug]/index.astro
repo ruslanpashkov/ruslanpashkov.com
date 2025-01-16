@@ -1,16 +1,15 @@
 ---
 import type { Article } from '@/types/Article';
-import type { Crumb } from '@/types/Crumb';
+import type { Link } from '@/types/Link';
 
 import TableOfContents from '@/components/Article/TableOfContents.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Glow from '@/components/Glow.astro';
 import { contacts } from '@/data/contacts';
 import Layout from '@/layouts/Layout.astro';
-import { formatDate } from '@/utils/formatDate';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { getArticleSchema } from '@/utils/schemas/getArticleSchema';
-import { getBreadcrumbsSchema } from '@/utils/schemas/getBreadcrumbsSchema';
+import { ContactManager } from '@/utils/contact';
+import { FormattingManager } from '@/utils/formatting';
+import { SEOManager } from '@/utils/seo';
 import { Icon } from 'astro-icon/components';
 import { getCollection, render } from 'astro:content';
 
@@ -37,20 +36,23 @@ const {
 	remarkPluginFrontmatter: { minutesRead },
 } = await render(article);
 
-const pageTitle = getPageTitle(title);
+const pageTitle = SEOManager.generatePageTitle(title);
 
 const currentPath = Astro.url.pathname;
 
-const [email, ...socialLinks] = contacts;
+const email = ContactManager.findEmail(contacts);
+const onlineProfiles = ContactManager.findOnlineProfiles(contacts);
+const publishedDate = FormattingManager.formatDate(publishedAt);
+const updatedDate = updatedAt && FormattingManager.formatDate(updatedAt);
 
-const breadcrumbs: Crumb[] = [
+const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the homepage', url: '/' },
 	{ label: 'Blog', title: 'Go to the blog', url: '/blog/' },
-	{ current: true, label: title, title: `You are currently reading ${title}`, url: currentPath },
+	{ label: title, title: `You are currently reading ${title}`, url: currentPath },
 ];
 
-const articleSchema = getArticleSchema(Astro.url, article);
-const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
+const articleSchema = SEOManager.buildArticleSchema(Astro.url, article);
+const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout
@@ -71,13 +73,13 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 				<aside class="article__meta">
 					<div class="article__dates">
 						<time class="article__published-at" datetime={publishedAt}>
-							{formatDate(publishedAt)}
+							{publishedDate}
 						</time>
 
 						{
 							updatedAt && (
 								<time class="article__updated-at" datetime={updatedAt}>
-									(updated at {formatDate(updatedAt)})
+									(updated at {updatedDate})
 								</time>
 							)
 						}
@@ -110,7 +112,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 					{categories.map((category) => <li class="article-tags__item">{category}</li>)}
 				</ul>
 
-				<section class="article__contacts">
+				<div class="article__contacts">
 					<div class="article__contact">
 						<p class="article__contact-text">
 							Got questions or feedback? Feel free to reach out!
@@ -129,7 +131,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 
 					<ul class="article__social">
 						{
-							socialLinks.map(({ icon, label, url }) => (
+							onlineProfiles.map(({ icon, label, url }) => (
 								<li>
 									<a
 										aria-label={label}
@@ -148,7 +150,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 							))
 						}
 					</ul>
-				</section>
+				</div>
 
 				<span class="article__glow article__glow--end">
 					<Glow />

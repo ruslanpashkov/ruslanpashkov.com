@@ -6,7 +6,6 @@
 	--alpha-contrast: 100%;
 	--alpha-accent: 75%;
 	--alpha-focus: 100%;
-
 	--color-primary: oklch(var(--color-white) / var(--alpha-primary));
 	--color-secondary: oklch(var(--color-timberwolf) / var(--alpha-secondary));
 	--color-neutral: oklch(var(--color-dim-gray) / var(--alpha-neutral));

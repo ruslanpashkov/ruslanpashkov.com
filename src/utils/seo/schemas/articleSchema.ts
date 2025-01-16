@@ -3,22 +3,22 @@ import type { BlogPosting, WithContext } from 'schema-dts';
 
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
-import { formatDate } from '@/utils/formatDate';
-import { getPageTitle } from '@/utils/getPageTitle';
-import { cleanMarkdown } from '@/utils/markdown/cleanMarkdown.ts';
+import { ContactManager } from '@/utils/contact';
+import { FormattingManager } from '@/utils/formatting';
+import { MarkdownManager } from '@/utils/markdown';
 
 export function getArticleSchema(website: URL, article: Article): WithContext<BlogPosting> {
-	const [email, ...otherContacts] = contacts.map((contact) => contact.url);
 	const {
 		body,
 		data: { categories, description, publishedAt, slug, title, topic },
 	} = article;
+	const email = ContactManager.findEmailURL(contacts);
+	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
 	const articleURL = new URL(`/blog/${slug}/`, website);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, website);
-	const datePublished = new Date(formatDate(publishedAt)).toISOString();
+	const datePublished = new Date(FormattingManager.formatDate(publishedAt)).toISOString();
 	const keywords = categories.join(', ');
-	const pageTitle = getPageTitle(title);
-	const cleanContent = cleanMarkdown(body!);
+	const cleanContent = MarkdownManager.clean(body!);
 
 	return {
 		'@context': 'https://schema.org',
@@ -34,12 +34,12 @@ export function getArticleSchema(website: URL, article: Article): WithContext<Bl
 			'@type': 'Person',
 			email: email,
 			name: global.author,
-			sameAs: otherContacts,
+			sameAs: onlineProfiles,
 			url: website.origin,
 		},
 		datePublished: datePublished,
 		description: description,
-		headline: pageTitle,
+		headline: title,
 		image: {
 			'@type': 'ImageObject',
 			height: '630',
@@ -56,7 +56,7 @@ export function getArticleSchema(website: URL, article: Article): WithContext<Bl
 			'@type': 'Person',
 			email: email,
 			name: global.author,
-			sameAs: otherContacts,
+			sameAs: onlineProfiles,
 			url: website.origin,
 		},
 		url: articleURL.href,
