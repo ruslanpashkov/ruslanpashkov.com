@@ -1,5 +1,4 @@
 :root {
-	/* Alpha values */
 	--alpha-primary: 100%;
 	--alpha-secondary: 25%;
 	--alpha-neutral: 100%;
@@ -8,7 +7,6 @@
 	--alpha-accent: 75%;
 	--alpha-focus: 100%;
 
-	/* Colors */
 	--color-primary: oklch(var(--color-white) / var(--alpha-primary));
 	--color-secondary: oklch(var(--color-timberwolf) / var(--alpha-secondary));
 	--color-neutral: oklch(var(--color-dim-gray) / var(--alpha-neutral));
@@ -17,6 +15,5 @@
 	--color-accent: oklch(var(--color-mindaro) / var(--alpha-accent));
 	--color-focus: oklch(var(--color-rebecca-purple) / var(--alpha-focus));
 
-	/* Color scheme */
 	color-scheme: light;
 }
