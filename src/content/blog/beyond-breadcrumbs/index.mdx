@@ -1,6 +1,6 @@
 ---
 publishedAt: '2024-12-27'
-updatedAt: '2025-01-02'
+updatedAt: '2025-01-16'
 slug: 'beyond-breadcrumbs'
 title: 'Why Breadcrumbs Matter More Than You Think'
 description: 'Ever thought breadcrumbs were just a basic navigation feature? Let me show you how breadcrumbs make complex websites more powerful, accessible, and SEO-friendly.'
@@ -769,9 +769,12 @@ export interface Crumb {
 ```
 
 ```typescript title="utils/schema.ts" showLineNumbers
-import { Crumb } from '../types';
+import type { BreadcrumbList, ListItem, WithContext } from 'schema-dts';
+import type { Crumb } from '../types';
 
-export const generateBreadcrumbSchema = (crumbs: Crumb[]) => ({
+export const generateBreadcrumbSchema = (
+	crumbs: Crumb[]
+): WithContext<BreadcrumbList> => ({
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
 	itemListElement: crumbs.map((crumb, index) => ({
@@ -779,7 +782,7 @@ export const generateBreadcrumbSchema = (crumbs: Crumb[]) => ({
 		position: index + 1,
 		name: crumb.label,
 		item: crumb.href,
-	})),
+	})) as ListItem[],
 });
 ```
 
@@ -828,9 +831,8 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 			}
 
 			const isStartFadeVisible = list.scrollLeft > SCROLL_THRESHOLD;
-			const isEndFadeVisible =
-				list.scrollLeft + list.clientWidth <
-					list.scrollWidth - SCROLL_THRESHOLD;
+			const isEndFadeVisible = list.scrollLeft + list.clientWidth
+				< list.scrollWidth - SCROLL_THRESHOLD;
 
 			setFadeStatus({
 				start: isStartFadeVisible,
