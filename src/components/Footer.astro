@@ -84,6 +84,11 @@ import { global } from '@/data/global';
 
 	.footer__copyright {
 		text-align: center;
+		white-space: pre;
+
+		@media (width >= 768px) {
+			margin-right: var(--text-spacing);
+		}
 	}
 
 	.license-list {
@@ -98,10 +103,17 @@ import { global } from '@/data/global';
 
 	.license-list__item {
 		display: inline;
+
+		@media (width >= 768px) {
+			&:not(:last-child) {
+				margin-right: var(--text-spacing);
+			}
+		}
 	}
 
 	.license-list__term {
 		display: inline;
+		margin-right: var(--text-spacing);
 		white-space: nowrap;
 	}
 

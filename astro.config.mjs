@@ -20,7 +20,7 @@ export default defineConfig({
 		icon({ iconDir: 'src/assets/svg' }),
 		expressiveCode(expressiveCodeOptions),
 		mdx(),
-		Compress({ CSS: false, HTML: false }),
+		Compress({ CSS: false }),
 	],
 	markdown: {
 		rehypePlugins: [
@@ -65,4 +65,9 @@ export default defineConfig({
 	output: 'static',
 	redirects,
 	site: 'https://ruslanpashkov.com',
+	vite: {
+		css: {
+			transformer: 'lightningcss',
+		},
+	},
 });
