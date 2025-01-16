@@ -830,9 +830,9 @@ export function BreadcrumbsClient({ crumbs }: Props) {
 				return;
 			}
 
-			const isStartFadeVisible = list.scrollLeft > SCROLL_THRESHOLD;
+			const isStartFadeVisible = list.scrollLeft <= SCROLL_THRESHOLD;
 			const isEndFadeVisible = list.scrollLeft + list.clientWidth
-				< list.scrollWidth - SCROLL_THRESHOLD;
+				>= list.scrollWidth - SCROLL_THRESHOLD;
 
 			setFadeStatus({
 				start: isStartFadeVisible,
