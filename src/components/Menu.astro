@@ -11,21 +11,18 @@ const currentPath = Astro.url.pathname;
 			{
 				menu.map(({ title, url }) => {
 					const isSelected = url === currentPath;
-					const ariaCurrent = isSelected ? 'page' : null;
 
 					return (
 						<li>
-							<a
-								aria-current={ariaCurrent}
-								class:list={[
-									'menu__link',
-									{ 'menu__link--selected': isSelected },
-									'hover',
-								]}
-								href={url}
-							>
-								{title}
-							</a>
+							{isSelected ? (
+								<span class="menu__link menu__link--selected" aria-current="page">
+									{title}
+								</span>
+							) : (
+								<a class="menu__link hover" href={url}>
+									{title}
+								</a>
+							)}
 						</li>
 					);
 				})
