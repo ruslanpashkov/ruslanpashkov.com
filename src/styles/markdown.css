@@ -170,6 +170,29 @@
 		}
 	}
 
+	& details {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		& > summary {
+			width: max-content;
+			font-style: italic;
+
+			@media (hover: hover) {
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+
+		& > div {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+	}
+
 	& hr {
 		padding-top: 12px;
 		font-size: 1.5rem;

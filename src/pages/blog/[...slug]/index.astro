@@ -70,7 +70,7 @@ const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrum
 			<header class="article__header">
 				<h1 class="article__title">{title}</h1>
 
-				<aside class="article__meta">
+				<div class="article__meta">
 					<div class="article__dates">
 						<time class="article__published-at" datetime={publishedAt}>
 							{publishedDate}
@@ -86,13 +86,13 @@ const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrum
 					</div>
 
 					<div class="article__info">
-						<p class="article__reading-time">
+						<h2 class="article__reading-time">
 							{minutesRead}
-						</p>
+						</h2>
 
 						<p class="article__topic">{topic}</p>
 					</div>
-				</aside>
+				</div>
 
 				<span class="article__glow article__glow--start">
 					<Glow />
