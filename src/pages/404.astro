@@ -2,10 +2,10 @@
 import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 import Layout from '@/layouts/Layout.astro';
-import { SEOManager } from '@/utils/seo';
+import { generateTitle } from '@/utils/seo';
 import { Icon } from 'astro-icon/components';
 
-const title = SEOManager.generatePageTitle('404');
+const title = generateTitle('404');
 
 const emailDetails = {
 	body: `I was trying to access the page at: ${Astro.url.href}`,

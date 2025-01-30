@@ -1,7 +1,7 @@
 ---
 import type { Article } from '@/types/Article';
 
-import { FormattingManager } from '@/utils/formatting';
+import { formatDate } from '@/utils/formatting';
 
 interface Props {
 	article: Article;
@@ -11,7 +11,7 @@ const { article } = Astro.props;
 
 const { categories, description, publishedAt, slug, title, topic } = article.data;
 
-const publishedDate = FormattingManager.formatDate(publishedAt);
+const publishedDate = formatDate(publishedAt);
 ---
 
 <article class="article-card">

@@ -4,16 +4,18 @@ import type { CollectionPage, CreativeWork, ListItem, WithContext } from 'schema
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
-import { ContactManager } from '@/utils/contact';
-import { ProjectManager } from '@/utils/project';
+import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
+import { sortByType } from '@/utils/project';
+import { generateTitle } from '@/utils/seo';
 
-import { generateTitle } from '../generateTitle';
-
-export function getProjectsSchema(website: URL, projects: Project[]): WithContext<CollectionPage> {
-	const email = ContactManager.findEmailURL(contacts);
-	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
+export const getProjectsSchema = (
+	website: URL,
+	projects: Project[],
+): WithContext<CollectionPage> => {
+	const email = findEmailURL(contacts);
+	const onlineProfiles = findOnlineProfilesURLs(contacts);
 	const title = generateTitle('Projects');
-	const sortedProjects = ProjectManager.sortByType(projects);
+	const sortedProjects = sortByType(projects);
 	const creativeWorks = sortedProjects.map(buildCreativeWorkSchema);
 	const projectItems = creativeWorks.map(buildListItemSchema);
 
@@ -36,7 +38,7 @@ export function getProjectsSchema(website: URL, projects: Project[]): WithContex
 		name: title,
 		url: website.href,
 	};
-}
+};
 
 function buildCreativeWorkSchema(project: Project): CreativeWork {
 	const keywords = project.tags.join(', ');

@@ -1,7 +1,7 @@
 ---
 import type { MarkdownHeading } from 'astro';
 
-import { FormattingManager } from '@/utils/formatting';
+import { removeTrailingHash } from '@/utils/formatting';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -29,7 +29,7 @@ const { headings } = Astro.props;
 		<ol class="table-of-contents__list">
 			{
 				headings.map((heading) => {
-					const headingText = FormattingManager.removeTrailingHash(heading.text);
+					const headingText = removeTrailingHash(heading.text);
 
 					return (
 						<li

@@ -9,26 +9,26 @@ import { projects } from '@/data/projects';
 import ContentLayout from '@/layouts/ContentLayout.astro';
 import Layout from '@/layouts/Layout.astro';
 import { projectTypes } from '@/types/Project';
-import { ProjectManager } from '@/utils/project';
-import { SEOManager } from '@/utils/seo';
+import { categorize, sortByType } from '@/utils/project';
+import { generateTitle, getBreadcrumbsSchema, getProjectsSchema } from '@/utils/seo';
 
-const title = SEOManager.generatePageTitle('Projects');
+const title = generateTitle('Projects');
 
-const sortedProjects = ProjectManager.sortByType(projects);
+const sortedProjects = sortByType(projects);
 
 const {
 	'Developer Tools': developerTools,
 	Utilities: utilities,
 	'Web Showcases': webShowcases,
-} = ProjectManager.categorize(sortedProjects, projectTypes);
+} = categorize(sortedProjects, projectTypes);
 
 const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ label: 'Projects', title: `You are currently on projects`, url: '/projects/' },
+	{ label: 'Projects', title: 'You are currently on projects', url: '/projects/' },
 ];
 
-const projectsSchema = SEOManager.buildProjectsSchema(Astro.url, sortedProjects);
-const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrumbs);
+const projectsSchema = getProjectsSchema(Astro.url, sortedProjects);
+const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout

@@ -7,9 +7,9 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Glow from '@/components/Glow.astro';
 import { contacts } from '@/data/contacts';
 import Layout from '@/layouts/Layout.astro';
-import { ContactManager } from '@/utils/contact';
-import { FormattingManager } from '@/utils/formatting';
-import { SEOManager } from '@/utils/seo';
+import { findEmail, findOnlineProfiles } from '@/utils/contact';
+import { formatDate } from '@/utils/formatting';
+import { generateTitle, getArticleSchema, getBreadcrumbsSchema } from '@/utils/seo';
 import { Icon } from 'astro-icon/components';
 import { getCollection, render } from 'astro:content';
 
@@ -36,14 +36,14 @@ const {
 	remarkPluginFrontmatter: { minutesRead },
 } = await render(article);
 
-const pageTitle = SEOManager.generatePageTitle(title);
+const pageTitle = generateTitle(title);
 
 const currentPath = Astro.url.pathname;
 
-const email = ContactManager.findEmail(contacts);
-const onlineProfiles = ContactManager.findOnlineProfiles(contacts);
-const publishedDate = FormattingManager.formatDate(publishedAt);
-const updatedDate = updatedAt && FormattingManager.formatDate(updatedAt);
+const email = findEmail(contacts);
+const onlineProfiles = findOnlineProfiles(contacts);
+const publishedDate = formatDate(publishedAt);
+const updatedDate = updatedAt && formatDate(updatedAt);
 
 const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the homepage', url: '/' },
@@ -51,8 +51,8 @@ const breadcrumbs: Link[] = [
 	{ label: title, title: `You are currently reading ${title}`, url: currentPath },
 ];
 
-const articleSchema = SEOManager.buildArticleSchema(Astro.url, article);
-const breadcrumbsSchema = SEOManager.buildBreadcrumbsSchema(Astro.url, breadcrumbs);
+const articleSchema = getArticleSchema(Astro.url, article);
+const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
 <Layout

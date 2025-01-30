@@ -2,13 +2,13 @@ import type { Language, Person, WithContext } from 'schema-dts';
 
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
-import { ContactManager } from '@/utils/contact';
-import { FormattingManager } from '@/utils/formatting';
+import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
+import { shortenLanguage } from '@/utils/formatting';
 
-export function getPersonSchema(website: URL): WithContext<Person> {
+export const getPersonSchema = (website: URL): WithContext<Person> => {
 	const [firstName, lastName] = global.author.split(' ');
-	const email = ContactManager.findEmailURL(contacts);
-	const onlineProfiles = ContactManager.findOnlineProfilesURLs(contacts);
+	const email = findEmailURL(contacts);
+	const onlineProfiles = findOnlineProfilesURLs(contacts);
 	const portraitURL = new URL('/images/portrait.jpg', website);
 	const knownLanguages = global.languages.map(buildLanguageSchema);
 
@@ -39,10 +39,10 @@ export function getPersonSchema(website: URL): WithContext<Person> {
 			name: global.job.name,
 		},
 	};
-}
+};
 
 function buildLanguageSchema(language: string): Language {
-	const languageCode = FormattingManager.shortenLanguage(language);
+	const languageCode = shortenLanguage(language);
 
 	return {
 		'@type': 'Language',

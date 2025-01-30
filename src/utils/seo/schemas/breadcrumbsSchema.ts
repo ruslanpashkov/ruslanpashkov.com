@@ -1,10 +1,10 @@
 import type { Link } from '@/types/Link';
 import type { BreadcrumbList, ListItem, WithContext } from 'schema-dts';
 
-export function getBreadcrumbsSchema(
+export const getBreadcrumbsSchema = (
 	website: URL,
 	breadcrumbs: Link[],
-): WithContext<BreadcrumbList> {
+): WithContext<BreadcrumbList> => {
 	const breadcrumbsList = breadcrumbs.map(buildListItemSchema);
 
 	return {
@@ -13,7 +13,7 @@ export function getBreadcrumbsSchema(
 		'@type': 'BreadcrumbList',
 		itemListElement: breadcrumbsList,
 	};
-}
+};
 
 function buildListItemSchema(crumb: Link, index: number): ListItem {
 	const crumbURL = new URL(crumb.url, import.meta.env.SITE);

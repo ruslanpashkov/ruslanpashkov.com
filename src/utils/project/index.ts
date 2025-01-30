@@ -5,25 +5,20 @@ import {
 	projectTypes,
 } from '@/types/Project';
 
-export class ProjectManager {
-	static categorize(
-		projects: Project[],
-		types: readonly ProjectType[] = projectTypes,
-	): CategorizedProjects {
-		return types.reduce((categorized, type) => {
-			categorized[type] = this.filterByType(projects, type);
+export const sortByType = (projects: Project[]): Project[] =>
+	projects.toSorted(
+		(first, second) => projectTypes.indexOf(first.type) - projectTypes.indexOf(second.type),
+	);
 
-			return categorized;
-		}, {} as CategorizedProjects);
-	}
+export const filterByType = (projects: Project[], type: ProjectType): Project[] =>
+	projects.filter((project) => project.type === type);
 
-	static filterByType(projects: Project[], type: ProjectType): Project[] {
-		return projects.filter((project) => project.type === type);
-	}
+export const categorize = (
+	projects: Project[],
+	types: readonly ProjectType[] = projectTypes,
+): CategorizedProjects =>
+	types.reduce((categorized, type) => {
+		categorized[type] = filterByType(projects, type);
 
-	static sortByType(projects: Project[]): Project[] {
-		return projects.toSorted(
-			(first, second) => projectTypes.indexOf(first.type) - projectTypes.indexOf(second.type),
-		);
-	}
-}
+		return categorized;
+	}, {} as CategorizedProjects);
