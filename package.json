@@ -19,7 +19,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "html-validate": "w3c-html-validator dist --exclude=blog,projects",
-    "build-previews": "bun run build-previews.js"
+    "build-previews": "bun run build-previews.js",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
@@ -48,6 +49,7 @@
     "globals": "^15.12.0",
     "globby": "^14.0.2",
     "gray-matter": "^4.0.3",
+    "husky": "^9.1.7",
     "lightningcss": "^1.29.1",
     "mdast-util-to-string": "^4.0.0",
     "playwright": "^1.49.0",
