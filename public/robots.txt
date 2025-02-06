@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /projects/*/
-Allow: /
+Disallow:
 
 Sitemap: https://ruslanpashkov.com/sitemap-index.xml
+
