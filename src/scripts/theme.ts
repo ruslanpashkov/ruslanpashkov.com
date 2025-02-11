@@ -51,17 +51,22 @@ const getThemeIcon = (theme: ColorTheme) => (theme === 'light' ? sunSvg : moonSv
 
 const getThemeConfig = (theme: Theme, systemTheme: ColorTheme) =>
 	({
-		dark: { icon: moonSvg, text: 'Dark' },
-		light: { icon: sunSvg, text: 'Light' },
-		system: { icon: getThemeIcon(systemTheme), text: 'System' },
+		dark: { icon: moonSvg, label: 'Use system theme', text: 'Dark' },
+		light: { icon: sunSvg, label: 'Use dark theme', text: 'Light' },
+		system: { icon: getThemeIcon(systemTheme), label: 'Use light theme', text: 'System' },
 	})[theme];
 
 const updateTogglerUI = (theme: Theme) => {
 	const [icon, text] = Array.from(refs.themeToggler.children) as [HTMLElement, HTMLElement];
-	const { icon: iconSvg, text: themeText } = getThemeConfig(theme, getSystemTheme());
+	const {
+		icon: themeIcon,
+		label: themeLabel,
+		text: themeText,
+	} = getThemeConfig(theme, getSystemTheme());
 
 	text.innerText = themeText;
-	icon.innerHTML = iconSvg;
+	icon.innerHTML = themeIcon;
+	refs.themeToggler.setAttribute('aria-label', themeLabel);
 };
 
 const applyTheme = (theme: Theme) => {

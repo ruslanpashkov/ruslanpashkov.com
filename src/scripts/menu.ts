@@ -28,6 +28,9 @@ const toggleHeaderAnimation = (shouldAnimate: boolean) =>
 const setMenuTogglerExpanded = (isExpanded: boolean) =>
 	refs.menuToggler.setAttribute('aria-expanded', isExpanded.toString());
 
+const setMenuTogglerLabel = (isExpanded: boolean) =>
+	refs.menuToggler.setAttribute('aria-label', isExpanded ? 'Close menu' : 'Open menu');
+
 const isClosed = () => refs.menu.classList.contains('menu--closed');
 const isOpen = () => refs.menu.classList.contains('menu--open');
 const isMenuOpen = () => refs.menuToggler.getAttribute('aria-expanded') === 'true';
@@ -57,6 +60,7 @@ const openMenu = () => {
 	toggleClosedMenuClass(false);
 	toggleHeaderAnimation(false);
 	setMenuTogglerExpanded(true);
+	setMenuTogglerLabel(true);
 	showMenu();
 	focusTrap.activate();
 };
@@ -66,6 +70,7 @@ const closeMenu = () => {
 	toggleOpenMenuClass(false);
 	toggleHeaderAnimation(true);
 	setMenuTogglerExpanded(false);
+	setMenuTogglerLabel(false);
 	hideMenu();
 	focusTrap.deactivate();
 };
