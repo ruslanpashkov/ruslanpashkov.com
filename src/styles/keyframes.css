@@ -18,12 +18,12 @@
 
 @keyframes header-scroll {
 	from {
-		background-color: transparent;
 		border-bottom-color: transparent;
+		background-color: transparent;
 	}
 
 	to {
-		background-color: var(--color-primary);
 		border-bottom-color: var(--color-secondary);
+		background-color: var(--color-primary);
 	}
 }

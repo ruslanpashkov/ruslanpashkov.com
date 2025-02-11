@@ -7,8 +7,8 @@
 	height: 1px;
 	margin: -1px;
 	padding: 0;
+	border: none;
 	white-space: nowrap;
 	clip: rect(0 0 0 0);
 	clip-path: inset(50%);
-	border: none;
 }

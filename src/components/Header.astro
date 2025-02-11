@@ -32,8 +32,8 @@ import { Icon } from 'astro-icon/components';
 		display: flex;
 		align-items: center;
 		min-height: var(--header-min-height);
-		background-color: var(--color-primary);
 		border-bottom: 1px solid var(--color-secondary);
+		background-color: var(--color-primary);
 
 		@media (width >= 1024px) {
 			min-height: var(--header-max-height);
@@ -92,8 +92,8 @@ import { Icon } from 'astro-icon/components';
 		position: relative;
 		width: var(--line-width);
 		height: var(--line-height);
-		background-color: var(--color-contrast);
 		border-radius: var(--line-border-radius);
+		background-color: var(--color-contrast);
 
 		&::before,
 		&::after {
@@ -102,8 +102,8 @@ import { Icon } from 'astro-icon/components';
 			inset-inline: 0;
 			width: var(--line-width);
 			height: var(--line-height);
-			background-color: var(--color-contrast);
 			border-radius: var(--line-border-radius);
+			background-color: var(--color-contrast);
 
 			@media (prefers-reduced-motion: no-preference) {
 				transition: transform var(--motion-duration);
