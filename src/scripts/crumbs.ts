@@ -34,7 +34,7 @@ const init = () => {
 };
 
 const cleanup = () => {
-	refs.list?.removeEventListener('scroll', checkScroll);
+	refs?.list?.removeEventListener('scroll', checkScroll);
 	window.removeEventListener('resize', handleResize);
 };
 

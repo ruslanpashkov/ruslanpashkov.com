@@ -35,7 +35,7 @@ const isExpanded = () => refs.toggle.getAttribute('aria-expanded') === 'true';
 
 const cleanupTransition = () => {
 	if (currentTransitionHandler) {
-		refs.content?.removeEventListener('transitionend', currentTransitionHandler);
+		refs?.content?.removeEventListener('transitionend', currentTransitionHandler);
 		currentTransitionHandler = null;
 	}
 };
@@ -129,7 +129,7 @@ const init = () => {
 
 const cleanup = () => {
 	cleanupTransition();
-	refs.toggle?.removeEventListener('click', handleTocToggle);
+	refs?.toggle?.removeEventListener('click', handleTocToggle);
 	window.removeEventListener('resize', handleResize);
 };
 

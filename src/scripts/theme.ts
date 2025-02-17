@@ -128,7 +128,7 @@ const init = () => {
 
 const cleanup = () => {
 	darkMediaQuery.removeEventListener('change', handleSystemThemeChange);
-	refs.themeToggler.removeEventListener('click', handleThemeToggle);
+	refs?.themeToggler?.removeEventListener('click', handleThemeToggle);
 };
 
 document.addEventListener('astro:before-swap', cleanup);
