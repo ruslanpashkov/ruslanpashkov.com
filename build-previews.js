@@ -227,7 +227,7 @@ async function generateOGImages(articles) {
 }
 
 async function buildPreviews() {
-	console.log('🎨 Starting preview generation...\n');
+	console.log('🎨 Starting preview generation…\n');
 
 	try {
 		const articles = await getCollection('blog');

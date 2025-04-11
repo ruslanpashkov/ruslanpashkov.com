@@ -24,13 +24,13 @@ import mobileBreadcrumbsWithMask from './mobile-breadcrumbs-with-mask.gif';
 
 I've been wanting to write my first technical article for quite some time. I knew right away that I wanted to write about [breadcrumbs](https://en.wikipedia.org/wiki/Breadcrumb_navigation)—after working on a real estate project, I discovered that they're way more interesting than they might seem at first glance.
 
-Funny enough, while preparing to write this article, I realized my personal blog didn't even have breadcrumbs... Well, now it does! And I'm excited to share my first article about breadcrumbs with you. 🙂
+Funny enough, while preparing to write this article, I realized my personal blog didn't even have breadcrumbs… Well, now it does! And I'm excited to share my first article about breadcrumbs with you. 🙂
 
 ## Why Do We Even Need These Crumbs?
 
 For a long time, I thought that breadcrumbs were just a formality that people added because _"that's how it's done"_. However, when I started working on a real estate project, I realized how important they are for users.
 
-Imagine this situation: someone is looking for an apartment, moving from district to district, comparing layouts, prices... And this is where breadcrumbs become not just navigation but a real helper. They help you not get lost in the pile of information and quickly return to the section you need.
+Imagine this situation: someone is looking for an apartment, moving from district to district, comparing layouts, prices… And this is where breadcrumbs become not just navigation but a real helper. They help you not get lost in the pile of information and quickly return to the section you need.
 
 But let's go in order—we could stop at my revelations, but let's instead look at what types of breadcrumbs exist, how to implement them properly _(spoiler: it's not just a list with slashes)_, and why they're important for [SEO](https://developer.mozilla.org/en-US/docs/Glossary/SEO) and accessibility.
 
@@ -453,7 +453,7 @@ Now, we have such simple, but already quite nice-looking, breadcrumbs:
 	quality="max"
 />
 
-Everything looks great so far! Well... at least until someone decides to name their page _"The Most Amazing Real Estate Complex That Will Change Your Life Forever"_. Or when marketing asks to add [five more levels](https://imgur.com/a/0WGgTBz) to your navigation hierarchy. And we haven't even mentioned responsiveness yet...
+Everything looks great so far! Well… at least until someone decides to name their page _"The Most Amazing Real Estate Complex That Will Change Your Life Forever"_. Or when marketing asks to add [five more levels](https://imgur.com/a/0WGgTBz) to your navigation hierarchy. And we haven't even mentioned responsiveness yet…
 
 But don't worry—we love solving problems that shouldn't exist in the first place. Let's see how we can handle these challenges with style. 😎
 
@@ -761,7 +761,7 @@ In fact, we can add some more advanced enhancements, which we won't cover in thi
 - Adding arrow buttons for controlled navigation through breadcrumbs
 - Combining script initialization into a single `initBreadcrumbs` handler
 - Moving focus to the first revealed item after clicking the ellipsis button
-- Using [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) for... well, nesting styles
+- Using [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) for… well, nesting styles
 
 Below you can see the final result of our implementation:
 
@@ -991,7 +991,7 @@ Let me break down what we built with just the right amount of detail:
 - Kept all our fancy animations, just _React-ified_ them with hooks and state
 - Made JSON-LD generation automatic because who writes that by hand
 - Added TypeScript to catch silly mistakes before they happen
-- Didn't get on the [dark side of Tailwind CSS](https://x.com/dev0cat/status/1753476315418591537)... _yet_
+- Didn't get on the [dark side of Tailwind CSS](https://x.com/dev0cat/status/1753476315418591537)… _yet_
 
 And that's it! Same breadcrumbs, just framework-friendly. And if you're using a different framework _(I use [Astro](https://astro.build), btw)_, the same principles apply—keep your components simple, separate concerns, and make sure everything works together smoothly.
 

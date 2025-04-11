@@ -3,7 +3,7 @@ import type { Project } from '@/types/Project';
 export const projects: Project[] = [
 	{
 		description:
-			"What is recursion? Well, it's simple - just click this button to find out what recursion is. The answer leads to more questions. And more.. And more...",
+			"What is recursion? Well, it's simple - just click this button to find out what recursion is. The answer leads to more questions. And more.. And more…",
 		tags: ['HTML', 'CSS', 'JavaScript'],
 		title: 'Just One More',
 		type: 'Web Showcases',
