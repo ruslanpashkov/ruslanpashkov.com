@@ -1,0 +1,132 @@
+---
+publishedAt: "2025-04-14"
+slug: "ui-ux-design-for-frontend-engineers"
+title: "UI/UX Design for Frontend Engineers"
+description: "Another article telling you to learn UI/UX principles and design interfaces? Well… That's far from true! Let's see how this knowledge makes us better engineers."
+categories: ["Frontend Engineering", "User Experience", "Career Growth", "Design Thinking"]
+topic: "UI/UX Design"
+---
+
+## Why Should Engineers Learn Design?
+
+Indeed, we're already expected to know system design, design patterns, backend technologies, infrastructure tools, testing, algorithms, and much more. Why should we also understand interface design principles? After all, designers hand us beautiful mockups, and we implement them—what else do we need?
+
+## Breaking Engineering Stereotypes
+
+Actually, the idea that frontend engineering is just _"coloring buttons"_ and turning Figma mockups into landing pages is kinda off _(unless someone's looking to shift blame, then suddenly it's just coloring buttons)_. **It’s about getting engineers to think in a way that supports product success, business goals, and user experience.**
+
+Frontend engineers occupy a unique position at the intersection of design, user experience, and technical implementation. This perspective provides invaluable insights that can drive product decisions in ways that pure design or backend specialists cannot. What do I mean by that?
+
+When frontend engineers understand interface design principles, it unlocks opportunities to contribute not only to the technical implementation, but also to consider different solutions in terms of **user experience** and whether the implemented design pursues the **business value** of the presented feature.
+
+Additionally, frontend engineers are often closer to the client, as they are the ones who translate ideas into interactive experiences. By providing visual representations of business concepts early in the process, they help stakeholders see and shape the product in real time—often influencing decision-making directly through what they create.
+
+This understanding allows engineers to move beyond purely technical execution and become **strategic contributors** who can collaborate more effectively with designers, customers, and backend developers, ultimately increasing development efficiency and product success.
+
+## So… Why Can’t We Just Trust Our Designers?
+
+Well, sometimes we can’t—even in professional teams. Not because they’re not talented, but because design teams, like any other, vary in experience, perspective, and priorities. **Things slip through; important edge cases get missed.** Sometimes the design is visually polished but lacks consideration for real-world implementation, accessibility, or even performance.
+
+But let’s say we do get lucky and have an incredible design team—experienced, thorough, collaborative. Even so, frontend engineers are the ones looking at the problem from a different angle. We're the ones who see what’s easy to implement, what’s tricky, and which things could be done better. We also spot patterns, inconsistencies, or features that might not be obvious in the mockup _(at least I want to believe that)_.
+
+Also, we can ask the questions others haven’t considered. We can suggest tweaks that [improve usability](https://www.nngroup.com/articles/usability-101-introduction-to-usability/) and performance—especially since the first users of any interface are often the developers themselves. When implementing a feature, we’re the ones testing how it works long before QA even sees it. If something feels unintuitive during development, chances are real users will struggle with it too.
+
+And it’s important to note: **this isn’t about stepping on toes—it’s about collaboration**. It’s about raising the level of conversation, making space for better ideas, and making sure the final product works not just on paper, but in the real world.
+
+Because honestly… who needs a perfect technical implementation if the product doesn’t meet the users’ needs? This is exactly why we need to be more involved with designers.
+
+## What Design Knowledge Really Means
+
+When I talk about "design knowledge" I'm not suggesting you need to become a professional designer or master every creative tool. Rather, I'm advocating for understanding **fundamental principles** that directly impact your engineering work:
+
+1. **User-Centered Thinking**: Understanding how real people interact with interfaces; like designing for touch targets or anticipating user intent
+
+2. **Accessibility Considerations**: Ensuring designs work for everyone—think keyboard navigation, proper color contrast, or using `alt` text on images
+
+3. **Interaction Design**: Recognizing patterns that make interfaces intuitive, such as using consistent hover states or familiar form behaviors
+
+4. **Systems Thinking**: Seeing how components fit into a cohesive whole, like recognizing that your card component also might exists in modals, sidebars, and search results
+
+We need this knowledge to become more effective engineers who can translate business goals and user needs into functional, usable interfaces. And although we may grasp the overall philosophy, how do we actually apply it in technical implementation?
+
+## The Technical Value of Design Knowledge
+
+We've realized that one of the key tasks of design is to satisfy users' needs when interacting with interfaces. This knowledge fundamentally changes our approach to interface development.
+
+By remembering that our primary task isn't just to create a technically correct solution _(and that still matters)_, but to solve **specific user problems**, we start thinking about scenarios that may not be envisioned in the design. For example:
+
+- How will we notify users when the interface state changes?
+- What happens if our interface doesn't receive complete data?
+- How should our interface respond to slow or intermittent connections?
+
+This list could go on. As you may have already realized, with this mindset focused on eliminating problems users might encounter, **we can anticipate edge cases** that might be missed during the design phase itself.
+
+This approach allows us to implement better contracts and create components by recognizing patterns in interface behavior. We begin to notice not only visual similarities between parts of the system but also how to deconstruct our interface into a coherent domain model, giving us a more complete picture.
+
+As a result, our components become more reusable, and our code becomes more intentional. Instead of building isolated UI pieces that look alike but serve different purposes, we create a cohesive system where components share not just visual language but also behavioral patterns.
+
+## A Real-World Case Study
+
+Let me share a story from my recent project. Our team faced a challenging situation where there was a disagreement between the designer and the client about the placement of a search form on the homepage. The client insisted on adding the search functionality in the hero section, allowing users to search for apartments immediately.
+
+However, our designer proposed a different approach—placing the search as a "floating island" between the first two sections, with the form partially visible on initial load but requiring a slight scroll down for full access.
+
+As a frontend engineer with UX understanding, I was able to back our designer's decision with these key arguments:
+
+1. Adding search to the hero section would **overload** the first screen with information, potentially leading to cognitive overwhelm for users.
+
+2. The "floating island" placement offered several advantages:
+   - Maintaining a clean and focused hero section
+   - Creating a natural "bridge" between sections
+   - Encouraging user scroll by teasing the search form
+
+3. This placement established a clear [visual hierarchy](https://www.interaction-design.org/literature/topics/visual-hierarchy), giving each element its own space and user attention.
+
+Thanks to my credibility with the client, they were receptive to these arguments, and we proceeded with the designer's implementation. This decision not only enhanced the user experience but also saved both design and development teams from unnecessary iterations.
+
+The outcome was truly a win-win situation for everyone involved: the designer gained increased trust from the client (which positively impacted future project work), we saved valuable development time and resources, and users got a more intuitive and user-friendly interface.
+
+Most importantly, this experience demonstrated how understanding design principles allowed me to contribute meaningfully to a product decision that wasn't about technical implementation at all, but rather about fundamental user experience.
+
+## Getting Started Today
+
+Fortunately, developing design knowledge doesn't require a dramatic shift in your workflow or extensive formal training. Start with just 15 minutes a day of intentional observation and questioning:
+
+**Ask "Why?" About Everything**:
+- Why is this button 48px tall and not 40px?
+- Why is this text a specific shade of blue?
+- Why is the product image positioned to the left of the description?
+- Why does this interaction have a specific animation timing?
+
+This practice of questioning builds your **design intuition** over time. Within months, you'll start noticing patterns and understanding the reasoning behind design decisions.
+
+❗ You'll also discover that not all design solutions are actually reasonable—and you'll begin to identify better alternatives that others might have missed.
+
+**Learn From Everyday Interactions**:
+- When you encounter a website or app with great UX, analyze what makes it effective
+- When something frustrates you as a user, consider how you would improve it
+- Pay attention to design patterns across different applications you use daily
+
+Of course, we can't learn everything through personal observation alone. That's why we should turn to professional literature—it helps us master the necessary knowledge and gain proper expertise more quickly.
+
+Here are my **personal** recommendations to get started:
+
+1. **"Refactoring UI"** by Adam Wathan and Steve Schoger—Design rules for coders
+
+2. **"Don't Make Me Think"** by Steve Krug—The bible of web usability
+
+3. **"Laws of UX"** by Jon Yablonski—Psychology behind interfaces
+
+4. **"Designing Better UI Components"** by Adrian Kuleszo—Understanding UI patterns
+
+5. **"The Design of Everyday Things"** by Don Norman—Why good UX feels obvious
+
+> It can be helpful to study existing design systems (like [Material Design](https://m3.material.io/)) to understand why they work and learn how to create similar experiences.
+
+## Conclusion
+
+So here's the thing—as frontend engineers, we're no longer just "translating designs". **That era is ending**. The days of siloed teams where designers throw mockups over the wall and engineers blindly implement them? _They’re on their way out._
+
+The most valuable frontend engineers today are at this intersection: technical knowledge combined with related fields—yes, including design. This [T-shaped](https://en.wikipedia.org/wiki/T-shaped_skills) skill set is no longer just a nice-to-have—it's becoming essential for anyone who wants to make a meaningful contribution to modern product development.
+
+And remember: **this isn't about becoming a designer; it's about understanding just enough design to make smarter decisions**—to spot opportunities, ask better questions, and write code that solves real problems for users and the business.
