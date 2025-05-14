@@ -65,6 +65,7 @@ export default defineConfig({
 	output: 'static',
 	redirects,
 	site: 'https://ruslanpashkov.com',
+	trailingSlash: 'always',
 	vite: {
 		css: {
 			transformer: 'lightningcss',
