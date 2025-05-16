@@ -7,7 +7,7 @@ export const projects: Project[] = [
 		tags: ['HTML', 'CSS', 'JavaScript'],
 		title: 'Just One More',
 		type: 'Web Showcases',
-		url: '/projects/just-one-more/',
+		url: 'https://justonemore.click/',
 	},
 	{
 		description:
@@ -15,7 +15,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'Material UI', 'Zustand', 'WXT'],
 		title: 'NovaPass',
 		type: 'Utilities',
-		url: '/projects/novapass/',
+		url: 'https://chromewebstore.google.com/detail/jpooemhlkehmepkbcbjflhpnjgilellm/',
 	},
 	{
 		description:
@@ -23,7 +23,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'SCSS', 'Express.js', 'PostgreSQL', 'Sequelize'],
 		title: 'Nice Gadgets',
 		type: 'Web Showcases',
-		url: '/projects/nice-gadgets/',
+		url: 'https://nice-gadgetz.netlify.app/',
 	},
 	{
 		description:
@@ -31,7 +31,7 @@ export const projects: Project[] = [
 		tags: ['TypeScript', 'React', 'React Router', 'SCSS', 'Fastify'],
 		title: 'TodoMVC Clone',
 		type: 'Web Showcases',
-		url: '/projects/todomvc-clone/',
+		url: 'https://todomvc-clone.netlify.app/',
 	},
 	{
 		description:
@@ -39,6 +39,6 @@ export const projects: Project[] = [
 		tags: ['HTML', 'SCSS', 'BEM', 'JavaScript', 'AOS'],
 		title: 'MET Exhibition',
 		type: 'Web Showcases',
-		url: '/projects/met-exhibition/',
+		url: 'https://met-exhibition.netlify.app/',
 	},
 ];

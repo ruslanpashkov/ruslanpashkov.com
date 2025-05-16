@@ -10,7 +10,6 @@ import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 
 import { expressiveCodeOptions } from './code-styles.mjs';
-import redirects from './redirects.ts';
 import { remarkReadingTime } from './remark-reading-time.mjs';
 
 // https://astro.build/config
@@ -63,7 +62,6 @@ export default defineConfig({
 		remarkPlugins: [remarkReadingTime],
 	},
 	output: 'static',
-	redirects,
 	site: 'https://ruslanpashkov.com',
 	trailingSlash: 'always',
 	vite: {
