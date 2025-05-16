@@ -1,0 +1,125 @@
+---
+import type { Page } from 'astro';
+
+import { generateSequence } from '@/utils/array/generateSequence';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	page: Page;
+}
+
+const { page } = Astro.props;
+
+const { currentPage, lastPage, url } = page;
+
+const pages = generateSequence(lastPage);
+---
+
+<nav aria-label="Pagination" class="pagination">
+	<ol class="pagination__list">
+		{
+			url.first && (
+				<li class="pagination__item">
+					<a
+						aria-label="Previous page"
+						class="pagination__label pagination__link hover"
+						href={url.prev}
+					>
+						<Icon
+							aria-hidden="true"
+							class="pagination__arrow-icon pagination__arrow-icon--rotated"
+							name="arrow-short"
+							width={28}
+						/>
+					</a>
+				</li>
+			)
+		}
+
+		{
+			pages.map((pageNumber) => {
+				const isCurrent = pageNumber === currentPage;
+				const isFirst = pageNumber === 1;
+				const baseURL = url.first ?? url.current;
+				const pageURL = isFirst ? baseURL : `${baseURL}${pageNumber}/`;
+
+				return (
+					<li class="pagination__item">
+						{isCurrent ? (
+							<span aria-current="page" class="pagination__label">
+								{pageNumber}
+							</span>
+						) : (
+							<a class="pagination__label pagination__link hover" href={pageURL}>
+								{pageNumber}
+							</a>
+						)}
+					</li>
+				);
+			})
+		}
+
+		{
+			url.last && (
+				<li class="pagination__item">
+					<a
+						aria-label="Next page"
+						class="pagination__label pagination__link hover"
+						href={url.next}
+					>
+						<Icon
+							aria-hidden="true"
+							class="pagination__arrow-icon"
+							name="arrow-short"
+							width={28}
+						/>
+					</a>
+				</li>
+			)
+		}
+	</ol>
+</nav>
+
+<style>
+	.pagination {
+		position: relative;
+	}
+
+	.pagination__list {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+	}
+
+	.pagination__item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.pagination__label {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 42px;
+		height: 42px;
+		padding-block: 0.5rem;
+		font-size: 1.125rem;
+	}
+
+	.pagination__link:focus-visible {
+		--offset-width: -2px;
+
+		border-radius: 6px;
+		outline: 2px solid var(--color-focus);
+		outline-offset: var(--offset-width);
+	}
+
+	.pagination__arrow-icon {
+		position: relative;
+	}
+
+	.pagination__arrow-icon--rotated {
+		transform: rotate(180deg);
+	}
+</style>

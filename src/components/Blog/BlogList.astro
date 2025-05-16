@@ -1,0 +1,27 @@
+---
+import type { Article } from '@/types/Article';
+import type { Page } from 'astro';
+
+import Pagination from '../Pagination.astro';
+import ArticleList from './ArticleList.astro';
+
+interface Props {
+	page: Page<Article>;
+}
+
+const { page } = Astro.props;
+---
+
+<div class="blog-list">
+	<ArticleList articles={page.data} />
+
+	{page.lastPage > 1 && <Pagination page={page} />}
+</div>
+
+<style>
+	.blog-list {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+</style>

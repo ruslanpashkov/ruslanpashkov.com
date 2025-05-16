@@ -1,7 +1,8 @@
 ---
 import type { Link } from '@/types/Link';
+import type { GetStaticPathsOptions } from 'astro';
 
-import ArticleList from '@/components/Blog/ArticleList.astro';
+import BlogList from '@/components/Blog/BlogList.astro';
 import Glow from '@/components/Glow.astro';
 import { descriptions } from '@/data/descriptions';
 import ContentLayout from '@/layouts/ContentLayout.astro';
@@ -10,18 +11,25 @@ import { sortByDate } from '@/utils/article';
 import { generateTitle, getBlogSchema, getBreadcrumbsSchema } from '@/utils/seo';
 import { getCollection } from 'astro:content';
 
-const title = generateTitle('Blog');
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+	const articles = await getCollection('blog');
 
-const articles = await getCollection('blog');
+	return paginate(sortByDate(articles), {
+		pageSize: 6,
+	});
+}
 
-const sortedArticles = sortByDate(articles);
+const { page } = Astro.props;
+
+const title = page.currentPage === 1 ? 'Blog' : `Blog — Page ${page.currentPage}`;
+const pageTitle = generateTitle(title);
 
 const breadcrumbs: Link[] = [
 	{ label: 'Home', title: 'Go to the home page', url: '/' },
 	{ label: 'Blog', title: 'You are currently on blog', url: '/blog/' },
 ];
 
-const blogSchema = getBlogSchema(Astro.url, sortedArticles);
+const blogSchema = getBlogSchema(Astro.url, page.data);
 const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 ---
 
@@ -29,14 +37,14 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 	cover="blog.png"
 	description={descriptions.articles}
 	schemas={[blogSchema, breadcrumbsSchema]}
-	title={title}
+	title={pageTitle}
 	type="website"
 >
 	<ContentLayout breadcrumbs={breadcrumbs} title="Blog">
 		{
-			sortedArticles.length > 0 ? (
+			page.data.length > 0 ? (
 				<div class="articles">
-					<ArticleList articles={sortedArticles} />
+					<BlogList page={page} />
 
 					<span class="articles-glow">
 						<Glow />
