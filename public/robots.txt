@@ -1,5 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
 
 Sitemap: https://ruslanpashkov.com/sitemap-index.xml
-
