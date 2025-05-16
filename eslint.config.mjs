@@ -23,6 +23,7 @@ export default [
 			},
 		},
 		rules: {
+			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-modules': 'off',
 		},
 	},
