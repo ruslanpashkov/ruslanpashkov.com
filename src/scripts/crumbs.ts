@@ -33,6 +33,12 @@ const init = () => {
 	}
 };
 
+const cleanup = () => {
+	refs?.list?.removeEventListener('scroll', checkScroll);
+	window.removeEventListener('resize', handleResize);
+};
+
+document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:page-load', init);
 
-export { init };
+export { cleanup, init };

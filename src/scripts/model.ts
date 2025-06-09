@@ -7,6 +7,7 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
+let animationId: number;
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
@@ -160,6 +161,8 @@ const loadModel = async () => {
 
 const animate = () => {
 	if (clock) {
+		animationId = requestAnimationFrame(animate);
+
 		const delta = clock.getDelta();
 
 		if (mixer) {
@@ -227,6 +230,66 @@ const init = async () => {
 	}
 };
 
+const cleanup = () => {
+	if (animationId) {
+		cancelAnimationFrame(animationId);
+	}
+
+	window.removeEventListener('resize', handleResize);
+
+	if (themeObserver) {
+		themeObserver.disconnect();
+	}
+
+	if (mixer) {
+		mixer.stopAllAction();
+		mixer.uncacheRoot(mixer.getRoot());
+	}
+
+	if (controls) {
+		controls.dispose();
+	}
+
+	if (scene) {
+		scene.traverse((object) => {
+			if (object instanceof THREE.Mesh) {
+				if (object.geometry) {
+					object.geometry.dispose();
+				}
+
+				if (object.material) {
+					if (Array.isArray(object.material)) {
+						object.material.forEach((material) => material.dispose());
+					} else {
+						object.material.dispose();
+					}
+				}
+			}
+		});
+
+		while (scene.children.length > 0) {
+			scene.remove(scene.children[0]);
+		}
+
+		scene.clear();
+	}
+
+	if (currentMaterial) {
+		currentMaterial.dispose();
+	}
+
+	if (renderer) {
+		const canvas = renderer.domElement;
+
+		if (canvas && canvas.parentNode) {
+			canvas.parentNode.removeChild(canvas);
+		}
+
+		renderer.dispose();
+	}
+};
+
+document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:page-load', init);
 
-export { init };
+export { cleanup, init };

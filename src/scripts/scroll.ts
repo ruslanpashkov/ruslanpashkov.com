@@ -15,6 +15,11 @@ const init = () => {
 	window.addEventListener('hashchange', handleHashNavigation);
 };
 
+const cleanup = () => {
+	window.removeEventListener('hashchange', handleHashNavigation);
+};
+
+document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:page-load', init);
 
-export { init };
+export { cleanup, init };

@@ -127,6 +127,13 @@ const init = () => {
 	}
 };
 
+const cleanup = () => {
+	cleanupTransition();
+	refs?.toggle?.removeEventListener('click', handleTocToggle);
+	window.removeEventListener('resize', handleResize);
+};
+
+document.addEventListener('astro:before-swap', cleanup);
 document.addEventListener('astro:page-load', init);
 
-export { init };
+export { cleanup, init };
