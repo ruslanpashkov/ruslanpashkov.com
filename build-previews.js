@@ -28,16 +28,70 @@ const CONFIG = {
 	},
 };
 
-function validateArticle(article) {
-	const required = ['title', 'description', 'slug', 'categories'];
-	const missing = required.filter((field) => !article[field]);
+async function buildPreviews() {
+	console.log('🎨 Starting preview generation…\n');
 
-	if (missing.length > 0) {
-		throw new Error(`Article missing required fields: ${missing.join(', ')}`);
+	try {
+		const articles = await getCollection('blog');
+
+		console.log(`📚 Found ${articles.length} articles`);
+
+		await generateOGImages(articles);
+
+		console.log('✨ Preview generation complete!');
+	} catch (error) {
+		console.error('❌ Error generating previews:', error);
+		process.exit(1);
 	}
+}
 
-	if (!Array.isArray(article.categories)) {
-		throw new Error('Article categories must be an array');
+async function generateOGImages(articles) {
+	let browser = null;
+	let skippedCount = 0;
+	let generatedCount = 0;
+
+	try {
+		browser = await chromium.launch();
+
+		const page = await browser.newPage();
+
+		await page.setViewportSize(CONFIG.dimensions);
+
+		for (const article of articles) {
+			const outputPath = join(CONFIG.paths.output, `${article.slug}.png`);
+
+			if (existsSync(outputPath)) {
+				console.log(`  💾 Skipping: ${article.title} (image already exists)`);
+				skippedCount++;
+				continue;
+			}
+
+			console.log(`  🖼 Generating: ${article.title}`);
+
+			const html = getTemplate(article);
+
+			await page.setContent(html, { waitUntil: 'networkidle' });
+
+			await mkdir(CONFIG.paths.output, { recursive: true });
+
+			await page.screenshot({
+				path: outputPath,
+				type: 'png',
+			});
+
+			generatedCount++;
+		}
+
+		console.log(
+			`\n📊 Summary:\n  🆕 Generated: ${generatedCount}\n  ⏩ Skipped: ${skippedCount}\n`,
+		);
+	} catch (error) {
+		console.error(`Error generating OG images:`, error);
+		throw error;
+	} finally {
+		if (browser) {
+			await browser.close();
+		}
 	}
 }
 
@@ -176,70 +230,16 @@ function getTemplate(article) {
 	`;
 }
 
-async function generateOGImages(articles) {
-	let browser = null;
-	let skippedCount = 0;
-	let generatedCount = 0;
+function validateArticle(article) {
+	const required = ['title', 'description', 'slug', 'categories'];
+	const missing = required.filter((field) => !article[field]);
 
-	try {
-		browser = await chromium.launch();
-
-		const page = await browser.newPage();
-
-		await page.setViewportSize(CONFIG.dimensions);
-
-		for (const article of articles) {
-			const outputPath = join(CONFIG.paths.output, `${article.slug}.png`);
-
-			if (existsSync(outputPath)) {
-				console.log(`  💾 Skipping: ${article.title} (image already exists)`);
-				skippedCount++;
-				continue;
-			}
-
-			console.log(`  🖼 Generating: ${article.title}`);
-
-			const html = getTemplate(article);
-
-			await page.setContent(html, { waitUntil: 'networkidle' });
-
-			await mkdir(CONFIG.paths.output, { recursive: true });
-
-			await page.screenshot({
-				path: outputPath,
-				type: 'png',
-			});
-
-			generatedCount++;
-		}
-
-		console.log(
-			`\n📊 Summary:\n  🆕 Generated: ${generatedCount}\n  ⏩ Skipped: ${skippedCount}\n`,
-		);
-	} catch (error) {
-		console.error(`Error generating OG images:`, error);
-		throw error;
-	} finally {
-		if (browser) {
-			await browser.close();
-		}
+	if (missing.length > 0) {
+		throw new Error(`Article missing required fields: ${missing.join(', ')}`);
 	}
-}
 
-async function buildPreviews() {
-	console.log('🎨 Starting preview generation…\n');
-
-	try {
-		const articles = await getCollection('blog');
-
-		console.log(`📚 Found ${articles.length} articles`);
-
-		await generateOGImages(articles);
-
-		console.log('✨ Preview generation complete!');
-	} catch (error) {
-		console.error('❌ Error generating previews:', error);
-		process.exit(1);
+	if (!Array.isArray(article.categories)) {
+		throw new Error('Article categories must be an array');
 	}
 }
 

@@ -2,7 +2,9 @@ import type { Link } from '@/types/Link';
 
 export const projectTypes = ['Web Showcases', 'Utilities', 'Developer Tools'] as const;
 
-export type ProjectType = (typeof projectTypes)[number];
+export type CategorizedProjects = {
+	[K in ProjectType]: Project[];
+};
 
 export interface Project extends Link {
 	description: string;
@@ -10,6 +12,4 @@ export interface Project extends Link {
 	type: ProjectType;
 }
 
-export type CategorizedProjects = {
-	[K in ProjectType]: Project[];
-};
+export type ProjectType = (typeof projectTypes)[number];

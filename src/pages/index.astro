@@ -1,4 +1,6 @@
 ---
+import { getCollection } from 'astro:content';
+
 import Glow from '@/components/Glow.astro';
 import Articles from '@/components/Home/Articles.astro';
 import Contacts from '@/components/Home/Contacts.astro';
@@ -14,7 +16,6 @@ import { projects } from '@/data/projects';
 import Layout from '@/layouts/Layout.astro';
 import { sortByDate } from '@/utils/article';
 import { getPersonSchema } from '@/utils/seo';
-import { getCollection } from 'astro:content';
 
 const articles = await getCollection('blog');
 

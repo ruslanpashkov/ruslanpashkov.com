@@ -1,5 +1,6 @@
-import type { Project } from '@/types/Project';
 import type { CollectionPage, CreativeWork, ListItem, WithContext } from 'schema-dts';
+
+import type { Project } from '@/types/Project';
 
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';

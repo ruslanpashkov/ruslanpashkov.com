@@ -1,5 +1,6 @@
-import type { Article } from '@/types/Article';
 import type { Blog, BlogPosting, WithContext } from 'schema-dts';
+
+import type { Article } from '@/types/Article';
 
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';

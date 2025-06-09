@@ -1,4 +1,7 @@
 ---
+import { Icon } from 'astro-icon/components';
+import { getCollection, render } from 'astro:content';
+
 import type { Article } from '@/types/Article';
 import type { Link } from '@/types/Link';
 
@@ -10,8 +13,10 @@ import Layout from '@/layouts/Layout.astro';
 import { findEmail, findOnlineProfiles } from '@/utils/contact';
 import { formatDate } from '@/utils/formatting';
 import { generateTitle, getArticleSchema, getBreadcrumbsSchema } from '@/utils/seo';
-import { Icon } from 'astro-icon/components';
-import { getCollection, render } from 'astro:content';
+
+interface Props {
+	article: Article;
+}
 
 export async function getStaticPaths() {
 	const articles = await getCollection('blog');
@@ -20,10 +25,6 @@ export async function getStaticPaths() {
 		params: { slug: article.data.slug },
 		props: { article },
 	}));
-}
-
-interface Props {
-	article: Article;
 }
 
 const { article } = Astro.props;

@@ -1,5 +1,6 @@
-import type { Link } from '@/types/Link';
 import type { BreadcrumbList, ListItem, WithContext } from 'schema-dts';
+
+import type { Link } from '@/types/Link';
 
 export const getBreadcrumbsSchema = (
 	website: URL,

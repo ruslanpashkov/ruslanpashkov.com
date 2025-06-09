@@ -1,9 +1,10 @@
 import type { APIContext } from 'astro';
 
-import { global } from '@/data/global';
-import { sortByDate } from '@/utils/article';
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+
+import { global } from '@/data/global';
+import { sortByDate } from '@/utils/article';
 
 export async function GET(context: APIContext) {
 	const blog = await getCollection('blog');

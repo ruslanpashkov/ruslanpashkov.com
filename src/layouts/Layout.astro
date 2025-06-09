@@ -1,6 +1,9 @@
 ---
-import type { Article } from '@/types/Article';
 import type { Thing, WithContext } from 'schema-dts';
+
+import { ClientRouter } from 'astro:transitions';
+
+import type { Article } from '@/types/Article';
 
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
@@ -8,9 +11,13 @@ import SkipToContent from '@/components/SkipToContent.astro';
 import { colors } from '@/constants/colors';
 import { global } from '@/data/global';
 import darkStyles from '@/styles/dark.css?raw';
-import '@/styles/global.css';
 import lightStyles from '@/styles/light.css?raw';
-import { ClientRouter } from 'astro:transitions';
+import '@/styles/global.css';
+
+interface ArticleProps extends DefaultProps {
+	article: Article;
+	type: 'article';
+}
 
 interface DefaultProps {
 	cover: string;
@@ -19,16 +26,11 @@ interface DefaultProps {
 	title: string;
 }
 
-interface ArticleProps extends DefaultProps {
-	article: Article;
-	type: 'article';
-}
+type Props = ArticleProps | WebsiteProps;
 
 interface WebsiteProps extends DefaultProps {
 	type: 'website';
 }
-
-type Props = ArticleProps | WebsiteProps;
 
 const props = Astro.props;
 const { cover, description, schemas = [], title, type } = props;
