@@ -1,0 +1,8 @@
+Model Information:
+* title:	Stickman
+* source:	https://sketchfab.com/3d-models/stickman-cd59f48ed6a7492da639efdc55f2c1f8
+* author:	KOMIRA.studio (https://sketchfab.com/komira)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
