@@ -9,7 +9,6 @@ export const getPersonSchema = (website: URL): WithContext<Person> => {
 	const [firstName, lastName] = global.author.split(' ');
 	const email = findEmailURL(contacts);
 	const onlineProfiles = findOnlineProfilesURLs(contacts);
-	const portraitURL = new URL('/images/portrait.jpg', website);
 	const knownLanguages = global.languages.map(buildLanguageSchema);
 
 	return {
@@ -23,7 +22,6 @@ export const getPersonSchema = (website: URL): WithContext<Person> => {
 		familyName: lastName,
 		gender: global.gender,
 		givenName: firstName,
-		image: portraitURL.href,
 		jobTitle: global.job.position,
 		knowsAbout: global.proficiencies,
 		knowsLanguage: knownLanguages,
