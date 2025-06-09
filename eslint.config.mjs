@@ -22,10 +22,6 @@ export default [
 				...globals.browser,
 			},
 		},
-		rules: {
-			'perfectionist/sort-imports': 'off',
-			'perfectionist/sort-modules': 'off',
-		},
 	},
 	{
 		ignores: ['src/**/*'],
