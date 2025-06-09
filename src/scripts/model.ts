@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const getRefs = () => ({
-	heroModel: document.getElementById('hero-model') as HTMLElement,
+	model: document.getElementById('model') as HTMLElement,
 });
 
 let refs: ReturnType<typeof getRefs>;
@@ -26,7 +26,7 @@ const createScene = () => {
 };
 
 const createCamera = () => {
-	const aspect = refs.heroModel.clientWidth / refs.heroModel.clientHeight;
+	const aspect = refs.model.clientWidth / refs.model.clientHeight;
 
 	camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 	camera.position.set(0, 1, 3);
@@ -35,13 +35,13 @@ const createCamera = () => {
 const createRenderer = () => {
 	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-	renderer.setSize(refs.heroModel.clientWidth, refs.heroModel.clientHeight);
+	renderer.setSize(refs.model.clientWidth, refs.model.clientHeight);
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	renderer.setClearColor(0x000000, 0);
 
-	refs.heroModel.appendChild(renderer.domElement);
+	refs.model.appendChild(renderer.domElement);
 };
 
 const createControls = () => {
@@ -179,8 +179,8 @@ const animate = () => {
 
 const handleResize = () => {
 	if (camera && renderer) {
-		const width = refs.heroModel.clientWidth;
-		const height = refs.heroModel.clientHeight;
+		const width = refs.model.clientWidth;
+		const height = refs.model.clientHeight;
 
 		camera.aspect = width / height;
 		camera.updateProjectionMatrix();

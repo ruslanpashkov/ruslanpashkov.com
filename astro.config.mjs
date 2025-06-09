@@ -65,6 +65,9 @@ export default defineConfig({
 	site: 'https://ruslanpashkov.com',
 	trailingSlash: 'always',
 	vite: {
+		build: {
+			chunkSizeWarningLimit: 1000,
+		},
 		css: {
 			transformer: 'lightningcss',
 		},

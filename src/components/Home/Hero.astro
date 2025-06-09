@@ -1,4 +1,5 @@
 ---
+import Model from '@/components/Model.astro';
 import Glow from '@/components/Glow.astro';
 import { global } from '@/data/global';
 ---
@@ -12,7 +13,7 @@ import { global } from '@/data/global';
 	<p class="hero__description">{global.about}</p>
 
 	<div class="hero__model-container">
-		<div class="hero__model" id="hero-model"></div>
+		<Model />
 
 		<span class="hero__model-glow">
 			<Glow />
@@ -80,12 +81,6 @@ import { global } from '@/data/global';
 		order: var(--model-order);
 	}
 
-	.hero__model {
-		aspect-ratio: 1;
-		width: clamp(320px, 100%, 440px);
-		height: auto;
-	}
-
 	.hero__model-glow {
 		position: absolute;
 		z-index: var(--z-index-glow);
@@ -110,5 +105,3 @@ import { global } from '@/data/global';
 		}
 	}
 </style>
-
-<script src="@/scripts/model.ts"></script>
