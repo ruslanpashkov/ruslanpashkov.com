@@ -127,14 +127,6 @@ const init = () => {
 	}
 };
 
-const cleanup = () => {
-	cleanupTransition();
-	refs?.toggle?.removeEventListener('click', handleTocToggle);
-	window.removeEventListener('resize', handleResize);
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:after-swap', init);
 document.addEventListener('astro:page-load', init);
 
-export { cleanup, init };
+export { init };

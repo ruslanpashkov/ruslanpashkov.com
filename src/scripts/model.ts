@@ -226,72 +226,10 @@ const init = async () => {
 			animate();
 		} catch (error) {
 			console.error('Error initializing 3D model:', error);
-			cleanup();
 		}
 	}
 };
 
-const cleanup = () => {
-	if (animationId) {
-		cancelAnimationFrame(animationId);
-	}
-
-	window.removeEventListener('resize', handleResize);
-
-	if (themeObserver) {
-		themeObserver.disconnect();
-	}
-
-	if (mixer) {
-		mixer.stopAllAction();
-		mixer.uncacheRoot(mixer.getRoot());
-	}
-
-	if (controls) {
-		controls.dispose();
-	}
-
-	if (scene) {
-		scene.traverse((object) => {
-			if (object instanceof THREE.Mesh) {
-				if (object.geometry) {
-					object.geometry.dispose();
-				}
-
-				if (object.material) {
-					if (Array.isArray(object.material)) {
-						object.material.forEach((material) => material.dispose());
-					} else {
-						object.material.dispose();
-					}
-				}
-			}
-		});
-
-		while (scene.children.length > 0) {
-			scene.remove(scene.children[0]);
-		}
-
-		scene.clear();
-	}
-
-	if (currentMaterial) {
-		currentMaterial.dispose();
-	}
-
-	if (renderer) {
-		const canvas = renderer.domElement;
-
-		if (canvas && canvas.parentNode) {
-			canvas.parentNode.removeChild(canvas);
-		}
-
-		renderer.dispose();
-	}
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:after-swap', init);
 document.addEventListener('astro:page-load', init);
 
-export { cleanup, init };
+export { init };

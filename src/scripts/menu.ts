@@ -116,15 +116,6 @@ const init = () => {
 	}
 };
 
-const cleanup = () => {
-	refs?.menuToggler?.removeEventListener('click', handleMenuToggle);
-	document.removeEventListener('keydown', handleEscapeKey);
-	mobileMediaQuery.removeEventListener('change', handleMediaQueryChange);
-	focusTrap.deactivate();
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:after-swap', init);
 document.addEventListener('astro:page-load', init);
 
-export { cleanup, init };
+export { init };
