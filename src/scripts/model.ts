@@ -7,7 +7,6 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
-let animationId: number;
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
@@ -161,8 +160,6 @@ const loadModel = async () => {
 
 const animate = () => {
 	if (clock) {
-		animationId = requestAnimationFrame(animate);
-
 		const delta = clock.getDelta();
 
 		if (mixer) {
