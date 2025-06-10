@@ -3,7 +3,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const getRefs = () => ({
+	loader: document.getElementById('model-loader') as HTMLElement,
 	model: document.getElementById('model') as HTMLElement,
+	percentage: document.getElementById('model-percentage') as HTMLElement,
+	progressBar: document.getElementById('model-progress-bar') as HTMLElement,
 });
 
 let refs: ReturnType<typeof getRefs>;
@@ -17,6 +20,7 @@ let mixer: THREE.AnimationMixer;
 let clock: THREE.Clock;
 let currentMaterial: THREE.MeshBasicMaterial;
 let themeObserver: MutationObserver;
+let loadingProgress = 0;
 
 const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
 
@@ -133,6 +137,35 @@ const fitModelToContainer = () => {
 	}
 };
 
+const updateLoadingProgress = (progress: number) => {
+	loadingProgress = Math.min(100, Math.max(0, progress));
+
+	if (refs.progressBar) {
+		refs.progressBar.style.width = `${loadingProgress}%`;
+		refs.progressBar.parentElement!.setAttribute('aria-valuenow', loadingProgress.toString());
+	}
+
+	if (refs.percentage) {
+		refs.percentage.textContent = `${Math.round(loadingProgress)}%`;
+	}
+};
+
+const hideLoader = () => {
+	if (refs.loader) {
+		refs.loader.classList.add('model-loader--hidden');
+
+		refs.loader.addEventListener(
+			'transitionend',
+			() => {
+				if (refs.loader && refs.loader.parentNode) {
+					refs.loader.remove();
+				}
+			},
+			{ once: true },
+		);
+	}
+};
+
 const setupAnimation = (gltf: GLTF) => {
 	if (gltf.animations && gltf.animations.length > 0) {
 		mixer = new THREE.AnimationMixer(model);
@@ -143,15 +176,45 @@ const setupAnimation = (gltf: GLTF) => {
 const loadModel = async () => {
 	const loader = new GLTFLoader();
 
-	loader.load('/models/stickman/scene.gltf', (gltf) => {
-		model = gltf.scene;
+	loader.load(
+		'/models/stickman/scene.gltf',
+		(gltf) => {
+			model = gltf.scene;
 
-		applyWireframeMaterial(model);
-		setupAnimation(gltf);
-		fitModelToContainer();
+			applyWireframeMaterial(model);
+			setupAnimation(gltf);
+			fitModelToContainer();
 
-		scene.add(model);
-	});
+			scene.add(model);
+
+			updateLoadingProgress(100);
+
+			if (refs.model) {
+				refs.model.classList.add('model--loaded');
+			}
+
+			hideLoader();
+		},
+		(progress) => {
+			if (progress.lengthComputable) {
+				const percentComplete = (progress.loaded / progress.total) * 100;
+
+				updateLoadingProgress(percentComplete);
+			} else {
+				loadingProgress += 10;
+				updateLoadingProgress(loadingProgress);
+			}
+		},
+		(error) => {
+			console.error('Error loading 3D model:', error);
+
+			if (refs.loader) {
+				refs.loader.innerHTML =
+					'<div class="model-loader__content"><div class="model-loader__text">Failed to load model</div></div>';
+				hideLoader();
+			}
+		},
+	);
 };
 
 const animate = () => {
@@ -209,6 +272,8 @@ const init = async () => {
 
 	if (hasRefs(refs)) {
 		try {
+			updateLoadingProgress(0);
+
 			createScene();
 			createCamera();
 			createRenderer();
@@ -221,6 +286,12 @@ const init = async () => {
 			animate();
 		} catch (error) {
 			console.error('Error initializing 3D model:', error);
+
+			if (refs.loader) {
+				refs.loader.innerHTML =
+					'<div class="model-loader__content"><div class="model-loader__text">Failed to initialize</div></div>';
+				hideLoader();
+			}
 		}
 	}
 };

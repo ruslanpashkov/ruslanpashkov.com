@@ -1,11 +1,107 @@
-<div class="model" id="model"></div>
+<div class="model" id="model">
+	<div aria-live="polite" class="model-loader" id="model-loader" role="status">
+		<div class="model-loader__content">
+			<span class="model-loader__text" id="loader-text">Loading Model…</span>
 
-<style>
-	.model {
-		aspect-ratio: 1;
-		width: clamp(320px, 100%, 440px);
-		height: auto;
-	}
-</style>
+			<div
+				aria-labelledby="loader-text"
+				aria-valuemax="100"
+				aria-valuemin="0"
+				aria-valuenow="0"
+				class="model-loader__progress"
+				role="progressbar"
+			>
+				<div class="model-loader__progress-bar" id="model-progress-bar"></div>
+			</div>
 
-<script src="@/scripts/model.ts"></script>
+			<div aria-hidden="true" class="model-loader__percentage" id="model-percentage">0%</div>
+		</div>
+	</div>
+
+	<style>
+		.model {
+			position: relative;
+			overflow: hidden;
+			aspect-ratio: 1;
+			width: clamp(320px, 100%, 440px);
+			height: auto;
+		}
+
+		.model-loader {
+			position: absolute;
+			z-index: var(--z-index-model);
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 6px;
+			opacity: 1;
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: opacity var(--motion-duration) ease-out;
+			}
+		}
+
+		.model-loader--hidden {
+			pointer-events: none;
+			opacity: 0;
+		}
+
+		.model-loader__content {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			align-items: center;
+			text-align: center;
+		}
+
+		.model-loader__text {
+			font-size: 1.125rem;
+		}
+
+		.model-loader__progress {
+			--border-rounding: 2px;
+
+			position: relative;
+			overflow: hidden;
+			width: 200px;
+			height: 4px;
+			border-radius: var(--border-rounding);
+			background-color: var(--color-secondary);
+		}
+
+		.model-loader__progress-bar {
+			position: relative;
+			overflow: hidden;
+			width: 0%;
+			height: 100%;
+			border-radius: var(--border-rounding);
+			background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: width var(--motion-duration) ease-out;
+			}
+		}
+
+		.model-loader__progress-bar::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(
+				90deg,
+				transparent,
+				oklch(var(--color-white) / 30%),
+				transparent
+			);
+			animation: shimmer 1.5s infinite;
+		}
+
+		.model-loader__percentage {
+			font-size: 0.875rem;
+			font-weight: bold;
+			color: var(--color-neutral);
+		}
+	</style>
+
+	<script src="@/scripts/model.ts"></script>
+</div>
