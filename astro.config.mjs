@@ -4,6 +4,8 @@ import Compress from '@playform/compress';
 import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
+import browserslist from 'browserslist';
+import browserslistToEsbuild from 'browserslist-to-esbuild';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
@@ -73,6 +75,7 @@ export default defineConfig({
 					manualChunks: (id) => chunkManager.getChunkName(id),
 				},
 			},
+			target: browserslistToEsbuild(browserslist()),
 		},
 		css: {
 			transformer: 'lightningcss',
