@@ -2,8 +2,10 @@
   "private": true,
   "type": "module",
   "browserslist": [
-    "last 2 version",
-    "not dead"
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
   ],
   "scripts": {
     "dev": "astro dev",

@@ -143,20 +143,15 @@ const setupAnimation = (gltf: GLTF) => {
 const loadModel = async () => {
 	const loader = new GLTFLoader();
 
-	loader.load(
-		'/models/stickman/scene.gltf',
-		(gltf) => {
-			model = gltf.scene;
+	loader.load('/models/stickman/scene.gltf', (gltf) => {
+		model = gltf.scene;
 
-			applyWireframeMaterial(model);
-			setupAnimation(gltf);
-			fitModelToContainer();
+		applyWireframeMaterial(model);
+		setupAnimation(gltf);
+		fitModelToContainer();
 
-			scene.add(model);
-		},
-		(xhr) => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
-		(error) => console.error(error),
-	);
+		scene.add(model);
+	});
 };
 
 const animate = () => {

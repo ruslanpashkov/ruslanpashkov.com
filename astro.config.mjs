@@ -9,6 +9,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 
+import { chunkManager } from './chunk-strategies.mjs';
 import { expressiveCodeOptions } from './code-styles.mjs';
 import { remarkReadingTime } from './remark-reading-time.mjs';
 
@@ -67,6 +68,11 @@ export default defineConfig({
 	vite: {
 		build: {
 			chunkSizeWarningLimit: 1000,
+			rollupOptions: {
+				output: {
+					manualChunks: (id) => chunkManager.getChunkName(id),
+				},
+			},
 		},
 		css: {
 			transformer: 'lightningcss',
