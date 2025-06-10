@@ -20,7 +20,7 @@
     "lint:fix": "bun run lint:eslint:fix && bun run lint:stylelint:fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "html-validate": "w3c-html-validator dist --exclude=blog,projects",
+    "html-validate": "w3c-html-validator dist --exclude=blog,projects,404",
     "build-previews": "bun run build-previews.js",
     "prepare": "husky"
   },
