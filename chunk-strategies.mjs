@@ -61,9 +61,19 @@ class ThreeCoreStrategy extends ChunkStrategy {
 	}
 }
 
+class TypewriterStrategy extends ChunkStrategy {
+	constructor() {
+		super('typewriter', 3);
+	}
+
+	matches(id) {
+		return id.includes('typewriter-effect');
+	}
+}
+
 class VendorStrategy extends ChunkStrategy {
 	constructor() {
-		super('vendor', 3);
+		super('vendor', 4);
 	}
 
 	matches(id) {
@@ -74,6 +84,7 @@ class VendorStrategy extends ChunkStrategy {
 const chunkManager = new ChunkManager().addStrategies(
 	new ThreeAddonsStrategy(),
 	new ThreeCoreStrategy(),
+	new TypewriterStrategy(),
 	new VendorStrategy(),
 );
 

@@ -75,6 +75,7 @@
     "three": "^0.177.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0",
+    "typewriter-effect": "^2.22.0",
     "w3c-html-validator": "^1.8.3"
   }
 }

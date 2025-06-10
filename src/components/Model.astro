@@ -1,4 +1,10 @@
+---
+import Message from '@/components/Message.astro';
+---
+
 <div class="model" id="model">
+	<Message id="model-message" />
+
 	<div aria-live="polite" class="model-loader" id="model-loader" role="status">
 		<div class="model-loader__content">
 			<span class="model-loader__text" id="loader-text">Loading Model…</span>
@@ -25,6 +31,9 @@
 			aspect-ratio: 1;
 			width: clamp(320px, 100%, 440px);
 			height: auto;
+
+			/* Remove WebKit tap highlight for 3D interactions */
+			-webkit-tap-highlight-color: transparent;
 		}
 
 		.model-loader {

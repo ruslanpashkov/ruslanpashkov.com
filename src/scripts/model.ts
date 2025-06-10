@@ -1,8 +1,15 @@
 import * as THREE from 'three';
 import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import Typewriter from 'typewriter-effect/dist/core';
+
+import type { MessageCategory } from '@/types/Message';
+
+import { messages } from '@/constants/messages';
 
 const getRefs = () => ({
 	loader: document.getElementById('model-loader') as HTMLElement,
+	message: document.getElementById('model-message') as HTMLElement,
+	messageText: document.getElementById('model-message-text') as HTMLElement,
 	model: document.getElementById('model') as HTMLElement,
 	percentage: document.getElementById('model-percentage') as HTMLElement,
 	progressBar: document.getElementById('model-progress-bar') as HTMLElement,
@@ -19,8 +26,57 @@ let clock: THREE.Clock;
 let currentMaterial: THREE.MeshBasicMaterial;
 let themeObserver: MutationObserver;
 let loadingProgress = 0;
+let clickCount = 0;
+let lastClickTime = 0;
+let messageTimeout: number;
+let isInitialized = false;
+let isMessageOpen = false;
+let modelMouseMoveHandler: ((event: MouseEvent) => void) | null = null;
+let modelClickHandler: ((event: MouseEvent) => void) | null = null;
+
+const shownMessages = new Set<string>();
 
 const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
+
+const getCurrentTheme = () => {
+	return document.documentElement.getAttribute('data-theme');
+};
+
+const getThemeColor = () => {
+	const theme = getCurrentTheme();
+
+	return theme === 'light' ? 0x553399 : 0xccff77;
+};
+
+const getRandomMessage = (category: MessageCategory) => {
+	const categoryMessages = messages[category];
+	const availableMessages = categoryMessages.filter((message) => !shownMessages.has(message));
+
+	if (availableMessages.length === 0) {
+		shownMessages.clear();
+		availableMessages.push(...categoryMessages);
+	}
+
+	const selectedMessage = availableMessages[Math.floor(Math.random() * availableMessages.length)];
+
+	shownMessages.add(selectedMessage);
+
+	return selectedMessage;
+};
+
+const getMessageCategory = (count: number): MessageCategory => {
+	const messageThresholds = [
+		{ category: 'friendly' as const, threshold: 4 },
+		{ category: 'cheeky' as const, threshold: 8 },
+		{ category: 'sassy' as const, threshold: 12 },
+		{ category: 'annoyed' as const, threshold: 16 },
+		{ category: 'philosophical' as const, threshold: 20 },
+	];
+
+	const matchedThreshold = messageThresholds.find(({ threshold }) => count <= threshold);
+
+	return matchedThreshold?.category ?? 'surrender';
+};
 
 const createScene = () => {
 	scene = new THREE.Scene();
@@ -59,16 +115,6 @@ const createLighting = () => {
 	scene.add(directionalLight);
 };
 
-const getCurrentTheme = () => {
-	return document.documentElement.getAttribute('data-theme');
-};
-
-const getThemeColor = () => {
-	const theme = getCurrentTheme();
-
-	return theme === 'light' ? 0x553399 : 0xccff77;
-};
-
 const createMaterial = () => {
 	currentMaterial = new THREE.MeshBasicMaterial({
 		color: getThemeColor(),
@@ -76,6 +122,59 @@ const createMaterial = () => {
 	});
 
 	return currentMaterial;
+};
+
+const writeMessage = (message: string) => {
+	const typingSpeed = 30;
+
+	const typewriter = new Typewriter(refs.messageText, {
+		delay: typingSpeed,
+	});
+
+	typewriter.typeString(message).start();
+};
+
+const showMessage = (text: string, category: MessageCategory = 'friendly') => {
+	if (refs.message && refs.messageText) {
+		if (messageTimeout) {
+			clearTimeout(messageTimeout);
+		}
+
+		refs.message.classList.add('message--open');
+		isMessageOpen = true;
+		writeMessage(text);
+
+		if (['annoyed', 'sassy', 'surrender'].includes(category)) {
+			refs.message.classList.add('message--shake');
+		}
+
+		const readingSpeed = 80;
+		const hideDelay = Math.max(3000, text.length * readingSpeed);
+
+		messageTimeout = window.setTimeout(() => {
+			if (refs.message) {
+				refs.message.classList.remove('message--open', 'message--shake');
+				refs.message.addEventListener(
+					'transitionend',
+					() => {
+						isMessageOpen = false;
+					},
+					{ once: true },
+				);
+			}
+		}, hideDelay);
+	}
+};
+
+const showInitialMessage = () => {
+	if (!isInitialized && refs.message && refs.messageText) {
+		setTimeout(() => {
+			const message = getRandomMessage('initial');
+
+			showMessage(message, 'friendly');
+			isInitialized = true;
+		}, 1000);
+	}
 };
 
 const updateModelColor = () => {
@@ -157,6 +256,53 @@ const setupAnimation = (gltf: GLTF) => {
 	}
 };
 
+const setupModelInteraction = () => {
+	if (renderer && camera && model) {
+		const raycaster = new THREE.Raycaster();
+		const mouse = new THREE.Vector2();
+
+		const updateMousePosition = (event: MouseEvent) => {
+			if (refs.model) {
+				const rect = refs.model.getBoundingClientRect();
+
+				mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+				mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+			}
+		};
+
+		modelMouseMoveHandler = (event: MouseEvent) => {
+			if (refs.model && camera && scene && isInitialized) {
+				updateMousePosition(event);
+				raycaster.setFromCamera(mouse, camera);
+
+				const intersects = raycaster.intersectObjects(model.children, true);
+
+				if (intersects.length > 0) {
+					refs.model.style.cursor = 'pointer';
+				} else {
+					refs.model.style.cursor = 'default';
+				}
+			}
+		};
+
+		modelClickHandler = (event: MouseEvent) => {
+			if (refs.model && camera && scene && !isMessageOpen && isInitialized) {
+				updateMousePosition(event);
+				raycaster.setFromCamera(mouse, camera);
+
+				const intersects = raycaster.intersectObjects(model.children, true);
+
+				if (intersects.length > 0) {
+					handleModelClick();
+				}
+			}
+		};
+
+		refs.model.addEventListener('mousemove', modelMouseMoveHandler);
+		refs.model.addEventListener('click', modelClickHandler);
+	}
+};
+
 const loadModel = async () => {
 	const loader = new GLTFLoader();
 
@@ -178,6 +324,8 @@ const loadModel = async () => {
 			}
 
 			hideLoader();
+			setupModelInteraction();
+			showInitialMessage();
 		},
 		(progress) => {
 			if (progress.lengthComputable) {
@@ -189,15 +337,7 @@ const loadModel = async () => {
 				updateLoadingProgress(loadingProgress);
 			}
 		},
-		(error) => {
-			console.error('Error loading 3D model:', error);
-
-			if (refs.loader) {
-				refs.loader.innerHTML =
-					'<div class="model-loader__content"><div class="model-loader__text">Failed to load model</div></div>';
-				hideLoader();
-			}
-		},
+		(error) => console.error('Error loading 3D model:', error),
 	);
 };
 
@@ -213,6 +353,22 @@ const animate = () => {
 
 		renderer.render(scene, camera);
 	}
+};
+
+const handleModelClick = () => {
+	const currentTime = Date.now();
+
+	if (currentTime - lastClickTime > 30000) {
+		clickCount = 0;
+	}
+
+	clickCount++;
+	lastClickTime = currentTime;
+
+	const category = getMessageCategory(clickCount);
+	const message = getRandomMessage(category);
+
+	showMessage(message, category);
 };
 
 const handleResize = () => {
@@ -284,6 +440,28 @@ const cleanup = () => {
 
 	if (themeObserver) {
 		themeObserver.disconnect();
+	}
+
+	if (messageTimeout) {
+		window.clearTimeout(messageTimeout);
+	}
+
+	if (modelMouseMoveHandler) {
+		refs.model.removeEventListener('mousemove', modelMouseMoveHandler);
+		modelMouseMoveHandler = null;
+	}
+
+	if (modelClickHandler) {
+		refs.model.removeEventListener('click', modelClickHandler);
+		modelClickHandler = null;
+	}
+
+	if (isInitialized) {
+		isInitialized = false;
+		isMessageOpen = false;
+		clickCount = 0;
+		lastClickTime = 0;
+		shownMessages.clear();
 	}
 
 	if (mixer) {

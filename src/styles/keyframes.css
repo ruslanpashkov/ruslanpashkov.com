@@ -26,6 +26,21 @@
 	}
 }
 
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(-50%);
+	}
+
+	25% {
+		transform: translateX(-50%) rotate(-2deg);
+	}
+
+	75% {
+		transform: translateX(-50%) rotate(2deg);
+	}
+}
+
 @keyframes header-scroll {
 	from {
 		border-bottom-color: transparent;
