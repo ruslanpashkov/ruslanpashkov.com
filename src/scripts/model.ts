@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const getRefs = () => ({
@@ -14,7 +13,6 @@ let animationId: number;
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
-let controls: OrbitControls;
 let model: THREE.Group;
 let mixer: THREE.AnimationMixer;
 let clock: THREE.Clock;
@@ -46,20 +44,6 @@ const createRenderer = () => {
 	renderer.setClearColor(0x000000, 0);
 
 	refs.model.appendChild(renderer.domElement);
-};
-
-const createControls = () => {
-	controls = new OrbitControls(camera, renderer.domElement);
-
-	controls.enableRotate = true;
-	controls.minPolarAngle = Math.PI / 2;
-	controls.maxPolarAngle = Math.PI / 2;
-	controls.minAzimuthAngle = -Infinity;
-	controls.maxAzimuthAngle = Infinity;
-	controls.enableZoom = false;
-	controls.enablePan = false;
-	controls.enableDamping = true;
-	controls.dampingFactor = 0.05;
 };
 
 const createLighting = () => {
@@ -227,10 +211,6 @@ const animate = () => {
 			mixer.update(delta);
 		}
 
-		if (controls) {
-			controls.update();
-		}
-
 		renderer.render(scene, camera);
 	}
 };
@@ -277,7 +257,6 @@ const init = async () => {
 			createScene();
 			createCamera();
 			createRenderer();
-			createControls();
 			createLighting();
 
 			await loadModel();
@@ -310,10 +289,6 @@ const cleanup = () => {
 	if (mixer) {
 		mixer.stopAllAction();
 		mixer.uncacheRoot(mixer.getRoot());
-	}
-
-	if (controls) {
-		controls.dispose();
 	}
 
 	if (scene) {
