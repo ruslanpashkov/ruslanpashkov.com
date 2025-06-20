@@ -19,7 +19,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.OS }}-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.OS }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.OS }}-bun-
       - name: Install dependencies
@@ -28,9 +28,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
 
-  lint:
+  eslint:
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
       - name: Run ESLint
         run: bun run eslint
 
@@ -60,6 +60,6 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
       - name: Run Stylelint
         run: bun run stylelint
