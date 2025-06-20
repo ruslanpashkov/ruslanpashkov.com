@@ -15,6 +15,7 @@
     "lint:fix": "bun run lint:eslint:fix && bun run lint:stylelint:fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "check": "bun run typecheck && bun run format:check && bun run lint",
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun run build-previews.js",
     "prepare": "husky"
