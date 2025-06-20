@@ -1,4 +1,4 @@
-.sr-only {
+.sr-only:not(:focus, :active) {
 	position: absolute;
 	top: 0;
 	left: 0;
