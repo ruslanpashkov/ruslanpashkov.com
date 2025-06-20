@@ -43,18 +43,22 @@
 		text-decoration: line-through;
 	}
 
-	& a {
-		text-decoration: underline;
-	}
-
 	/* Styles for auto-generated anchor links next to headings */
 	& .heading-link {
 		user-select: none;
 		margin-left: 8px;
-		text-decoration: none;
 
 		@media (width >= 768px) {
 			margin-left: 12px;
+		}
+	}
+
+	& a:not(.heading-link) {
+		color: var(--color-link);
+		text-decoration: underline;
+
+		&:visited {
+			color: var(--color-visited);
 		}
 	}
 

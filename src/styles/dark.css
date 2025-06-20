@@ -6,6 +6,8 @@
 	--alpha-contrast: 100%;
 	--alpha-accent: 75%;
 	--alpha-focus: 100%;
+	--alpha-link: 100%;
+	--alpha-visited: 100%;
 	--color-primary: oklch(var(--color-night) / var(--alpha-primary));
 	--color-secondary: oklch(var(--color-onyx) / var(--alpha-secondary));
 	--color-neutral: oklch(var(--color-cadet-gray) / var(--alpha-neutral));
@@ -13,6 +15,8 @@
 	--color-contrast: oklch(var(--color-white) / var(--alpha-contrast));
 	--color-accent: oklch(var(--color-rebecca-purple) / var(--alpha-accent));
 	--color-focus: oklch(var(--color-mindaro) / var(--alpha-focus));
+	--color-link: oklch(var(--color-cornflower-blue) / var(--alpha-link));
+	--color-visited: oklch(var(--color-light-orchid) / var(--alpha-visited));
 
 	color-scheme: dark;
 }
