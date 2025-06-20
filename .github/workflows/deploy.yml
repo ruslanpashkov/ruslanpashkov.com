@@ -1,0 +1,13 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger Netlify Build
+        run: |
+          curl -X POST -d {} ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
