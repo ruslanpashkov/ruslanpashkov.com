@@ -2,10 +2,13 @@
 import { Icon } from 'astro-icon/components';
 
 import Menu from '@/components/Menu.astro';
+import SkipToContent from '@/components/SkipToContent.astro';
 ---
 
 <header class="header header--animation" id="header">
 	<div class="header__content container">
+		<SkipToContent />
+
 		<a aria-label="Home" class="header__logo" href="/">
 			<Icon aria-hidden="true" name="logo" size={32} />
 		</a>

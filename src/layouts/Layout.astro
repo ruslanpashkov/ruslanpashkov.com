@@ -7,7 +7,6 @@ import type { Article } from '@/types/Article';
 
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
-import SkipToContent from '@/components/SkipToContent.astro';
 import { colors } from '@/constants/colors';
 import { global } from '@/data/global';
 import darkStyles from '@/styles/dark.css?raw';
@@ -161,8 +160,6 @@ const generator = Astro.generator;
 	</head>
 
 	<body class="page__body" id="body">
-		<SkipToContent />
-
 		<Header transition:persist />
 
 		<main class="page__content" id="content">
