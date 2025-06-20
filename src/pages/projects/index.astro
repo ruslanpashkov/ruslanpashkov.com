@@ -23,8 +23,8 @@ const {
 } = categorize(sortedProjects, projectTypes);
 
 const breadcrumbs: Link[] = [
-	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ label: 'Projects', title: 'You are currently on projects', url: '/projects/' },
+	{ title: 'Home', url: '/' },
+	{ title: 'Projects', url: '/projects/' },
 ];
 
 const projectsSchema = getProjectsSchema(Astro.url, sortedProjects);

@@ -2,115 +2,146 @@
 import Message from '@/components/Message.astro';
 ---
 
-<div class="model" id="model">
-	<Message id="model-message" />
+<div class="model" id="model" role="presentation">
+	<div class="model__message" id="model-message-container">
+		<Message id="model-message" />
+	</div>
 
-	<div aria-live="polite" class="model-loader" id="model-loader" role="status">
+	<div class="model-loader" id="model-loader">
 		<div class="model-loader__content">
 			<span class="model-loader__text" id="loader-text">Loading Model…</span>
 
-			<div
-				aria-labelledby="loader-text"
-				aria-valuemax="100"
-				aria-valuemin="0"
-				aria-valuenow="0"
-				class="model-loader__progress"
-				role="progressbar"
-			>
+			<div class="model-loader__progress">
 				<div class="model-loader__progress-bar" id="model-progress-bar"></div>
 			</div>
 
-			<div aria-hidden="true" class="model-loader__percentage" id="model-percentage">0%</div>
+			<div class="model-loader__percentage" id="model-percentage">0%</div>
 		</div>
 	</div>
-
-	<style>
-		.model {
-			position: relative;
-			overflow: hidden;
-			aspect-ratio: 1;
-			width: clamp(320px, 100%, 440px);
-			height: auto;
-
-			/* Remove WebKit tap highlight for 3D interactions */
-			-webkit-tap-highlight-color: transparent;
-		}
-
-		.model-loader {
-			position: absolute;
-			z-index: var(--z-index-model);
-			inset: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: 6px;
-			opacity: 1;
-
-			@media (prefers-reduced-motion: no-preference) {
-				transition: opacity var(--motion-duration) ease-out;
-			}
-		}
-
-		.model-loader--hidden {
-			pointer-events: none;
-			opacity: 0;
-		}
-
-		.model-loader__content {
-			display: flex;
-			flex-direction: column;
-			gap: 12px;
-			align-items: center;
-			text-align: center;
-		}
-
-		.model-loader__text {
-			font-size: 1.125rem;
-		}
-
-		.model-loader__progress {
-			--border-rounding: 2px;
-
-			position: relative;
-			overflow: hidden;
-			width: 200px;
-			height: 4px;
-			border-radius: var(--border-rounding);
-			background-color: var(--color-secondary);
-		}
-
-		.model-loader__progress-bar {
-			position: relative;
-			overflow: hidden;
-			width: 0%;
-			height: 100%;
-			border-radius: var(--border-rounding);
-			background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
-
-			@media (prefers-reduced-motion: no-preference) {
-				transition: width var(--motion-duration) ease-out;
-			}
-		}
-
-		.model-loader__progress-bar::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(
-				90deg,
-				transparent,
-				oklch(var(--color-white) / 30%),
-				transparent
-			);
-			animation: shimmer 1.5s infinite;
-		}
-
-		.model-loader__percentage {
-			font-size: 0.875rem;
-			font-weight: bold;
-			color: var(--color-neutral);
-		}
-	</style>
-
-	<script src="@/scripts/model.ts"></script>
 </div>
+
+<style>
+	.model {
+		position: relative;
+		overflow: hidden;
+		aspect-ratio: 1;
+		width: clamp(320px, 100%, 440px);
+
+		/* Remove WebKit tap highlight for 3D interactions */
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.model__message {
+		pointer-events: none;
+		position: absolute;
+		top: 5%;
+		left: 50%;
+		transform: translateX(-50%) translateY(20px);
+		width: 220px;
+		visibility: hidden;
+		opacity: 0;
+
+		@media (width >= 768px) {
+			left: 75%;
+			max-width: 320px;
+		}
+
+		@media (width >= 1024px) {
+			top: 10%;
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition:
+				opacity calc(var(--motion-duration) * 2) ease-out,
+				visibility calc(var(--motion-duration) * 2) ease-out,
+				transform calc(var(--motion-duration) * 3) cubic-bezier(0.34, 1.56, 0.64, 1);
+		}
+	}
+
+	.model__message--open {
+		transform: translateX(-50%) translateY(0);
+		visibility: visible;
+		opacity: 1;
+	}
+
+	.model__message--shake {
+		animation: shake 0.3s ease-in-out;
+	}
+
+	.model-loader {
+		position: absolute;
+		z-index: var(--z-index-model);
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 6px;
+		opacity: 1;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: opacity var(--motion-duration) ease-out;
+		}
+	}
+
+	.model-loader--hidden {
+		pointer-events: none;
+		opacity: 0;
+	}
+
+	.model-loader__content {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		align-items: center;
+		text-align: center;
+	}
+
+	.model-loader__text {
+		font-size: 1.125rem;
+	}
+
+	.model-loader__progress {
+		--border-rounding: 2px;
+
+		position: relative;
+		overflow: hidden;
+		width: 200px;
+		height: 4px;
+		border-radius: var(--border-rounding);
+		background-color: var(--color-secondary);
+	}
+
+	.model-loader__progress-bar {
+		position: relative;
+		overflow: hidden;
+		width: 0%;
+		height: 100%;
+		border-radius: var(--border-rounding);
+		background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: width var(--motion-duration) ease-out;
+		}
+	}
+
+	.model-loader__progress-bar::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			oklch(var(--color-white) / 30%),
+			transparent
+		);
+		animation: shimmer 1.5s infinite;
+	}
+
+	.model-loader__percentage {
+		font-size: 0.875rem;
+		font-weight: bold;
+		color: var(--color-neutral);
+	}
+</style>
+
+<script src="@/scripts/model.ts"></script>

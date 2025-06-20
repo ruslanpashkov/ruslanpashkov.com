@@ -27,8 +27,8 @@ const title = page.currentPage === 1 ? 'Blog' : `Blog — Page ${page.currentPag
 const pageTitle = generateTitle(title);
 
 const breadcrumbs: Link[] = [
-	{ label: 'Home', title: 'Go to the home page', url: '/' },
-	{ label: 'Blog', title: 'You are currently on blog', url: '/blog/' },
+	{ title: 'Home', url: '/' },
+	{ title: 'Blog', url: '/blog/' },
 ];
 
 const blogSchema = getBlogSchema(Astro.url, page.data);

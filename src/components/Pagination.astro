@@ -21,11 +21,9 @@ const pages = generateSequence(lastPage);
 		{
 			url.first && (
 				<li class="pagination__item">
-					<a
-						aria-label="Previous page"
-						class="pagination__label pagination__link hover"
-						href={url.prev}
-					>
+					<a class="pagination__label pagination__link hover" href={url.prev}>
+						<span class="sr-only">Previous page</span>
+
 						<Icon
 							aria-hidden="true"
 							class="pagination__arrow-icon pagination__arrow-icon--rotated"
@@ -48,11 +46,11 @@ const pages = generateSequence(lastPage);
 					<li class="pagination__item">
 						{isCurrent ? (
 							<span aria-current="page" class="pagination__label">
-								{pageNumber}
+								<span class="sr-only">Page</span> {pageNumber}
 							</span>
 						) : (
 							<a class="pagination__label pagination__link hover" href={pageURL}>
-								{pageNumber}
+								<span class="sr-only">Page</span> {pageNumber}
 							</a>
 						)}
 					</li>
@@ -63,11 +61,9 @@ const pages = generateSequence(lastPage);
 		{
 			url.last && (
 				<li class="pagination__item">
-					<a
-						aria-label="Next page"
-						class="pagination__label pagination__link hover"
-						href={url.next}
-					>
+					<a class="pagination__label pagination__link hover" href={url.next}>
+						<span class="sr-only">Next page</span>
+
 						<Icon
 							aria-hidden="true"
 							class="pagination__arrow-icon"

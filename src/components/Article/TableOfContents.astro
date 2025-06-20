@@ -12,12 +12,13 @@ interface Props {
 const { headings } = Astro.props;
 ---
 
-<nav class="table-of-contents">
+<nav aria-labelledby="toc-toggler" class="table-of-contents">
 	<h2 class="table-of-contents__title">
 		<button
 			aria-controls="toc-content"
 			aria-expanded="true"
 			class="table-of-contents__toggle"
+			id="toc-toggler"
 			type="button"
 		>
 			Table of Contents
@@ -39,7 +40,7 @@ const { headings } = Astro.props;
 								`table-of-contents__item--${heading.depth}`,
 							]}
 						>
-							<a aria-label={headingText} class="hover" href={`#${heading.slug}`}>
+							<a class="hover" href={`#${heading.slug}`}>
 								{headingText}
 							</a>
 						</li>

@@ -20,11 +20,11 @@ const { breadcrumbs } = Astro.props;
 					<li class="breadcrumbs__item">
 						{isLast ? (
 							<span aria-current="page" class="breadcrumbs__label">
-								{crumb.label}
+								{crumb.title}
 							</span>
 						) : (
 							<a class="breadcrumbs__label breadcrumbs__link hover" href={crumb.url}>
-								{crumb.label}
+								{crumb.title}
 							</a>
 						)}
 

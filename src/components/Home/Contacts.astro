@@ -16,19 +16,13 @@ const { contacts } = Astro.props;
 			const isPhoneLink = url.startsWith('tel:');
 			const isMailLink = url.startsWith('mailto:');
 			const isStandardLink = !isPhoneLink && !isMailLink;
-			const rel = isStandardLink ? 'noopener noreferrer' : null;
+			const rel = isStandardLink ? 'noreferrer' : null;
 			const target = isStandardLink ? '_blank' : null;
 
 			return (
 				<li class="contact-list__item">
-					<a
-						aria-label={label}
-						class="contact-list__link hover"
-						href={url}
-						rel={rel}
-						target={target}
-					>
-						<Icon aria-hidden="true" class="contact-list__icon" name={icon} />
+					<a class="contact-list__link hover" href={url} rel={rel} target={target}>
+						<Icon aria-label={label} class="contact-list__icon" name={icon} />
 
 						{title}
 					</a>

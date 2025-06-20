@@ -48,9 +48,9 @@ const publishedDate = formatDate(publishedAt);
 const updatedDate = updatedAt && formatDate(updatedAt);
 
 const breadcrumbs: Link[] = [
-	{ label: 'Home', title: 'Go to the homepage', url: '/' },
-	{ label: 'Blog', title: 'Go to the blog', url: '/blog/' },
-	{ label: title, title: `You are currently reading ${title}`, url: currentPath },
+	{ title: 'Home', url: '/' },
+	{ title: 'Blog', url: '/blog/' },
+	{ title, url: currentPath },
 ];
 
 const articleSchema = getArticleSchema(Astro.url, article);
@@ -122,7 +122,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 
 						<a class="article__contact-link hover" href={email.url}>
 							<Icon
-								aria-hidden="true"
+								aria-label="Email"
 								class="article__contact-icon"
 								name="email-outlined"
 							/>
@@ -136,14 +136,13 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 							onlineProfiles.map(({ icon, label, url }) => (
 								<li>
 									<a
-										aria-label={label}
 										class="article__social-link hover"
 										href={url}
-										rel="noopener noreferrer"
+										rel="noreferrer"
 										target="_blank"
 									>
 										<Icon
-											aria-hidden="true"
+											aria-label={label}
 											class="article__social-icon"
 											name={`${icon}-outlined`}
 										/>

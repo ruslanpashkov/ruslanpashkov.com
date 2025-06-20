@@ -8,7 +8,7 @@ import { messages } from '@/constants/messages';
 
 const getRefs = () => ({
 	loader: document.getElementById('model-loader') as HTMLElement,
-	message: document.getElementById('model-message') as HTMLElement,
+	message: document.getElementById('model-message-container') as HTMLElement,
 	messageText: document.getElementById('model-message-text') as HTMLElement,
 	model: document.getElementById('model') as HTMLElement,
 	percentage: document.getElementById('model-percentage') as HTMLElement,
@@ -140,12 +140,12 @@ const showMessage = (text: string, category: MessageCategory = 'friendly') => {
 			clearTimeout(messageTimeout);
 		}
 
-		refs.message.classList.add('message--open');
+		refs.message.classList.add('model__message--open');
 		isMessageOpen = true;
 		writeMessage(text);
 
 		if (['annoyed', 'sassy', 'surrender'].includes(category)) {
-			refs.message.classList.add('message--shake');
+			refs.message.classList.add('model__message--shake');
 		}
 
 		const readingSpeed = 80;
@@ -153,7 +153,7 @@ const showMessage = (text: string, category: MessageCategory = 'friendly') => {
 
 		messageTimeout = window.setTimeout(() => {
 			if (refs.message) {
-				refs.message.classList.remove('message--open', 'message--shake');
+				refs.message.classList.remove('model__message--open', 'model__message--shake');
 				refs.message.addEventListener(
 					'transitionend',
 					() => {
@@ -318,10 +318,6 @@ const loadModel = async () => {
 			scene.add(model);
 
 			updateLoadingProgress(100);
-
-			if (refs.model) {
-				refs.model.classList.add('model--loaded');
-			}
 
 			hideLoader();
 			setupModelInteraction();

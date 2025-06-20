@@ -10,15 +10,9 @@ const { credits } = Astro.props;
 
 <ul class="credit-list">
 	{
-		credits.map(({ label, title, url }) => (
+		credits.map(({ title, url }) => (
 			<li class="credit-list__item">
-				<a
-					aria-label={label}
-					class="credit-list__link hover"
-					href={url}
-					rel="noopener noreferrer"
-					target="_blank"
-				>
+				<a class="credit-list__link hover" href={url} rel="noreferrer" target="_blank">
 					{title}
 				</a>
 			</li>

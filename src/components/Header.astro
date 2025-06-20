@@ -9,7 +9,9 @@ import SkipToContent from '@/components/SkipToContent.astro';
 	<div class="header__content container">
 		<SkipToContent />
 
-		<a aria-label="Home" class="header__logo" href="/">
+		<a class="header__logo" href="/">
+			<span class="sr-only">Home</span>
+
 			<Icon aria-hidden="true" name="logo" size={32} />
 		</a>
 
@@ -21,7 +23,7 @@ import SkipToContent from '@/components/SkipToContent.astro';
 			id="menu-toggler"
 			type="button"
 		>
-			<span class="menu-toggler__icon"></span>
+			<span class="menu-toggler__icon" role="presentation"></span>
 		</button>
 
 		<Menu />
