@@ -30,6 +30,23 @@ jobs:
           path: node_modules
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
 
+  typecheck:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - name: Run Typecheck
+        run: bun run typecheck
+
   eslint:
     needs: setup
     runs-on: ubuntu-latest

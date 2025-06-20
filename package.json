@@ -3,9 +3,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "typecheck": "astro check",
     "lint:eslint": "eslint",
     "lint:stylelint": "stylelint \"**/*.{css,astro}\"",
     "lint": "bun run lint:eslint && bun run lint:stylelint",
@@ -14,7 +15,7 @@
     "lint:fix": "bun run lint:eslint:fix && bun run lint:stylelint:fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "html-validate": "w3c-html-validator dist --exclude=blog,projects",
+    "html-validate": "w3c-html-validator dist",
     "build-previews": "bun run build-previews.js",
     "prepare": "husky"
   },
