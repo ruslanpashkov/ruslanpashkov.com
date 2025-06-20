@@ -1,15 +1,3 @@
-/**
- * This module exports configuration options for the `astro-expressive-code` package.
- *
- * The `expressiveCodeOptions` object customizes the appearance and behavior of code blocks
- * rendered by the `astro-expressive-code` package. This includes setting theme properties,
- * style overrides, and other visual customizations to ensure the code blocks match the
- * overall design and theme of the website.
- *
- * The customization options provided here allow for a consistent and visually appealing
- * presentation of code snippets, enhancing readability and user experience.
- */
-
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 
