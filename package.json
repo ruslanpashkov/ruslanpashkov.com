@@ -18,7 +18,7 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test": "bun run test:unit && bun run test:e2e",
-    "check": "bun run typecheck && bun run format:check && bun run lint && bun run test",
+    "check": "bun run typecheck && bun run format:check && bun run lint",
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun run build-previews.js",
     "prepare": "husky"

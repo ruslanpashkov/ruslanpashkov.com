@@ -30,8 +30,52 @@ jobs:
           path: node_modules
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
 
-  playwright:
+  build:
     needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - name: Build Website
+        run: bun run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  vitest:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Run Vitest
+        run: bun run test:unit
+
+  playwright:
+    needs: vitest
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -45,8 +89,13 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: bunx playwright install --with-deps
       - name: Run Playwright tests
         run: bun run test:e2e
       - uses: actions/upload-artifact@v4
