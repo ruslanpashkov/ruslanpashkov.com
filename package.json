@@ -15,8 +15,9 @@
     "lint:fix": "bun run lint:eslint:fix && bun run lint:stylelint:fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "test": "bun run test:e2e",
+    "test": "bun run test:unit && bun run test:e2e",
     "check": "bun run typecheck && bun run format:check && bun run lint && bun run test",
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun run build-previews.js",
@@ -35,6 +36,7 @@
     "@playwright/test": "^1.53.1",
     "@types/three": "^0.177.0",
     "@typescript-eslint/parser": "^8.34.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "astro": "5.10.0",
     "astro-embed": "^0.9.0",
     "astro-eslint-parser": "^1.2.2",
@@ -54,6 +56,7 @@
     "globby": "^14.1.0",
     "gray-matter": "^4.0.3",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lightningcss": "^1.30.1",
     "mdast-util-to-string": "^4.0.0",
     "playwright": "^1.53.1",
@@ -78,6 +81,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "typewriter-effect": "^2.22.0",
+    "vitest": "^3.2.4",
     "w3c-html-validator": "^1.8.3"
   }
 }
