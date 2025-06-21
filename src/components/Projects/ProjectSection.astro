@@ -6,8 +6,18 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<section aria-labelledby="project-section-title" class="project-section">
-	<h2 class="project-section__title" id="project-section-title">{title}</h2>
+<section
+	aria-labelledby="project-section-title"
+	class="project-section"
+	data-testid="project-section"
+>
+	<h2
+		class="project-section__title"
+		data-testid="project-section-title"
+		id="project-section-title"
+	>
+		{title}
+	</h2>
 
 	<slot />
 </section>

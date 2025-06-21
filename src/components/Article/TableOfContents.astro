@@ -12,23 +12,29 @@ interface Props {
 const { headings } = Astro.props;
 ---
 
-<nav aria-labelledby="toc-toggler" class="table-of-contents">
-	<h2 class="table-of-contents__title">
+<nav aria-labelledby="toc-toggler" class="table-of-contents" data-testid="table-of-contents">
+	<h2 class="table-of-contents__title" data-testid="toc-title">
 		<button
 			aria-controls="toc-content"
 			aria-expanded="true"
 			class="table-of-contents__toggle"
+			data-testid="toc-toggle"
 			id="toc-toggler"
 			type="button"
 		>
 			Table of Contents
 
-			<Icon aria-hidden="true" class="table-of-contents__icon" name="chevron-down" />
+			<Icon
+				aria-hidden="true"
+				class="table-of-contents__icon"
+				data-testid="toc-toggle-icon"
+				name="chevron-down"
+			/>
 		</button>
 	</h2>
 
-	<div class="table-of-contents__content" id="toc-content">
-		<ol class="table-of-contents__list">
+	<div class="table-of-contents__content" data-testid="toc-content" id="toc-content">
+		<ol class="table-of-contents__list" data-testid="toc-list">
 			{
 				headings.map((heading) => {
 					const headingText = removeTrailingHash(heading.text);
@@ -39,8 +45,9 @@ const { headings } = Astro.props;
 								'table-of-contents__item',
 								`table-of-contents__item--${heading.depth}`,
 							]}
+							data-testid="toc-item"
 						>
-							<a class="hover" href={`#${heading.slug}`}>
+							<a class="hover" data-testid="toc-link" href={`#${heading.slug}`}>
 								{headingText}
 							</a>
 						</li>

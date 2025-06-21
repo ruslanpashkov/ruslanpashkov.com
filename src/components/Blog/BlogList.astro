@@ -13,7 +13,7 @@ interface Props {
 const { page } = Astro.props;
 ---
 
-<div class="blog-list">
+<div class="blog-list" data-testid="blog-list">
 	<ArticleList articles={page.data} />
 
 	{page.lastPage > 1 && <Pagination page={page} />}

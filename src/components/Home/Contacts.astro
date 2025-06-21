@@ -10,7 +10,7 @@ interface Props {
 const { contacts } = Astro.props;
 ---
 
-<ul class="contact-list">
+<ul class="contact-list" data-testid="home-contacts-list">
 	{
 		contacts.map(({ icon, label, title, url }) => {
 			const isPhoneLink = url.startsWith('tel:');
@@ -20,11 +20,22 @@ const { contacts } = Astro.props;
 			const target = isStandardLink ? '_blank' : null;
 
 			return (
-				<li class="contact-list__item">
-					<a class="contact-list__link hover" href={url} rel={rel} target={target}>
-						<Icon aria-label={label} class="contact-list__icon" name={icon} />
+				<li class="contact-list__item" data-testid="home-contact-item">
+					<a
+						class="contact-list__link hover"
+						data-testid="home-contact-link"
+						href={url}
+						rel={rel}
+						target={target}
+					>
+						<Icon
+							aria-label={label}
+							class="contact-list__icon"
+							data-testid="home-contact-icon"
+							name={icon}
+						/>
 
-						{title}
+						<span data-testid="home-contact-title">{title}</span>
 					</a>
 				</li>
 			);

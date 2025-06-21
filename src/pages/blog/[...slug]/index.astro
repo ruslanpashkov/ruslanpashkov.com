@@ -65,65 +65,88 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 	title={pageTitle}
 	type="article"
 >
-	<div class="container container--spaced">
+	<div class="container container--spaced" data-testid="blog-article-page-container">
 		<Breadcrumbs breadcrumbs={breadcrumbs} />
 
-		<article class="article">
-			<header class="article__header">
-				<h1 class="article__title">{title}</h1>
+		<article class="article" data-testid="blog-article">
+			<header class="article__header" data-testid="blog-article-header">
+				<h1 class="article__title" data-testid="blog-article-title">{title}</h1>
 
-				<div class="article__meta">
-					<div class="article__dates">
-						<time class="article__published-at" datetime={publishedAt}>
+				<div class="article__meta" data-testid="blog-article-meta">
+					<div class="article__dates" data-testid="blog-article-dates">
+						<time
+							class="article__published-at"
+							data-testid="blog-article-published-at"
+							datetime={publishedAt}
+						>
 							{publishedDate}
 						</time>
 
 						{
 							updatedAt && (
-								<time class="article__updated-at" datetime={updatedAt}>
+								<time
+									class="article__updated-at"
+									data-testid="blog-article-updated-at"
+									datetime={updatedAt}
+								>
 									(updated at {updatedDate})
 								</time>
 							)
 						}
 					</div>
 
-					<div class="article__info">
-						<h2 class="article__reading-time">
+					<div class="article__info" data-testid="blog-article-info">
+						<h2 class="article__reading-time" data-testid="blog-article-reading-time">
 							{minutesRead}
 						</h2>
 
-						<p class="article__topic">{topic}</p>
+						<p class="article__topic" data-testid="blog-article-topic">{topic}</p>
 					</div>
 				</div>
 
-				<span class="article__glow article__glow--start">
+				<span
+					class="article__glow article__glow--start"
+					data-testid="blog-article-glow-start"
+				>
 					<Glow />
 				</span>
 			</header>
 
 			{headings.length > 0 && <TableOfContents headings={headings} />}
 
-			<div class="article__content markdown">
+			<div class="article__content markdown" data-testid="blog-article-content">
 				<Content />
 			</div>
 
-			<div class="article__divider" role="presentation"></div>
+			<div class="article__divider" data-testid="blog-article-divider" role="presentation">
+			</div>
 
-			<footer class="article__footer">
-				<ul class="article-tags">
-					{categories.map((category) => <li class="article-tags__item">{category}</li>)}
+			<footer class="article__footer" data-testid="blog-article-footer">
+				<ul class="article-tags" data-testid="blog-article-tags">
+					{
+						categories.map((category) => (
+							<li class="article-tags__item" data-testid="blog-article-tag">
+								{category}
+							</li>
+						))
+					}
 				</ul>
 
-				<div class="article__contacts">
-					<div class="article__contact">
-						<p class="article__contact-text">
+				<div class="article__contacts" data-testid="blog-article-contacts">
+					<div class="article__contact" data-testid="blog-article-contact">
+						<p class="article__contact-text" data-testid="blog-article-contact-text">
 							Got questions or feedback? Feel free to reach out!
 						</p>
 
-						<a class="article__contact-link hover" href={email.url}>
+						<a
+							class="article__contact-link hover"
+							data-testid="blog-article-contact-link"
+							href={email.url}
+						>
 							<Icon
 								aria-label="Email"
 								class="article__contact-icon"
+								data-testid="blog-article-contact-icon"
 								name="email-outlined"
 							/>
 
@@ -131,12 +154,13 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 						</a>
 					</div>
 
-					<ul class="article__social">
+					<ul class="article__social" data-testid="blog-article-social">
 						{
 							onlineProfiles.map(({ icon, label, url }) => (
-								<li>
+								<li data-testid="blog-article-social-item">
 									<a
 										class="article__social-link hover"
+										data-testid="blog-article-social-link"
 										href={url}
 										rel="noreferrer"
 										target="_blank"
@@ -144,6 +168,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 										<Icon
 											aria-label={label}
 											class="article__social-icon"
+											data-testid="blog-article-social-icon"
 											name={`${icon}-outlined`}
 										/>
 									</a>
@@ -153,7 +178,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 					</ul>
 				</div>
 
-				<span class="article__glow article__glow--end">
+				<span class="article__glow article__glow--end" data-testid="blog-article-glow-end">
 					<Glow />
 				</span>
 			</footer>

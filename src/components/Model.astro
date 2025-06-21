@@ -2,20 +2,33 @@
 import Message from '@/components/Message.astro';
 ---
 
-<div class="model" id="model" role="presentation">
-	<div class="model__message" id="model-message-container">
+<div class="model" data-testid="model" id="model" role="presentation">
+	<div class="model__message" data-testid="model-message-container" id="model-message-container">
 		<Message id="model-message" />
 	</div>
 
-	<div class="model-loader" id="model-loader">
-		<div class="model-loader__content">
-			<span class="model-loader__text" id="loader-text">Loading Model…</span>
+	<div class="model-loader" data-testid="model-loader" id="model-loader">
+		<div class="model-loader__content" data-testid="model-loader-content">
+			<span class="model-loader__text" data-testid="model-loader-text" id="loader-text"
+				>Loading Model…</span
+			>
 
-			<div class="model-loader__progress">
-				<div class="model-loader__progress-bar" id="model-progress-bar"></div>
+			<div class="model-loader__progress" data-testid="model-loader-progress">
+				<div
+					class="model-loader__progress-bar"
+					data-testid="model-progress-bar"
+					id="model-progress-bar"
+				>
+				</div>
 			</div>
 
-			<div class="model-loader__percentage" id="model-percentage">0%</div>
+			<div
+				class="model-loader__percentage"
+				data-testid="model-percentage"
+				id="model-percentage"
+			>
+				0%
+			</div>
 		</div>
 	</div>
 </div>

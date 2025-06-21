@@ -22,38 +22,52 @@ const githubIssueURL = 'https://github.com/ruslanpashkov/ruslanpashkov.com/issue
 ---
 
 <Layout cover="404.png" description="Page not found" title={title} type="website">
-	<div class="container container--gapped">
-		<section aria-labelledby="not-found-title" class="not-found">
-			<div class="not-found__title-container">
-				<h1 class="not-found__title" id="not-found-title">Page not found</h1>
+	<div class="container container--gapped" data-testid="404-page-container">
+		<section
+			aria-labelledby="not-found-title"
+			class="not-found"
+			data-testid="404-not-found-section"
+		>
+			<div class="not-found__title-container" data-testid="404-title-container">
+				<h1 class="not-found__title" data-testid="404-title" id="not-found-title">
+					Page not found
+				</h1>
 
-				<div class="not-found__divider" role="presentation"></div>
+				<div class="not-found__divider" data-testid="404-divider" role="presentation"></div>
 			</div>
 
-			<div class="not-found__content">
-				<h2 class="not-found__subtitle">
+			<div class="not-found__content" data-testid="404-content">
+				<h2 class="not-found__subtitle" data-testid="404-subtitle">
 					Sorry, the page you are looking for does not exist.
 				</h2>
 
-				<p class="not-found__description">
+				<p class="not-found__description" data-testid="404-description">
 					Please check the URL in the address bar and try again.
 					{' '}
 					If you believe this is an error, please
 
-					<a class="not-found__contact" href={mailToURL}>contact me</a>.
+					<a class="not-found__contact" data-testid="404-contact-link" href={mailToURL}>
+						contact me
+					</a>.
 				</p>
 
-				<a class="not-found__back hover" href="/">
-					<Icon aria-hidden="true" name="arrow-short" width={28} />
+				<a class="not-found__back hover" data-testid="404-back-link" href="/">
+					<Icon
+						aria-hidden="true"
+						data-testid="404-back-icon"
+						name="arrow-short"
+						width={28}
+					/>
 
 					Go back to the homepage
 				</a>
 
-				<p class="not-found__issue">
+				<p class="not-found__issue" data-testid="404-issue">
 					You can also
 
 					<a
 						class="not-found__contact"
+						data-testid="404-github-link"
 						href={githubIssueURL}
 						rel="noreferrer"
 						target="_blank"
@@ -66,7 +80,7 @@ const githubIssueURL = 'https://github.com/ruslanpashkov/ruslanpashkov.com/issue
 			</div>
 		</section>
 
-		<span class="glow-not-found">
+		<span class="glow-not-found" data-testid="404-glow">
 			<Glow />
 		</span>
 	</div>

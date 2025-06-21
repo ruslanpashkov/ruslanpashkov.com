@@ -16,15 +16,15 @@ const { counter, link, title } = Astro.props;
 const slug = slugify(title);
 ---
 
-<section aria-labelledby={slug} class="section">
-	<header class="section__header">
-		<div class="section__title-container">
-			<h2 class="section__title" id={slug}>
+<section aria-labelledby={slug} class="section" data-testid="home-section">
+	<header class="section__header" data-testid="home-section-header">
+		<div class="section__title-container" data-testid="home-section-title-container">
+			<h2 class="section__title" data-testid="home-section-title" id={slug}>
 				{title}
 
 				{
 					counter && (
-						<span class="section__counter">
+						<span class="section__counter" data-testid="home-section-counter">
 							{counter}
 
 							<span class="sr-only">items in total</span>
@@ -35,12 +35,18 @@ const slug = slugify(title);
 
 			{
 				link && (
-					<a aria-label={link.label} class="section__link" href={link.url}>
+					<a
+						aria-label={link.label}
+						class="section__link"
+						data-testid="home-section-link"
+						href={link.url}
+					>
 						{link.title}
 
 						<Icon
 							aria-hidden="true"
 							class="section__navigation-icon"
+							data-testid="home-section-icon"
 							name="arrow-default"
 							width={40}
 						/>
@@ -49,7 +55,7 @@ const slug = slugify(title);
 			}
 		</div>
 
-		<div class="section__divider" role="presentation"></div>
+		<div class="section__divider" data-testid="home-section-divider" role="presentation"></div>
 	</header>
 
 	<slot />

@@ -14,23 +14,34 @@ const { categories, description, publishedAt, slug, title, topic } = article.dat
 const publishedDate = formatDate(publishedAt);
 ---
 
-<article class="article-card">
-	<header class="article-card__header">
-		<time class="article-card__date" datetime={publishedAt}>
+<article class="article-card" data-testid="blog-article-card">
+	<header class="article-card__header" data-testid="blog-article-header">
+		<time class="article-card__date" data-testid="blog-article-date" datetime={publishedAt}>
 			{publishedDate}
 		</time>
 
-		<p class="article-card__topic">{topic}</p>
+		<p class="article-card__topic" data-testid="blog-article-topic">{topic}</p>
 	</header>
 
-	<a class="article-card__link" draggable="false" href={`/blog/${slug}/`}>
-		<h2 class="article-card__title">{title}</h2>
+	<a
+		class="article-card__link"
+		data-testid="blog-article-link"
+		draggable="false"
+		href={`/blog/${slug}/`}
+	>
+		<h2 class="article-card__title" data-testid="blog-article-title">{title}</h2>
 	</a>
 
-	<p>{description}</p>
+	<p data-testid="blog-article-description">{description}</p>
 
-	<ul class="article-tags">
-		{categories.map((category) => <li class="article-tags__item">{category}</li>)}
+	<ul class="article-tags" data-testid="blog-article-tags">
+		{
+			categories.map((category) => (
+				<li class="article-tags__item" data-testid="blog-article-tag">
+					{category}
+				</li>
+			))
+		}
 	</ul>
 </article>
 

@@ -45,20 +45,26 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 	<ContentLayout breadcrumbs={breadcrumbs} title="Blog">
 		{
 			page.data.length > 0 ? (
-				<div class="articles">
+				<div class="articles" data-testid="blog-articles-container">
 					<BlogList page={page} />
 
-					<span class="articles-glow">
+					<span class="articles-glow" data-testid="blog-articles-glow">
 						<Glow />
 					</span>
 				</div>
 			) : (
-				<div class="no-articles">
-					<h2 class="no-articles__title">There are no articles yet.</h2>
+				<div class="no-articles" data-testid="blog-no-articles">
+					<h2 class="no-articles__title" data-testid="blog-no-articles-title">
+						There are no articles yet.
+					</h2>
 
-					<p class="no-articles__subtitle">
+					<p class="no-articles__subtitle" data-testid="blog-no-articles-subtitle">
 						But you still can check out my projects on
-						<a class="no-articles__projects-link" href="/projects/">
+						<a
+							class="no-articles__projects-link"
+							data-testid="blog-no-articles-projects-link"
+							href="/projects/"
+						>
 							the projects page!
 						</a>
 					</p>

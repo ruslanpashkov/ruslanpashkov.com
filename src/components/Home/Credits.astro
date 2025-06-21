@@ -8,11 +8,17 @@ interface Props {
 const { credits } = Astro.props;
 ---
 
-<ul class="credit-list">
+<ul class="credit-list" data-testid="home-credits-list">
 	{
 		credits.map(({ title, url }) => (
-			<li class="credit-list__item">
-				<a class="credit-list__link hover" href={url} rel="noreferrer" target="_blank">
+			<li class="credit-list__item" data-testid="home-credit-item">
+				<a
+					class="credit-list__link hover"
+					data-testid="home-credit-link"
+					href={url}
+					rel="noreferrer"
+					target="_blank"
+				>
 					{title}
 				</a>
 			</li>

@@ -10,20 +10,28 @@ interface Props {
 const { articles } = Astro.props;
 ---
 
-<ul class="article-list">
+<ul class="article-list" data-testid="home-articles-list">
 	{
 		articles.map(({ data }) => (
-			<li>
-				<article class="article-card">
-					<h3 class="article-card__title">{data.title}</h3>
+			<li data-testid="home-article-item">
+				<article class="article-card" data-testid="home-article-card">
+					<h3 class="article-card__title" data-testid="home-article-title">
+						{data.title}
+					</h3>
 
-					<p>{data.description}</p>
+					<p data-testid="home-article-description">{data.description}</p>
 
-					<a class="article-card__link" draggable="false" href={`/blog/${data.slug}/`}>
+					<a
+						class="article-card__link"
+						data-testid="home-article-link"
+						draggable="false"
+						href={`/blog/${data.slug}/`}
+					>
 						Read article
 						<Icon
 							aria-hidden="true"
 							class="article-card__navigation-icon"
+							data-testid="home-article-icon"
 							name="arrow-default"
 							width={40}
 						/>

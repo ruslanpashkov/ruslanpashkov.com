@@ -6,9 +6,9 @@ interface Props {
 const { id = 'message' } = Astro.props;
 ---
 
-<div class="message" id={id}>
-	<div class="message__content">
-		<span class="message__text" id={`${id}-text`}>Hi!</span>
+<div class="message" data-testid="message" id={id}>
+	<div class="message__content" data-testid="message-content">
+		<span class="message__text" data-testid="message-text" id={`${id}-text`}>Hi!</span>
 	</div>
 </div>
 

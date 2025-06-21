@@ -6,21 +6,25 @@ import { menu } from '@/data/menu';
 const currentPath = Astro.url.pathname;
 ---
 
-<div class="menu menu--closed" id="menu">
-	<nav aria-label="Main" class="menu__navigation" id="navigation">
-		<ul class="menu__list">
+<div class="menu menu--closed" data-testid="menu" id="menu">
+	<nav aria-label="Main" class="menu__navigation" data-testid="menu-navigation" id="navigation">
+		<ul class="menu__list" data-testid="menu-list">
 			{
 				menu.map(({ title, url }) => {
 					const isSelected = url === currentPath;
 
 					return (
-						<li>
+						<li data-testid="menu-item">
 							{isSelected ? (
-								<span aria-current="page" class="menu__link menu__link--selected">
+								<span
+									aria-current="page"
+									class="menu__link menu__link--selected"
+									data-testid="menu-link-selected"
+								>
 									{title}
 								</span>
 							) : (
-								<a class="menu__link hover" href={url}>
+								<a class="menu__link hover" data-testid="menu-link" href={url}>
 									{title}
 								</a>
 							)}
@@ -31,25 +35,26 @@ const currentPath = Astro.url.pathname;
 		</ul>
 	</nav>
 
-	<a class="action menu__feed" href="/rss.xml" id="feed">
-		<span class="action__icon">
+	<a class="action menu__feed" data-testid="menu-rss-feed" href="/rss.xml" id="feed">
+		<span class="action__icon" data-testid="menu-rss-icon">
 			<Icon aria-hidden="true" name="rss" size={16} />
 		</span>
 
-		<span class="action__label">RSS</span>
+		<span class="action__label" data-testid="menu-rss-label">RSS</span>
 	</a>
 
 	<button
 		aria-label="Use dark theme"
 		class="action menu__theme-toggler"
+		data-testid="menu-theme-toggler"
 		id="theme-toggler"
 		type="button"
 	>
-		<span class="action__icon">
+		<span class="action__icon" data-testid="menu-theme-icon">
 			<Icon aria-hidden="true" name="sun" size={22} />
 		</span>
 
-		<span class="action__label">Light</span>
+		<span class="action__label" data-testid="menu-theme-label">Light</span>
 	</button>
 </div>
 

@@ -31,7 +31,7 @@ const personSchema = getPersonSchema(Astro.url);
 	title={global.author}
 	type="website"
 >
-	<div class="container container--gapped">
+	<div class="container container--gapped" data-testid="home-page-container">
 		<Hero />
 
 		{
@@ -44,7 +44,7 @@ const personSchema = getPersonSchema(Astro.url);
 					}}
 					title="Blog"
 				>
-					<span class="glow-blog">
+					<span class="glow-blog" data-testid="home-glow-blog">
 						<Glow />
 					</span>
 
@@ -63,7 +63,7 @@ const personSchema = getPersonSchema(Astro.url);
 					}}
 					title="Projects"
 				>
-					<span class="glow-projects">
+					<span class="glow-projects" data-testid="home-glow-projects">
 						<Glow />
 					</span>
 
@@ -75,7 +75,7 @@ const personSchema = getPersonSchema(Astro.url);
 		{
 			contacts.length > 0 && (
 				<Section title="Contacts">
-					<div class="details">
+					<div class="details" data-testid="home-contacts-details">
 						<Contacts contacts={contacts} />
 
 						<Credits credits={credits} />

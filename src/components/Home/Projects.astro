@@ -10,33 +10,37 @@ interface Props {
 const { projects } = Astro.props;
 ---
 
-<ul class="project-list">
+<ul class="project-list" data-testid="home-projects-list">
 	{
 		projects.map(({ tags, title, url }) => (
-			<li>
-				<article class="project-card">
+			<li data-testid="home-project-item">
+				<article class="project-card" data-testid="home-project-card">
 					<a
 						class="project-card__link"
+						data-testid="home-project-link"
 						draggable="false"
 						href={url}
 						rel="noreferrer"
 						target="_blank"
 					>
-						<h3 class="project-card__title">
+						<h3 class="project-card__title" data-testid="home-project-title">
 							{title}
 
 							<Icon
 								aria-hidden="true"
 								class="project-card__navigation-icon"
+								data-testid="home-project-icon"
 								name="arrow-default"
 								width={40}
 							/>
 						</h3>
 					</a>
 
-					<ul class="project-tags">
+					<ul class="project-tags" data-testid="home-project-tags">
 						{tags.map((tag) => (
-							<li class="project-tags__item">{tag}</li>
+							<li class="project-tags__item" data-testid="home-project-tag">
+								{tag}
+							</li>
 						))}
 					</ul>
 				</article>

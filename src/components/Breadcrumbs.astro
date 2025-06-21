@@ -10,20 +10,28 @@ interface Props {
 const { breadcrumbs } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumbs" class="breadcrumbs">
-	<ol class="breadcrumbs__list">
+<nav aria-label="Breadcrumbs" class="breadcrumbs" data-testid="breadcrumbs">
+	<ol class="breadcrumbs__list" data-testid="breadcrumbs-list">
 		{
 			breadcrumbs.map((crumb, index) => {
 				const isLast = index === breadcrumbs.length - 1;
 
 				return (
-					<li class="breadcrumbs__item">
+					<li class="breadcrumbs__item" data-testid="breadcrumbs-item">
 						{isLast ? (
-							<span aria-current="page" class="breadcrumbs__label">
+							<span
+								aria-current="page"
+								class="breadcrumbs__label"
+								data-testid="breadcrumbs-current"
+							>
 								{crumb.title}
 							</span>
 						) : (
-							<a class="breadcrumbs__label breadcrumbs__link hover" href={crumb.url}>
+							<a
+								class="breadcrumbs__label breadcrumbs__link hover"
+								data-testid="breadcrumbs-link"
+								href={crumb.url}
+							>
 								{crumb.title}
 							</a>
 						)}
@@ -32,6 +40,7 @@ const { breadcrumbs } = Astro.props;
 							<Icon
 								aria-hidden="true"
 								class="breadcrumbs__separator"
+								data-testid="breadcrumbs-separator"
 								name="chevron-down"
 							/>
 						)}

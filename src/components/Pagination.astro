@@ -16,17 +16,22 @@ const { currentPage, lastPage, url } = page;
 const pages = generateSequence(lastPage);
 ---
 
-<nav aria-label="Pagination" class="pagination">
-	<ol class="pagination__list">
+<nav aria-label="Pagination" class="pagination" data-testid="pagination">
+	<ol class="pagination__list" data-testid="pagination-list">
 		{
 			url.first && (
-				<li class="pagination__item">
-					<a class="pagination__label pagination__link hover" href={url.prev}>
+				<li class="pagination__item" data-testid="pagination-prev">
+					<a
+						class="pagination__label pagination__link hover"
+						data-testid="pagination-prev-link"
+						href={url.prev}
+					>
 						<span class="sr-only">Previous page</span>
 
 						<Icon
 							aria-hidden="true"
 							class="pagination__arrow-icon pagination__arrow-icon--rotated"
+							data-testid="pagination-prev-icon"
 							name="arrow-short"
 							width={28}
 						/>
@@ -43,13 +48,21 @@ const pages = generateSequence(lastPage);
 				const pageURL = isFirst ? baseURL : `${baseURL}${pageNumber}/`;
 
 				return (
-					<li class="pagination__item">
+					<li class="pagination__item" data-testid="pagination-item">
 						{isCurrent ? (
-							<span aria-current="page" class="pagination__label">
+							<span
+								aria-current="page"
+								class="pagination__label"
+								data-testid="pagination-current"
+							>
 								<span class="sr-only">Page</span> {pageNumber}
 							</span>
 						) : (
-							<a class="pagination__label pagination__link hover" href={pageURL}>
+							<a
+								class="pagination__label pagination__link hover"
+								data-testid="pagination-link"
+								href={pageURL}
+							>
 								<span class="sr-only">Page</span> {pageNumber}
 							</a>
 						)}
@@ -60,13 +73,18 @@ const pages = generateSequence(lastPage);
 
 		{
 			url.last && (
-				<li class="pagination__item">
-					<a class="pagination__label pagination__link hover" href={url.next}>
+				<li class="pagination__item" data-testid="pagination-next">
+					<a
+						class="pagination__label pagination__link hover"
+						data-testid="pagination-next-link"
+						href={url.next}
+					>
 						<span class="sr-only">Next page</span>
 
 						<Icon
 							aria-hidden="true"
 							class="pagination__arrow-icon"
+							data-testid="pagination-next-icon"
 							name="arrow-short"
 							width={28}
 						/>

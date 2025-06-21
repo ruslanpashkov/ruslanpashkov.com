@@ -4,19 +4,19 @@ import Model from '@/components/Model.astro';
 import { global } from '@/data/global';
 ---
 
-<header class="hero">
-	<h1 class="hero__title">
-		<span class="hero__intro">Hi, I am</span>
+<header class="hero" data-testid="hero">
+	<h1 class="hero__title" data-testid="hero-title">
+		<span class="hero__intro" data-testid="hero-intro">Hi, I am</span>
 
-		<strong class="hero__name">{global.author}</strong>
+		<strong class="hero__name" data-testid="hero-name">{global.author}</strong>
 	</h1>
 
-	<p class="hero__description">{global.about}</p>
+	<p class="hero__description" data-testid="hero-description">{global.about}</p>
 
-	<div class="hero__model-container">
+	<div class="hero__model-container" data-testid="hero-model-container">
 		<Model />
 
-		<span class="hero__model-glow">
+		<span class="hero__model-glow" data-testid="hero-model-glow">
 			<Glow />
 		</span>
 	</div>

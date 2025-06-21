@@ -39,13 +39,13 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 	type="website"
 >
 	<ContentLayout breadcrumbs={breadcrumbs} title="Projects">
-		<div class="projects">
+		<div class="projects" data-testid="projects-page-container">
 			{
 				webShowcases.length > 0 && (
 					<ProjectSection title="Web Showcases">
 						<ProjectList projects={webShowcases} />
 
-						<span class="web-showcases-glow">
+						<span class="web-showcases-glow" data-testid="projects-web-showcases-glow">
 							<Glow />
 						</span>
 					</ProjectSection>
@@ -57,7 +57,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 					<ProjectSection title="Utilities">
 						<ProjectList projects={utilities} />
 
-						<span class="utilities-glow">
+						<span class="utilities-glow" data-testid="projects-utilities-glow">
 							<Glow />
 						</span>
 					</ProjectSection>
@@ -69,7 +69,10 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 					<ProjectSection title="Developer Tools">
 						<ProjectList projects={developerTools} />
 
-						<span class="developer-tools-glow">
+						<span
+							class="developer-tools-glow"
+							data-testid="projects-developer-tools-glow"
+						>
 							<Glow />
 						</span>
 					</ProjectSection>

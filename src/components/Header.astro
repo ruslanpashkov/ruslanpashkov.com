@@ -5,11 +5,11 @@ import Menu from '@/components/Menu.astro';
 import SkipToContent from '@/components/SkipToContent.astro';
 ---
 
-<header class="header header--animation" id="header">
-	<div class="header__content container">
+<header class="header header--animation" data-testid="header" id="header">
+	<div class="header__content container" data-testid="header-content">
 		<SkipToContent />
 
-		<a class="header__logo" href="/">
+		<a class="header__logo" data-testid="header-logo" href="/">
 			<span class="sr-only">Home</span>
 
 			<Icon aria-hidden="true" name="logo" size={32} />
@@ -20,10 +20,16 @@ import SkipToContent from '@/components/SkipToContent.astro';
 			aria-expanded="false"
 			aria-label="Open menu"
 			class="menu-toggler"
+			data-testid="header-menu-toggler"
 			id="menu-toggler"
 			type="button"
 		>
-			<span class="menu-toggler__icon" role="presentation"></span>
+			<span
+				class="menu-toggler__icon"
+				data-testid="header-menu-toggler-icon"
+				role="presentation"
+			>
+			</span>
 		</button>
 
 		<Menu />

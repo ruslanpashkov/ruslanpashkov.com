@@ -10,10 +10,10 @@ interface Props {
 const { articles } = Astro.props;
 ---
 
-<ul class="article-list">
+<ul class="article-list" data-testid="blog-article-list">
 	{
 		articles.map((article) => (
-			<li>
+			<li data-testid="blog-article-list-item">
 				<ArticleCard article={article} />
 			</li>
 		))

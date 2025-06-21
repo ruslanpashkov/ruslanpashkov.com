@@ -10,10 +10,10 @@ interface Props {
 const { projects } = Astro.props;
 ---
 
-<ul class="project-list">
+<ul class="project-list" data-testid="project-list">
 	{
 		projects.map((project) => (
-			<li>
+			<li data-testid="project-list-item">
 				<ProjectCard project={project} />
 			</li>
 		))
