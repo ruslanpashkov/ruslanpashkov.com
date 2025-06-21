@@ -1,4 +1,4 @@
-export const messages = {
+export const messages = Object.freeze({
 	annoyed: [
 		'I exist for aesthetics, not as your personal stress reliever.',
 		"Wild idea: maybe check out Ruslan's actual work instead?",
@@ -41,4 +41,4 @@ export const messages = {
 		'Good job. You just wasted more than a minute. Keep it up!',
 		"Brilliant. You've successfully annoyed a collection of triangles.",
 	],
-} as const;
+});
