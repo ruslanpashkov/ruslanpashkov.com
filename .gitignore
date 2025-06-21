@@ -9,3 +9,9 @@ node_modules/
 
 # Platform specific files
 .netlify/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
