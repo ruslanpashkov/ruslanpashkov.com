@@ -25,7 +25,7 @@ function buildListItemSchema(crumb: Link, index: number): ListItem {
 		item: {
 			'@id': crumbURL.href,
 			'@type': 'WebPage',
-			name: crumb.label,
+			name: crumb.title,
 		},
 		position: position,
 	};
