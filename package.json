@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "bun build/build-previews",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -20,7 +21,6 @@
     "test:e2e": "playwright test",
     "check": "bun run typecheck && bun run format:check && bun run lint",
     "html-validate": "w3c-html-validator dist",
-    "build-previews": "bun run build-previews.js",
     "prepare": "husky"
   },
   "devDependencies": {

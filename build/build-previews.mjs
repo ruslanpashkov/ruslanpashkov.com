@@ -2,8 +2,7 @@ import { readFile } from 'fs/promises';
 import matter from 'gray-matter';
 import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { chromium } from 'playwright';
 
 const CONFIG = {
@@ -13,7 +12,7 @@ const CONFIG = {
 	},
 	paths: {
 		content: join(process.cwd(), 'src/content'),
-		output: join(dirname(fileURLToPath(import.meta.url)), '/public/images/previews'),
+		output: join(process.cwd(), 'public/images/previews'),
 	},
 	template: {
 		color: {
@@ -45,6 +44,120 @@ async function buildPreviews() {
 	}
 }
 
+function createLogo(primaryColor) {
+	return `<svg width="64" height="76" viewBox="0 0 64 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M2 51.1294V2C2 2 20.3158 2 32.7368 2C45.1579 2 50.6316 13.6471 50.6316 19.5765C50.6316 39.4824 32.9474 39.6941 32.9474 39.6941L59.0526 74H38.2105L20.5263 51.1294H46C50.8421 51.1294 62 45.8353 62 31.8588C62 22.5412 54 13.8588 45.3684 13.8588H17.3684V74H2.00001" stroke="${primaryColor}" stroke-width="3" stroke-miterlimit="10"/>
+	</svg>`;
+}
+
+function createStyles({ color, font, height, width }) {
+	return `
+		html {
+			font-family: ${font.name};
+			line-height: 1.2;
+			color: ${color.primary};
+		}
+		body {
+			box-sizing: border-box;
+			position: relative;
+			margin: 0;
+			width: ${width}px;
+			height: ${height}px;
+		}
+		.preview-template {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: flex-start;
+			padding: 40px;
+			position: relative;
+			width: ${width}px;
+			height: ${height}px;
+			background: ${color.secondary};
+			isolation: isolate;
+		}
+		.content {
+			z-index: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 12px;
+			max-width: 820px;
+		}
+		.title {
+			font-size: 54px;
+		}
+		.description {
+			font-size: 24px;
+		}
+		.categories {
+			display: flex;
+			gap: 20px;
+		}
+		.category {
+			z-index: 1;
+			box-sizing: border-box;
+			padding: 4px 16px;
+			width: max-content;
+			font-size: 24px;
+			border: 2px solid ${color.primary};
+			border-radius: 24px;
+		}
+		.glow {
+			position: absolute;
+			width: 400px;
+			height: 400px;
+			left: 900px;
+			top: 132px;
+			background: ${color.accent};
+			filter: blur(100px);
+		}
+	`
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+function createTemplate(article) {
+	const { color, font } = CONFIG.template;
+	const { height, width } = CONFIG.dimensions;
+
+	const styles = createStyles({ color, font, height, width });
+	const categoriesHtml = article.categories
+		.map((category) => `<div class="category">${escapeHtml(category)}</div>`)
+		.join('');
+
+	return `<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>${escapeHtml(article.title)}</title>
+		<link href="${font.url}" rel="stylesheet">
+		<style>${styles}</style>
+	</head>
+	<body class="preview-template">
+		${createLogo(color.primary)}
+		<div class="content">
+			<div class="title">${escapeHtml(article.title)}</div>
+			<div class="description">${escapeHtml(article.description)}</div>
+		</div>
+		<div class="categories">${categoriesHtml}</div>
+		<div class="glow"></div>
+	</body>
+</html>`;
+}
+
+function escapeHtml(text) {
+	const map = {
+		'"': '&quot;',
+		'&': '&amp;',
+		"'": '&#039;',
+		'<': '&lt;',
+		'>': '&gt;',
+	};
+	return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
 async function generateOGImages(articles) {
 	let browser = null;
 	let skippedCount = 0;
@@ -68,7 +181,7 @@ async function generateOGImages(articles) {
 
 			console.log(`  🖼 Generating: ${article.title}`);
 
-			const html = getTemplate(article);
+			const html = createTemplate(article);
 
 			await page.setContent(html, { waitUntil: 'networkidle' });
 
@@ -120,114 +233,6 @@ async function getCollection(name) {
 		console.error(`Error getting collection ${name}:`, error);
 		throw error;
 	}
-}
-
-function getTemplate(article) {
-	return `<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-			<title>${article.title}</title>
-
-			<link href="${CONFIG.template.font.url}" rel="stylesheet">
-
-			<style>
-				html {
-					font-family: ${CONFIG.template.font.name};
-					line-height: 1.2;
-					color: ${CONFIG.template.color.primary};
-				}
-
-				body {
-					box-sizing: border-box;
-					position: relative;
-					margin: 0;
-					width: ${CONFIG.dimensions.width}px;
-					height: ${CONFIG.dimensions.height}px;
-				}
-
-				.preview-template {
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-					align-items: flex-start;
-					padding: 40px;
-					position: relative;
-					width: ${CONFIG.dimensions.width}px;
-					height: ${CONFIG.dimensions.height}px;
-					background: ${CONFIG.template.color.secondary};
-					isolation: isolate;
-				}
-
-				.content {
-					z-index: 1;
-					display: flex;
-					flex-direction: column;
-					align-items: flex-start;
-					gap: 12px;
-					max-width: 820px;
-				}
-
-				.title {
-					font-size: 54px;
-				}
-
-				.description {
-					font-size: 24px;
-				}
-
-				.categories {
-					display: flex;
-					gap: 20px;
-				}
-
-				.category {
-					box-sizing: border-box;
-					padding: 4px 16px;
-					width: max-content;
-					font-size: 24px;
-					border: 2px solid ${CONFIG.template.color.primary};
-					border-radius: 24px;
-				}
-
-				.glow {
-					position: absolute;
-					width: 400px;
-					height: 400px;
-					left: 900px;
-					top: 132px;
-					background: ${CONFIG.template.color.accent};
-					filter: blur(100px);
-				}
-			</style>
-		</head>
-
-		<body class="preview-template">
-			<svg width="64" height="76" viewBox="0 0 64 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path
-					d="M2 51.1294V2C2 2 20.3158 2 32.7368 2C45.1579 2 50.6316 13.6471 50.6316 19.5765C50.6316 39.4824 32.9474 39.6941 32.9474 39.6941L59.0526 74H38.2105L20.5263 51.1294H46C50.8421 51.1294 62 45.8353 62 31.8588C62 22.5412 54 13.8588 45.3684 13.8588H17.3684V74H2.00001"
-					stroke="${CONFIG.template.color.primary}"
-					stroke-width="3"
-					stroke-miterlimit="10"
-				/>
-			</svg>
-
-			<div class="content">
-				<div class="title">${article.title}</div>
-
-				<div class="description">${article.description}</div>
-			</div>
-
-			<div class="categories">
-				${article.categories.map((category) => `<div class="category">${category}</div>`).join('')}
-			</div>
-
-			<div class="glow"></div>
-		</body>
-	</html>
-	`;
 }
 
 function validateArticle(article) {
