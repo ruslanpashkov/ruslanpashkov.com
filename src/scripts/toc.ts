@@ -8,6 +8,7 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
+
 let currentTransitionHandler: ((event: TransitionEvent) => void) | null = null;
 
 const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);

@@ -16,6 +16,7 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
+
 let animationId: number;
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
@@ -399,20 +400,23 @@ const initEventListeners = () => {
 	});
 };
 
+const initState = async () => {
+	updateLoadingProgress(0);
+
+	createScene();
+	createCamera();
+	createRenderer();
+	createLighting();
+
+	await loadModel();
+};
+
 const init = async () => {
 	refs = getRefs();
 
 	if (hasRefs(refs)) {
 		try {
-			updateLoadingProgress(0);
-
-			createScene();
-			createCamera();
-			createRenderer();
-			createLighting();
-
-			await loadModel();
-
+			await initState();
 			initEventListeners();
 			animate();
 		} catch (error) {

@@ -10,9 +10,17 @@ const handleHashNavigation = () => {
 	}
 };
 
-const init = () => {
-	handleHashNavigation();
+const initEventListeners = () => {
 	window.addEventListener('hashchange', handleHashNavigation);
+};
+
+const initState = () => {
+	handleHashNavigation();
+};
+
+const init = () => {
+	initState();
+	initEventListeners();
 };
 
 const cleanup = () => {

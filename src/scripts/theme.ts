@@ -6,9 +6,6 @@ import sunSvg from '@/assets/svg/sun.svg?raw';
 const THEME_STORAGE_KEY = 'theme';
 const themes: Theme[] = ['system', 'light', 'dark'];
 
-let refs: ReturnType<typeof getRefs>;
-let darkMediaQuery: MediaQueryList;
-
 const getRefs = () => ({
 	darkStyles: document.getElementById('style-media-dark') as HTMLStyleElement,
 	darkThemeColor: document.getElementById('theme-color-dark') as HTMLMetaElement,
@@ -16,6 +13,12 @@ const getRefs = () => ({
 	lightThemeColor: document.getElementById('theme-color-light') as HTMLMetaElement,
 	themeToggler: document.getElementById('theme-toggler') as HTMLButtonElement,
 });
+
+let refs: ReturnType<typeof getRefs>;
+
+let darkMediaQuery: MediaQueryList;
+
+const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
 
 const getSystemTheme = (): ColorTheme => (darkMediaQuery.matches ? 'dark' : 'light');
 
@@ -37,6 +40,27 @@ const setDocumentTheme = (theme: ColorTheme) => {
 const getMediaForTheme = (theme: ColorTheme, targetTheme: ColorTheme) =>
 	theme === targetTheme ? 'all' : 'not all';
 
+const getThemeIcon = (theme: ColorTheme) => (theme === 'light' ? sunSvg : moonSvg);
+
+const getThemeConfig = (theme: Theme, systemTheme: ColorTheme) =>
+	({
+		dark: { icon: moonSvg, label: 'Use system theme', text: 'Dark' },
+		light: { icon: sunSvg, label: 'Use dark theme', text: 'Light' },
+		system: { icon: getThemeIcon(systemTheme), label: 'Use light theme', text: 'System' },
+	})[theme];
+
+const getEffectiveTheme = (theme: Theme) => (theme === 'system' ? getSystemTheme() : theme);
+
+const getNextIndex = (currentIndex: number, arrayLength: number) =>
+	(currentIndex + 1) % arrayLength;
+
+const getNextTheme = (currentTheme: Theme) => {
+	const currentIndex = themes.indexOf(currentTheme);
+	const nextIndex = getNextIndex(currentIndex, themes.length);
+
+	return themes[nextIndex];
+};
+
 const updateStylesheetsForTheme = (theme: ColorTheme) => {
 	const lightMedia = getMediaForTheme(theme, 'light');
 	const darkMedia = getMediaForTheme(theme, 'dark');
@@ -46,15 +70,6 @@ const updateStylesheetsForTheme = (theme: ColorTheme) => {
 	refs.lightThemeColor.media = lightMedia;
 	refs.darkThemeColor.media = darkMedia;
 };
-
-const getThemeIcon = (theme: ColorTheme) => (theme === 'light' ? sunSvg : moonSvg);
-
-const getThemeConfig = (theme: Theme, systemTheme: ColorTheme) =>
-	({
-		dark: { icon: moonSvg, label: 'Use system theme', text: 'Dark' },
-		light: { icon: sunSvg, label: 'Use dark theme', text: 'Light' },
-		system: { icon: getThemeIcon(systemTheme), label: 'Use light theme', text: 'System' },
-	})[theme];
 
 const updateTogglerUI = (theme: Theme) => {
 	const [icon, text] = Array.from(refs.themeToggler.children) as [HTMLElement, HTMLElement];
@@ -76,18 +91,6 @@ const applyTheme = (theme: Theme) => {
 	setDocumentTheme(effectiveTheme);
 	updateStylesheetsForTheme(effectiveTheme);
 	updateTogglerUI(theme);
-};
-
-const getEffectiveTheme = (theme: Theme) => (theme === 'system' ? getSystemTheme() : theme);
-
-const getNextIndex = (currentIndex: number, arrayLength: number) =>
-	(currentIndex + 1) % arrayLength;
-
-const getNextTheme = (currentTheme: Theme) => {
-	const currentIndex = themes.indexOf(currentTheme);
-	const nextIndex = getNextIndex(currentIndex, themes.length);
-
-	return themes[nextIndex];
 };
 
 const handleSystemThemeChange = () => {
@@ -115,15 +118,22 @@ const setupThemeToggler = () => {
 	refs.themeToggler.addEventListener('click', handleThemeToggle);
 };
 
-const init = () => {
-	refs = getRefs();
+const initState = () => {
 	darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
 	const initialTheme = getColorTheme();
 
 	applyTheme(initialTheme);
-	setupThemeToggler();
-	setupSystemThemeListener();
+};
+
+const init = () => {
+	refs = getRefs();
+
+	if (hasRefs(refs)) {
+		initState();
+		setupThemeToggler();
+		setupSystemThemeListener();
+	}
 };
 
 const cleanup = () => {

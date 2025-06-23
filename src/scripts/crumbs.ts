@@ -24,11 +24,15 @@ const initEventListeners = () => {
 	window.addEventListener('resize', handleResize);
 };
 
+const initState = () => {
+	checkScroll();
+};
+
 const init = () => {
 	refs = getRefs();
 
 	if (hasRefs(refs)) {
-		checkScroll();
+		initState();
 		initEventListeners();
 	}
 };

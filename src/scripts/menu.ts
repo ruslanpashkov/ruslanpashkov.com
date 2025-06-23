@@ -10,8 +10,11 @@ const getRefs = () => ({
 });
 
 let refs: ReturnType<typeof getRefs>;
+
 let focusTrap: ReturnType<typeof createFocusTrap>;
 let mobileMediaQuery: MediaQueryList;
+
+const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
 
 const toggleBodyClip = (shouldClip: boolean) =>
 	refs.body.classList.toggle('page__body--clip', shouldClip);
@@ -32,7 +35,9 @@ const setMenuTogglerLabel = (isExpanded: boolean) =>
 	refs.menuToggler.setAttribute('aria-label', isExpanded ? 'Close menu' : 'Open menu');
 
 const isClosed = () => refs.menu.classList.contains('menu--closed');
+
 const isOpen = () => refs.menu.classList.contains('menu--open');
+
 const isMenuOpen = () => refs.menuToggler.getAttribute('aria-expanded') === 'true';
 
 const showMenuIfNotClosed = () => {
@@ -104,15 +109,21 @@ const initEventListeners = () => {
 	mobileMediaQuery.addEventListener('change', handleMediaQueryChange);
 };
 
-const init = () => {
-	refs = getRefs();
+const initState = () => {
 	focusTrap = createFocusTrap(refs.header);
 	mobileMediaQuery = window.matchMedia('(max-width: 1023px)');
 
-	initEventListeners();
-
 	if (mobileMediaQuery.matches) {
 		refs.feed.after(refs.navigation);
+	}
+};
+
+const init = () => {
+	refs = getRefs();
+
+	if (hasRefs(refs)) {
+		initState();
+		initEventListeners();
 	}
 };
 
