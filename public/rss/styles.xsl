@@ -54,7 +54,7 @@
             <p>
               <xsl:value-of select="/rss/channel/description"/>
             </p>
-            <a target="_blank">
+            <a>
               <xsl:attribute name="href">
                 <xsl:value-of select="/rss/channel/link"/>
               </xsl:attribute>
@@ -67,7 +67,7 @@
               <li class="mb-5">
                 <article>
                   <h3 class="mb-0">
-                    <a target="_blank">
+                    <a>
                       <xsl:attribute name="href">
                         <xsl:value-of select="link"/>
                       </xsl:attribute>

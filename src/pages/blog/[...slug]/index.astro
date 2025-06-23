@@ -47,6 +47,17 @@ const onlineProfiles = findOnlineProfiles(contacts);
 const publishedDate = formatDate(publishedAt);
 const updatedDate = updatedAt && formatDate(updatedAt);
 
+const emailDetails = {
+	body: 'Hi Ruslan, I just read your article and have some questions/feedback.',
+	recipient: email.url,
+	subject: `Re: ${title} - Questions/Feedback`,
+};
+
+const mailToURL =
+	`mailto:${emailDetails.recipient}?` +
+	`subject=${encodeURIComponent(emailDetails.subject)}&` +
+	`body=${encodeURIComponent(emailDetails.body)}`;
+
 const breadcrumbs: Link[] = [
 	{ title: 'Home', url: '/' },
 	{ title: 'Blog', url: '/blog/' },
@@ -141,7 +152,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 						<a
 							class="article__contact-link hover"
 							data-testid="blog-article-contact-link"
-							href={email.url}
+							href={mailToURL}
 						>
 							<Icon
 								aria-label="Email"
@@ -163,7 +174,6 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 										data-testid="blog-article-social-link"
 										href={url}
 										rel="noreferrer"
-										target="_blank"
 									>
 										<Icon
 											aria-label={label}
