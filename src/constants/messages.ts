@@ -15,7 +15,7 @@ export const messages = Object.freeze({
 		"Oh, you clicked me! I'm not supposed to be clickable—but that's okay.",
 		'Hey! Below you can find some of my latest work. Feel free to explore!',
 		"Yes, I am interactive! I'm happy that you found it. Have a look around!",
-		"Psst… Click quietly! Yes, I can talk, but don't tell Ruslan!",
+		"Psst… Click quietly! Yes, I can talk, but don't tell it to the others!",
 	],
 	initial: [
 		'Hey! Welcome to my blog.',
