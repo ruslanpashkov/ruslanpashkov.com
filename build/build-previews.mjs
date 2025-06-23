@@ -197,7 +197,7 @@ async function generateOGImages(articles) {
 			`\n📊 Summary:\n  🆕 Generated: ${generatedCount}\n  ⏩ Skipped: ${skippedCount}\n`,
 		);
 	} catch (error) {
-		console.error(`Error generating OG images:`, error);
+		console.error(`❌ Error generating OG images:`, error);
 		throw error;
 	} finally {
 		if (browser) {
@@ -228,7 +228,7 @@ async function getCollection(name) {
 			}),
 		);
 	} catch (error) {
-		console.error(`Error getting collection ${name}:`, error);
+		console.error(`❌ Error getting collection ${name}:`, error);
 		throw error;
 	}
 }

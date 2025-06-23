@@ -54,13 +54,13 @@
     },
     {
       "src": "/images/screenshots/mobile-light.png",
-      "sizes": "430x932",
+      "sizes": "360x800",
       "type": "image/png",
       "form_factor": "narrow"
     },
     {
       "src": "/images/screenshots/mobile-dark.png",
-      "sizes": "430x932",
+      "sizes": "360x800",
       "type": "image/png",
       "form_factor": "narrow"
     }
