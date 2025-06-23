@@ -138,7 +138,7 @@ const writeMessage = (message: string) => {
 const showMessage = (text: string, category: MessageCategory = 'friendly') => {
 	if (refs.message && refs.messageText) {
 		if (messageTimeout) {
-			clearTimeout(messageTimeout);
+			window.clearTimeout(messageTimeout);
 		}
 
 		refs.message.classList.add('model__message--open');
@@ -169,7 +169,7 @@ const showMessage = (text: string, category: MessageCategory = 'friendly') => {
 
 const showInitialMessage = () => {
 	if (!isInitialized && refs.message && refs.messageText) {
-		setTimeout(() => {
+		window.setTimeout(() => {
 			const message = getRandomMessage('initial');
 
 			showMessage(message, 'friendly');
