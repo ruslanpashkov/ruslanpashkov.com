@@ -13,6 +13,7 @@ export default defineConfig({
 	reporter: 'html',
 	retries: process.env.CI ? 2 : 0,
 	testDir: './__tests__/e2e',
+	testMatch: '*.spec.ts',
 	use: {
 		baseURL: 'http://localhost:4321',
 		trace: 'on-first-retry',
