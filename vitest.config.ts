@@ -4,7 +4,14 @@ import { getViteConfig } from 'astro/config';
 export default getViteConfig({
 	test: {
 		coverage: {
-			include: ['src/**/*.{ts,astro}'],
+			exclude: [
+				'src/components/**/*.ts',
+				'src/constants/**/*.ts',
+				'src/content/**/*.ts',
+				'src/pages/**/*.ts',
+				'src/data/**/*.ts',
+			],
+			include: ['src/**/*.ts'],
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
 		},

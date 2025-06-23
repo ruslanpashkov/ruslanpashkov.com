@@ -10,7 +10,8 @@ node_modules/
 # Platform specific files
 .netlify/
 
-# Playwright
+# Test results
+/coverage/
 /test-results/
 /playwright-report/
 /blob-report/
