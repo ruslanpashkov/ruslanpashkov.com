@@ -11,9 +11,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 
-import { chunkManager } from './chunk-strategies.mjs';
-import { expressiveCodeOptions } from './code-styles.mjs';
-import { remarkReadingTime } from './remark-reading-time.mjs';
+import { chunkManager } from './build/chunk-strategies.mjs';
+import { expressiveCodeOptions } from './build/code-styles.mjs';
+import { remarkReadingTime } from './build/remark-reading-time.mjs';
 
 // https://astro.build/config
 export default defineConfig({
