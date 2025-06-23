@@ -2,7 +2,7 @@ const STORAGE_KEY = 'toc-collapsed';
 
 const getRefs = () => ({
 	content: document.querySelector('.table-of-contents__content') as HTMLElement,
-	list: document.querySelector('.table-of-contents__list') as HTMLElement,
+	list: document.querySelector('.table-of-contents__list') as HTMLOListElement,
 	toc: document.querySelector('.table-of-contents') as HTMLElement,
 	toggle: document.querySelector('.table-of-contents__toggle') as HTMLButtonElement,
 });

@@ -1,7 +1,7 @@
 import { createFocusTrap } from 'focus-trap';
 
 const getRefs = () => ({
-	body: document.getElementById('body') as HTMLElement,
+	body: document.getElementById('body') as HTMLBodyElement,
 	feed: document.getElementById('feed') as HTMLLinkElement,
 	header: document.getElementById('header') as HTMLElement,
 	menu: document.getElementById('menu') as HTMLElement,
