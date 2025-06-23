@@ -10,6 +10,12 @@
   "orientation": "natural",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
+  "scope": "/",
+  "scope_extensions": [],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "categories": ["productivity", "education", "utilities"],
+  "iarc_rating_id": "not_applicable",
   "launch_handler": {
     "client_mode": ["focus-existing", "auto"]
   },
