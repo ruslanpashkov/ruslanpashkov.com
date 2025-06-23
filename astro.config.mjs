@@ -11,7 +11,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 
-import { chunkManager } from './build/chunk-strategies.mjs';
+import { getChunkName } from './build/chunk-strategies.mjs';
 import { expressiveCodeOptions } from './build/code-styles.mjs';
 import { remarkReadingTime } from './build/remark-reading-time.mjs';
 
@@ -72,7 +72,7 @@ export default defineConfig({
 			chunkSizeWarningLimit: 1000,
 			rollupOptions: {
 				output: {
-					manualChunks: (id) => chunkManager.getChunkName(id),
+					manualChunks: (id) => getChunkName(id),
 				},
 			},
 			target: browserslistToEsbuild(browserslist()),
