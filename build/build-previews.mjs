@@ -184,9 +184,7 @@ async function generateOGImages(articles) {
 			const html = createTemplate(article);
 
 			await page.setContent(html, { waitUntil: 'networkidle' });
-
 			await mkdir(CONFIG.paths.output, { recursive: true });
-
 			await page.screenshot({
 				path: outputPath,
 				type: 'png',
