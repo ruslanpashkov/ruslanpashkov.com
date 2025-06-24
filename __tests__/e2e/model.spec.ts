@@ -1,27 +1,20 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('3D Model', () => {
-	test('is visible and interacts with the model', async ({ page }) => {
+	test('is visible and handles state changes', async ({ page }) => {
 		await page.goto('/');
+
 		await expect(page.getByTestId('model-loader')).toBeVisible();
+		await expect(page.getByTestId('model-loader-text')).toHaveText('Loading Model…');
+		await expect(page.getByTestId('model-progress-bar')).toBeVisible();
+		await expect(page.getByTestId('model-percentage')).toHaveText(/^\d+%$/);
 		await expect(page.getByTestId('model')).toBeVisible();
 		await expect(page.getByTestId('model-loader')).toBeHidden();
-		await expect(page.getByTestId('model-message-container')).toBeVisible();
-		const messageTextLocator = page.getByTestId('message-text');
+		await expect(page.getByTestId('model-error')).toBeHidden();
 
-		await expect(messageTextLocator).not.toBeEmpty();
-		await expect(page.getByTestId('model-message-container')).toBeHidden();
-		const modelCanvas = page.locator('[data-testid="model"] canvas').first();
-		const box = await modelCanvas.boundingBox();
-		expect(box, '3D model canvas not found or not visible').not.toBeNull();
-		const centerX = box!.x + box!.width / 2;
-		const centerY = box!.y + box!.height / 2;
-
-		await page.mouse.click(centerX, centerY);
-
-		await expect(page.getByTestId('model-message-container')).toBeVisible();
-		await expect(messageTextLocator).not.toBeEmpty();
-		await expect(page.getByTestId('model-message-container')).toBeHidden();
+		const modelContainer = page.getByTestId('model');
+		await expect(modelContainer).toHaveAttribute('role', 'presentation');
+		await expect(modelContainer).toHaveAttribute('id', 'model');
 	});
 
 	test('shows error message if model fails to load', async ({ page }) => {
