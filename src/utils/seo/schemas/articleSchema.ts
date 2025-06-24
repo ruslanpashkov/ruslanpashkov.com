@@ -5,7 +5,6 @@ import type { Article } from '@/types/Article';
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
-import { formatDate } from '@/utils/formatting';
 import { clean } from '@/utils/markdown';
 
 export const getArticleSchema = (website: URL, article: Article): WithContext<BlogPosting> => {
@@ -17,7 +16,7 @@ export const getArticleSchema = (website: URL, article: Article): WithContext<Bl
 	const onlineProfiles = findOnlineProfilesURLs(contacts);
 	const articleURL = new URL(`/blog/${slug}/`, website);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, website);
-	const datePublished = new Date(formatDate(publishedAt)).toISOString();
+	const datePublished = new Date(publishedAt).toISOString();
 	const keywords = categories.join(', ');
 	const cleanContent = clean(body as string);
 

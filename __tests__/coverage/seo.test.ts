@@ -100,7 +100,7 @@ describe('SEO utilities', () => {
 			expect(result['@id']).toBe('https://example.com/blog/test-article/');
 			expect(result.headline).toBe('Test Article');
 			expect(result.description).toBe('Test article description');
-			expect(result.datePublished).toMatch(/^2024-12-31T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+			expect(result.datePublished).toMatch(/^2025-01-01T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
 			expect(result.keywords).toBe('Technology, Programming');
 			expect(result.inLanguage).toBe('en');
 			expect(result.url).toBe('https://example.com/blog/test-article/');

@@ -7,7 +7,6 @@ import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
 import { sortByDate } from '@/utils/article';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
-import { formatDate } from '@/utils/formatting';
 import { clean } from '@/utils/markdown';
 import { generateTitle } from '@/utils/seo';
 
@@ -51,7 +50,7 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
-	const datePublished = new Date(formatDate(publishedAt)).toISOString();
+	const datePublished = new Date(publishedAt).toISOString();
 	const keywords = categories.join(', ');
 	const cleanContent = clean(body as string);
 
