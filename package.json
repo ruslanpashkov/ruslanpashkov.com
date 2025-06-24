@@ -17,13 +17,13 @@
     "format:check": "prettier --check .",
     "test": "bun run test:unit && bun run test:e2e",
     "test:unit": "vitest run",
-    "test:unit:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
+    "test:unit:coverage": "bun run test:unit -- --coverage",
+    "test:e2e": "bun run test:e2e:install && playwright test",
+    "test:e2e:install": "bunx playwright install --with-deps",
     "check": "bun run typecheck && bun run format:check && bun run lint",
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun build/build-previews",
     "build-screenshots": "bun build/build-screenshots",
-    "postinstall": "bunx playwright install --with-deps",
     "prepare": "husky"
   },
   "devDependencies": {
