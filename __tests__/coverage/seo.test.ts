@@ -14,10 +14,10 @@ import {
 	getProjectsSchema,
 } from '@/utils/seo/schemas';
 
-// The schema-dts library has complex union types that TypeScript can't properly narrow
-// for testing purposes. Using a simple Record<string, any> type allows us to test
-// the actual schema structure without dealing with the complex type system.
-// TODO: Find a better way to test the schema structure.
+// The schema-dts library has complex union types that
+// TypeScript can't properly narrow for testing purposes.
+// Using an any type allows us to test the actual schema
+// structure without dealing with the complex type system.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SchemaObject = Record<string, any>;
 
@@ -93,7 +93,7 @@ describe('SEO utilities', () => {
 				id: 'test-article',
 			};
 
-			const result = getArticleSchema(mockWebsite, mockArticle) as SchemaObject;
+			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
 
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('BlogPosting');
@@ -129,7 +129,7 @@ describe('SEO utilities', () => {
 				id: 'ai-article',
 			};
 
-			const result = getArticleSchema(mockWebsite, mockArticle) as SchemaObject;
+			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
 
 			expect(result.keywords).toBe('Tech, AI, Machine Learning');
 			expect(result.articleSection).toEqual(['Tech', 'AI', 'Machine Learning']);
@@ -167,7 +167,7 @@ describe('SEO utilities', () => {
 				},
 			];
 
-			const result = getBlogSchema(mockWebsite, mockArticles) as SchemaObject;
+			const result: SchemaObject = getBlogSchema(mockWebsite, mockArticles);
 
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('Blog');
@@ -181,7 +181,7 @@ describe('SEO utilities', () => {
 		});
 
 		it('should handle empty articles array', () => {
-			const result = getBlogSchema(mockWebsite, []) as SchemaObject;
+			const result: SchemaObject = getBlogSchema(mockWebsite, []);
 
 			expect(result.blogPost).toHaveLength(0);
 		});
@@ -189,7 +189,7 @@ describe('SEO utilities', () => {
 
 	describe('getPersonSchema', () => {
 		it('should generate valid person schema', () => {
-			const result = getPersonSchema(mockWebsite) as SchemaObject;
+			const result: SchemaObject = getPersonSchema(mockWebsite);
 
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('Person');
@@ -207,7 +207,7 @@ describe('SEO utilities', () => {
 		});
 
 		it('should include language schemas', () => {
-			const result = getPersonSchema(mockWebsite) as SchemaObject;
+			const result: SchemaObject = getPersonSchema(mockWebsite);
 
 			expect(result.knowsLanguage).toHaveLength(3);
 			expect(result.knowsLanguage[0]['@type']).toBe('Language');
@@ -235,7 +235,7 @@ describe('SEO utilities', () => {
 				},
 			];
 
-			const result = getProjectsSchema(mockWebsite, mockProjects) as SchemaObject;
+			const result: SchemaObject = getProjectsSchema(mockWebsite, mockProjects);
 
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('CollectionPage');
@@ -250,7 +250,7 @@ describe('SEO utilities', () => {
 		});
 
 		it('should handle empty projects array', () => {
-			const result = getProjectsSchema(mockWebsite, []) as SchemaObject;
+			const result: SchemaObject = getProjectsSchema(mockWebsite, []);
 
 			expect(result.mainEntity.itemListElement).toHaveLength(0);
 		});
@@ -266,7 +266,7 @@ describe('SEO utilities', () => {
 				},
 			];
 
-			const result = getProjectsSchema(mockWebsite, mockProjects) as SchemaObject;
+			const result: SchemaObject = getProjectsSchema(mockWebsite, mockProjects);
 
 			const listItem = result.mainEntity.itemListElement[0];
 
@@ -286,7 +286,7 @@ describe('SEO utilities', () => {
 				{ title: 'Article', url: '/blog/article/' },
 			];
 
-			const result = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs) as SchemaObject;
+			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs);
 
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('BreadcrumbList');
@@ -303,7 +303,7 @@ describe('SEO utilities', () => {
 		});
 
 		it('should handle empty breadcrumbs array', () => {
-			const result = getBreadcrumbsSchema(mockWebsite, []) as SchemaObject;
+			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, []);
 
 			expect(result.itemListElement).toHaveLength(0);
 		});
@@ -311,7 +311,7 @@ describe('SEO utilities', () => {
 		it('should handle single breadcrumb', () => {
 			const mockBreadcrumbs: Link[] = [{ title: 'Home', url: '/' }];
 
-			const result = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs) as SchemaObject;
+			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs);
 
 			expect(result.itemListElement).toHaveLength(1);
 			expect(result.itemListElement[0].position).toBe(1);
