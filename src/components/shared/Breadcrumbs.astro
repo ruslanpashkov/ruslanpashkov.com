@@ -61,17 +61,19 @@ const { breadcrumbs } = Astro.props;
 
 	.breadcrumbs::before,
 	.breadcrumbs::after {
-		pointer-events: none;
 		content: '';
 		position: absolute;
 		top: 0;
 		width: 48px;
 		height: 100%;
+		visibility: hidden;
 		opacity: 0;
 		background-color: var(--color-primary);
 
 		@media (prefers-reduced-motion: no-preference) {
-			transition: opacity var(--motion-duration) ease-in-out;
+			transition:
+				visibility var(--motion-duration) ease-in-out,
+				opacity var(--motion-duration) ease-in-out;
 		}
 	}
 
@@ -87,6 +89,7 @@ const { breadcrumbs } = Astro.props;
 
 	.breadcrumbs.show-start-fade::before,
 	.breadcrumbs.show-end-fade::after {
+		visibility: visible;
 		opacity: 1;
 	}
 

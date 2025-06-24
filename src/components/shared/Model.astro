@@ -61,7 +61,6 @@ import Message from '@/components/shared/Message.astro';
 	}
 
 	.model__message {
-		pointer-events: none;
 		position: absolute;
 		top: 5%;
 		left: 50%;
@@ -81,9 +80,9 @@ import Message from '@/components/shared/Message.astro';
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition:
-				opacity calc(var(--motion-duration) * 2) ease-in-out,
+				transform calc(var(--motion-duration) * 3) cubic-bezier(0.34, 1.56, 0.64, 1),
 				visibility calc(var(--motion-duration) * 2) ease-in-out,
-				transform calc(var(--motion-duration) * 3) cubic-bezier(0.34, 1.56, 0.64, 1);
+				opacity calc(var(--motion-duration) * 2) ease-in-out;
 		}
 	}
 
@@ -104,15 +103,18 @@ import Message from '@/components/shared/Message.astro';
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		visibility: visible;
 		opacity: 1;
 
 		@media (prefers-reduced-motion: no-preference) {
-			transition: opacity var(--motion-duration) ease-in-out;
+			transition:
+				visibility var(--motion-duration) ease-in-out,
+				opacity var(--motion-duration) ease-in-out;
 		}
 	}
 
 	.model-notification--hidden {
-		pointer-events: none;
+		visibility: hidden;
 		opacity: 0;
 	}
 
