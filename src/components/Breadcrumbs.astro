@@ -69,7 +69,10 @@ const { breadcrumbs } = Astro.props;
 		height: 100%;
 		opacity: 0;
 		background-color: var(--color-primary);
-		transition: opacity 0.2s ease;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: opacity var(--motion-duration) ease-in-out;
+		}
 	}
 
 	.breadcrumbs::before {

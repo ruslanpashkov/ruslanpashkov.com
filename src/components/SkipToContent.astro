@@ -34,8 +34,8 @@ import { Icon } from 'astro-icon/components';
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition:
-				transform var(--motion-duration),
-				opacity var(--motion-duration);
+				transform var(--motion-duration) ease-in-out,
+				opacity var(--motion-duration) ease-in-out;
 		}
 	}
 </style>

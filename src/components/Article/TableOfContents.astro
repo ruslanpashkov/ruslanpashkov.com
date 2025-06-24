@@ -74,7 +74,10 @@ const { headings } = Astro.props;
 
 	.table-of-contents__content {
 		overflow: hidden;
-		transition: height var(--motion-duration) ease-in-out;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: height var(--motion-duration) ease-in-out;
+		}
 	}
 
 	.table-of-contents__list {
@@ -124,7 +127,10 @@ const { headings } = Astro.props;
 
 		width: var(--icon-size);
 		height: var(--icon-size);
-		transition: transform var(--motion-duration) ease-in-out;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: transform var(--motion-duration) ease-in-out;
+		}
 	}
 </style>
 

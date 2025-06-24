@@ -7,6 +7,7 @@ import type { MessageCategory } from '@/types/Message';
 import { messages } from '@/constants/messages';
 
 const getRefs = () => ({
+	error: document.getElementById('model-error') as HTMLElement,
 	loader: document.getElementById('model-loader') as HTMLElement,
 	message: document.getElementById('model-message-container') as HTMLElement,
 	messageText: document.getElementById('model-message-text') as HTMLElement,
@@ -32,6 +33,8 @@ let lastClickTime = 0;
 let messageTimeout: number;
 let isInitialized = false;
 let isMessageOpen = false;
+let fadeInAnimation = 0;
+let fadeInStartTime = 0;
 let modelMouseMoveHandler: ((event: MouseEvent) => void) | null = null;
 let modelClickHandler: ((event: MouseEvent) => void) | null = null;
 
@@ -119,10 +122,42 @@ const createLighting = () => {
 const createMaterial = () => {
 	currentMaterial = new THREE.MeshBasicMaterial({
 		color: getThemeColor(),
+		opacity: 0,
+		transparent: true,
 		wireframe: true,
 	});
 
 	return currentMaterial;
+};
+
+const animateFadeIn = (currentTime: number) => {
+	if (!fadeInStartTime) {
+		fadeInStartTime = currentTime;
+	}
+
+	const elapsed = currentTime - fadeInStartTime;
+	const duration = 1000;
+	const progress = Math.min(elapsed / duration, 1);
+
+	const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+
+	if (currentMaterial) {
+		currentMaterial.opacity = easeOutCubic;
+	}
+
+	if (progress < 1) {
+		fadeInAnimation = requestAnimationFrame(animateFadeIn);
+	} else {
+		fadeInAnimation = 0;
+		fadeInStartTime = 0;
+	}
+};
+
+const startFadeIn = () => {
+	if (currentMaterial) {
+		currentMaterial.opacity = 0;
+		fadeInAnimation = requestAnimationFrame(animateFadeIn);
+	}
 };
 
 const writeMessage = (message: string) => {
@@ -175,6 +210,12 @@ const showInitialMessage = () => {
 			showMessage(message, 'friendly');
 			isInitialized = true;
 		}, 1000);
+	}
+};
+
+const showErrorMessage = () => {
+	if (refs.error) {
+		refs.error.classList.remove('model-notification--hidden');
 	}
 };
 
@@ -236,7 +277,7 @@ const updateLoadingProgress = (progress: number) => {
 
 const hideLoader = () => {
 	if (refs.loader) {
-		refs.loader.classList.add('model-loader--hidden');
+		refs.loader.classList.add('model-notification--hidden');
 
 		refs.loader.addEventListener(
 			'transitionend',
@@ -321,6 +362,7 @@ const loadModel = async () => {
 			updateLoadingProgress(100);
 
 			hideLoader();
+			startFadeIn();
 			setupModelInteraction();
 			showInitialMessage();
 		},
@@ -334,7 +376,10 @@ const loadModel = async () => {
 				updateLoadingProgress(loadingProgress);
 			}
 		},
-		(error) => console.error('Error loading 3D model:', error),
+		(_error) => {
+			hideLoader();
+			showErrorMessage();
+		},
 	);
 };
 
@@ -419,14 +464,9 @@ const init = async () => {
 			await initState();
 			initEventListeners();
 			animate();
-		} catch (error) {
-			console.error('Error initializing 3D model:', error);
-
-			if (refs.loader) {
-				refs.loader.innerHTML =
-					'<div class="model-loader__content"><div class="model-loader__text">Failed to initialize</div></div>';
-				hideLoader();
-			}
+		} catch {
+			hideLoader();
+			showErrorMessage();
 		}
 	}
 };
@@ -505,6 +545,12 @@ const cleanup = () => {
 		}
 
 		renderer.dispose();
+	}
+
+	if (fadeInAnimation) {
+		cancelAnimationFrame(fadeInAnimation);
+		fadeInAnimation = 0;
+		fadeInStartTime = 0;
 	}
 };
 

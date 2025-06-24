@@ -7,15 +7,15 @@ import Message from '@/components/Message.astro';
 		<Message id="model-message" />
 	</div>
 
-	<div class="model-loader" data-testid="model-loader" id="model-loader">
-		<div class="model-loader__content" data-testid="model-loader-content">
-			<span class="model-loader__text" data-testid="model-loader-text" id="loader-text"
-				>Loading Model…</span
-			>
+	<div class="model-notification" data-testid="model-loader" id="model-loader">
+		<div class="model-notification__content" data-testid="model-loader-content">
+			<span class="model-notification__text" data-testid="model-loader-text" id="loader-text">
+				Loading Model…
+			</span>
 
-			<div class="model-loader__progress" data-testid="model-loader-progress">
+			<div class="model-notification__progress" data-testid="model-loader-progress">
 				<div
-					class="model-loader__progress-bar"
+					class="model-notification__progress-bar"
 					data-testid="model-progress-bar"
 					id="model-progress-bar"
 				>
@@ -23,12 +23,28 @@ import Message from '@/components/Message.astro';
 			</div>
 
 			<div
-				class="model-loader__percentage"
+				class="model-notification__percentage"
 				data-testid="model-percentage"
 				id="model-percentage"
 			>
 				0%
 			</div>
+		</div>
+	</div>
+
+	<div
+		class="model-notification model-notification--hidden"
+		data-testid="model-error"
+		id="model-error"
+	>
+		<div class="model-notification__content" data-testid="model-error-content">
+			<span
+				class="model-notification__text"
+				data-testid="model-error-text"
+				id="model-error-text"
+			>
+				Failed to load 3D model. Try to refresh the page.
+			</span>
 		</div>
 	</div>
 </div>
@@ -65,8 +81,8 @@ import Message from '@/components/Message.astro';
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition:
-				opacity calc(var(--motion-duration) * 2) ease-out,
-				visibility calc(var(--motion-duration) * 2) ease-out,
+				opacity calc(var(--motion-duration) * 2) ease-in-out,
+				visibility calc(var(--motion-duration) * 2) ease-in-out,
 				transform calc(var(--motion-duration) * 3) cubic-bezier(0.34, 1.56, 0.64, 1);
 		}
 	}
@@ -81,27 +97,26 @@ import Message from '@/components/Message.astro';
 		animation: shake 0.3s ease-in-out;
 	}
 
-	.model-loader {
+	.model-notification {
 		position: absolute;
 		z-index: var(--z-index-model);
 		inset: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 6px;
 		opacity: 1;
 
 		@media (prefers-reduced-motion: no-preference) {
-			transition: opacity var(--motion-duration) ease-out;
+			transition: opacity var(--motion-duration) ease-in-out;
 		}
 	}
 
-	.model-loader--hidden {
+	.model-notification--hidden {
 		pointer-events: none;
 		opacity: 0;
 	}
 
-	.model-loader__content {
+	.model-notification__content {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
@@ -109,22 +124,24 @@ import Message from '@/components/Message.astro';
 		text-align: center;
 	}
 
-	.model-loader__text {
+	.model-notification__text {
 		font-size: 1.125rem;
+		text-wrap: balance;
 	}
 
-	.model-loader__progress {
+	.model-notification__progress {
 		--border-rounding: 2px;
 
 		position: relative;
 		overflow: hidden;
 		width: 200px;
 		height: 4px;
+		border: 1px solid var(--color-secondary);
 		border-radius: var(--border-rounding);
-		background-color: var(--color-secondary);
+		background-color: var(--color-transparent);
 	}
 
-	.model-loader__progress-bar {
+	.model-notification__progress-bar {
 		position: relative;
 		overflow: hidden;
 		width: 0%;
@@ -133,11 +150,11 @@ import Message from '@/components/Message.astro';
 		background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
 
 		@media (prefers-reduced-motion: no-preference) {
-			transition: width var(--motion-duration) ease-out;
+			transition: width var(--motion-duration) ease-in-out;
 		}
 	}
 
-	.model-loader__progress-bar::after {
+	.model-notification__progress-bar::after {
 		content: '';
 		position: absolute;
 		inset: 0;
@@ -150,7 +167,7 @@ import Message from '@/components/Message.astro';
 		animation: shimmer 1.5s infinite;
 	}
 
-	.model-loader__percentage {
+	.model-notification__percentage {
 		font-size: 0.875rem;
 		font-weight: bold;
 		color: var(--color-neutral);
