@@ -1,4 +1,4 @@
 #!/bin/sh
 
-bun run check
+bunx lint-staged
 bun run test
