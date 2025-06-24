@@ -2,9 +2,6 @@
 publish = "dist"
 command = "bun run build"
 
-[context.production]
-command = "bun run check && bun run build && bun run test"
-
 [[headers]]
 for = "/*"
 [headers.values]
