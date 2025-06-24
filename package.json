@@ -23,6 +23,7 @@
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun build/build-previews",
     "build-screenshots": "bun build/build-screenshots",
+    "postinstall": "bunx playwright install --with-deps",
     "prepare": "husky"
   },
   "devDependencies": {
