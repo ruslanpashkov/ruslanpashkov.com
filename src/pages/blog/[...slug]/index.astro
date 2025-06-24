@@ -54,7 +54,7 @@ const emailDetails = {
 };
 
 const mailToURL =
-	`mailto:${emailDetails.recipient}?` +
+	`${emailDetails.recipient}?` +
 	`subject=${encodeURIComponent(emailDetails.subject)}&` +
 	`body=${encodeURIComponent(emailDetails.body)}`;
 
