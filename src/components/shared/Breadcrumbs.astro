@@ -10,8 +10,8 @@ interface Props {
 const { breadcrumbs } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumbs" class="breadcrumbs" data-testid="breadcrumbs">
-	<ol class="breadcrumbs__list" data-testid="breadcrumbs-list">
+<nav aria-label="Breadcrumbs" class="breadcrumbs" data-testid="breadcrumbs" id="breadcrumbs">
+	<ol class="breadcrumbs__list" data-testid="breadcrumbs-list" id="breadcrumbs-list">
 		{
 			breadcrumbs.map((crumb, index) => {
 				const isLast = index === breadcrumbs.length - 1;
