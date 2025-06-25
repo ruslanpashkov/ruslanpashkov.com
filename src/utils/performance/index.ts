@@ -1,6 +1,6 @@
-export function debounce<T extends (...args: unknown[]) => unknown>(
+export function debounce<T extends (...args: never[]) => unknown>(
 	func: T,
-	wait: number,
+	wait = 50,
 ): (...args: Parameters<T>) => ReturnType<T> | void {
 	let timeout: number;
 
@@ -15,9 +15,9 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 	};
 }
 
-export function throttle<T extends (...args: unknown[]) => unknown>(
+export function throttle<T extends (...args: never[]) => unknown>(
 	func: T,
-	limit: number,
+	limit = 50,
 ): (...args: Parameters<T>) => ReturnType<T> | void {
 	let inThrottle = false;
 
