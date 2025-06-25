@@ -17,4 +17,4 @@ export const global = {
 		'Web Development',
 		'Web Standards',
 	],
-};
+} as const;
