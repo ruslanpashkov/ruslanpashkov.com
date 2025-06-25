@@ -1,6 +1,4 @@
-import type { ColorMapping } from '@/types/Theme';
-
-export const colors: ColorMapping = Object.freeze({
+export const colors = Object.freeze({
 	dark: '#121212',
 	light: '#FEFEFE',
 });
