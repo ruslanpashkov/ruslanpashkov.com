@@ -1,22 +1,13 @@
 :root {
-	--alpha-primary: 100%;
-	--alpha-secondary: 25%;
-	--alpha-neutral: 100%;
-	--alpha-transparent: 25%;
-	--alpha-contrast: 100%;
-	--alpha-accent: 75%;
-	--alpha-focus: 100%;
-	--alpha-link: 100%;
-	--alpha-visited: 100%;
-	--color-primary: oklch(var(--color-white) / var(--alpha-primary));
-	--color-secondary: oklch(var(--color-timberwolf) / var(--alpha-secondary));
-	--color-neutral: oklch(var(--color-dim-gray) / var(--alpha-neutral));
-	--color-transparent: oklch(var(--color-white) / var(--alpha-transparent));
-	--color-contrast: oklch(var(--color-night) / var(--alpha-contrast));
-	--color-accent: oklch(var(--color-mindaro) / var(--alpha-accent));
-	--color-focus: oklch(var(--color-rebecca-purple) / var(--alpha-focus));
-	--color-link: oklch(var(--color-dodger-blue) / var(--alpha-link));
-	--color-visited: oklch(var(--color-amethyst) / var(--alpha-visited));
+	--color-primary: oklch(var(--color-white));
+	--color-secondary: oklch(var(--color-timberwolf) / 25%);
+	--color-neutral: oklch(var(--color-dim-gray));
+	--color-transparent: oklch(var(--color-white) / 25%);
+	--color-contrast: oklch(var(--color-night));
+	--color-accent: oklch(var(--color-mindaro) / 75%);
+	--color-focus: oklch(var(--color-rebecca-purple));
+	--color-link: oklch(var(--color-dodger-blue));
+	--color-visited: oklch(var(--color-amethyst));
 
 	color-scheme: light;
 }
