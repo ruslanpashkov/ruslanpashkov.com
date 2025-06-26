@@ -1,10 +1,14 @@
----
-import Message from '@/components/shared/Message.astro';
----
-
 <div class="model" data-testid="model" id="model" role="presentation">
-	<div class="model__message" data-testid="model-message-container" id="model-message-container">
-		<Message id="model-message" />
+	<div class="model-message" data-testid="model-message" id="model-message">
+		<div class="model-message__content" data-testid="model-message-content">
+			<span
+				class="model-message__text"
+				data-testid="model-message-text"
+				id="model-message-text"
+			>
+				Hi!
+			</span>
+		</div>
 	</div>
 
 	<div class="model-notification" data-testid="model-loader" id="model-loader">
@@ -60,14 +64,18 @@ import Message from '@/components/shared/Message.astro';
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	.model__message {
+	.model-message {
 		position: absolute;
 		top: 5%;
 		left: 50%;
 		transform: translateX(-50%) translateY(20px);
 		width: 220px;
+		border: 1px solid var(--color-secondary);
+		border-radius: 24px;
 		visibility: hidden;
 		opacity: 0;
+		background: var(--color-transparent);
+		backdrop-filter: blur(10px);
 
 		@media (width >= 768px) {
 			left: 75%;
@@ -86,14 +94,24 @@ import Message from '@/components/shared/Message.astro';
 		}
 	}
 
-	.model__message--open {
+	.model-message--open {
 		transform: translateX(-50%) translateY(0);
 		visibility: visible;
 		opacity: 1;
 	}
 
-	.model__message--shake {
+	.model-message--shake {
 		animation: shake 0.3s ease-in-out;
+	}
+
+	.model-message__content {
+		position: relative;
+		padding: 12px;
+	}
+
+	.model-message__text {
+		font-size: 0.875rem;
+		line-height: 1.2;
 	}
 
 	.model-notification {

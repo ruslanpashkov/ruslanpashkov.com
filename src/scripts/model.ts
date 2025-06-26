@@ -6,7 +6,7 @@ import { messages } from '@/constants/messages';
 
 (() => {
 	const model = document.getElementById('model');
-	const message = document.getElementById('model-message-container');
+	const message = document.getElementById('model-message');
 	const text = document.getElementById('model-message-text');
 	const percentage = document.getElementById('model-percentage');
 	const progress = document.getElementById('model-progress-bar');
@@ -24,7 +24,7 @@ import { messages } from '@/constants/messages';
 
 	const getCurrentTheme = () => document.documentElement.getAttribute('data-theme');
 
-	const getModelColor = () => (getCurrentTheme() ? 0x553399 : 0xccff77);
+	const getModelColor = () => (getCurrentTheme() === 'light' ? 0x553399 : 0xccff77);
 
 	const getRandomMessage = (category: MessageCategory) => {
 		const categoryMessages = messages[category];
@@ -47,9 +47,11 @@ import { messages } from '@/constants/messages';
 			{ category: 'annoyed' as const, threshold: 16 },
 			{ category: 'philosophical' as const, threshold: 20 },
 		];
-
 		const matchedThreshold = messageThresholds.find(({ threshold }) => count <= threshold);
-		return matchedThreshold?.category ?? 'surrender';
+		if (matchedThreshold) {
+			return matchedThreshold.category;
+		}
+		return 'surrender';
 	};
 
 	const createScene = () => new THREE.Scene();
@@ -94,52 +96,39 @@ import { messages } from '@/constants/messages';
 	const createFadeInAnimation = (material: THREE.MeshBasicMaterial) => {
 		const startTime = performance.now();
 		const duration = 1000;
-
 		const animate = (currentTime: number) => {
 			const elapsed = currentTime - startTime;
 			const progress = Math.min(elapsed / duration, 1);
 			const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-
 			material.opacity = easeOutCubic;
-
 			if (progress < 1) {
 				requestAnimationFrame(animate);
 			}
 		};
-
 		material.opacity = 0;
 		requestAnimationFrame(animate);
 	};
 
-	const writeMessage = (text: string) => {
+	const writeMessage = (msg: string) => {
 		const typewriter = new Typewriter(text, { delay: 30 });
-		typewriter.typeString(text).start();
+		typewriter.typeString(msg).start();
 	};
 
-	const showMessage = (text: string, category: MessageCategory = 'friendly') => {
-		// Don't show new message if one is already visible
-		if (message.classList.contains('model__message--open')) {
-			return;
-		}
-
-		message.classList.add('model__message--open');
-
-		writeMessage(text);
-
+	const showMessage = (msg: string, category: MessageCategory) => {
+		message.classList.add('model-message--open');
+		writeMessage(msg);
 		if (['annoyed', 'sassy', 'surrender'].includes(category)) {
-			message.classList.add('model__message--shake');
+			message.classList.add('model-message--shake');
 		}
-
 		const readingSpeed = 80;
-		const hideDelay = Math.max(3000, text.length * readingSpeed);
-
-		setTimeout(() => {
-			message.classList.remove('model__message--open', 'model__message--shake');
+		const hideDelay = Math.max(3000, msg.length * readingSpeed);
+		window.setTimeout(() => {
+			message.classList.remove('model-message--open', 'model-message--shake');
 		}, hideDelay);
 	};
 
 	const showInitialMessage = () => {
-		setTimeout(() => {
+		window.setTimeout(() => {
 			const text = getRandomMessage('initial');
 			showMessage(text, 'friendly');
 		}, 1000);
@@ -151,7 +140,6 @@ import { messages } from '@/constants/messages';
 
 	const applyWireframeMaterial = (object: THREE.Object3D) => {
 		const wireframeMaterial = createMaterial();
-
 		object.traverse((child) => {
 			if (child instanceof THREE.Mesh) {
 				child.material = wireframeMaterial;
@@ -159,32 +147,28 @@ import { messages } from '@/constants/messages';
 				child.receiveShadow = true;
 			}
 		});
-
 		return wireframeMaterial;
 	};
 
-	const fitModelToContainer = (modelObject: THREE.Group, camera: THREE.PerspectiveCamera) => {
-		const box = new THREE.Box3().setFromObject(modelObject);
+	const fitModelToContainer = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {
+		const box = new THREE.Box3().setFromObject(root);
 		const size = box.getSize(new THREE.Vector3());
 		const center = box.getCenter(new THREE.Vector3());
-
-		modelObject.position.x = -center.x;
-		modelObject.position.y = -center.y;
-		modelObject.position.z = -center.z;
-		modelObject.rotation.y = -Math.PI / 12;
-
+		root.position.x = -center.x;
+		root.position.y = -center.y;
+		root.position.z = -center.z;
+		root.rotation.y = -Math.PI / 12;
 		const maxDim = Math.max(size.x, size.y, size.z);
 		const scale = 0.8;
 		const fov = camera.fov * (Math.PI / 180);
 		const distance = Math.abs(maxDim / Math.sin(fov / 2)) * scale;
-
 		camera.position.set(0, 0, distance);
 		camera.lookAt(0, 0, 0);
 		camera.updateProjectionMatrix();
 	};
 
-	const updateLoadingProgress = (actualProgress: number) => {
-		const loadingProgress = Math.min(100, Math.max(0, actualProgress));
+	const updateLoadingProgress = (percent: number) => {
+		const loadingProgress = Math.min(100, Math.max(0, percent));
 		progress.style.width = `${loadingProgress}%`;
 		progress.parentElement!.setAttribute('aria-valuenow', loadingProgress.toString());
 		percentage.textContent = `${Math.round(loadingProgress)}%`;
@@ -203,101 +187,77 @@ import { messages } from '@/constants/messages';
 		);
 	};
 
-	const setupAnimation = (gltf: GLTF, modelObject: THREE.Group) => {
+	const setupAnimation = (gltf: GLTF, root: THREE.Group) => {
 		if (gltf.animations && gltf.animations.length > 0) {
-			const mixer = new THREE.AnimationMixer(modelObject);
+			const mixer = new THREE.AnimationMixer(root);
 			mixer.clipAction(gltf.animations[0]).play();
 			return mixer;
 		}
 		return null;
 	};
 
-	const createModelInteraction = (modelObject: THREE.Group, camera: THREE.PerspectiveCamera) => {
+	const createModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {
+		const raycaster = new THREE.Raycaster();
+		const mouse = new THREE.Vector2();
 		let clickCount = 0;
 		let lastClickTime = 0;
-		let isMessageOpen = false;
-
 		const handleClick = () => {
 			const currentTime = Date.now();
-
 			if (currentTime - lastClickTime > 30000) {
 				clickCount = 0;
 			}
-
 			clickCount++;
 			lastClickTime = currentTime;
-
 			const category = getMessageCategory(clickCount);
 			const text = getRandomMessage(category);
 			showMessage(text, category);
-			isMessageOpen = true;
-
-			setTimeout(
-				() => {
-					isMessageOpen = false;
-				},
-				Math.max(3000, text.length * 80),
-			);
 		};
-
-		const raycaster = new THREE.Raycaster();
-		const mouse = new THREE.Vector2();
-
 		const updateMousePosition = (event: MouseEvent) => {
 			const rect = model.getBoundingClientRect();
 			mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
 			mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 		};
-
 		const onMouseMove = (event: MouseEvent) => {
 			updateMousePosition(event);
 			raycaster.setFromCamera(mouse, camera);
-
-			const intersects = raycaster.intersectObjects(modelObject.children, true);
+			const intersects = raycaster.intersectObjects(root.children, true);
 			model.style.cursor = intersects.length > 0 ? 'pointer' : 'default';
 		};
-
 		const onClick = (event: MouseEvent) => {
-			if (!isMessageOpen) {
+			if (!message.classList.contains('model-message--open')) {
 				updateMousePosition(event);
 				raycaster.setFromCamera(mouse, camera);
-
-				const intersects = raycaster.intersectObjects(modelObject.children, true);
+				const intersects = raycaster.intersectObjects(root.children, true);
 				if (intersects.length > 0) {
 					handleClick();
 				}
 			}
 		};
-
 		model.addEventListener('mousemove', onMouseMove);
 		model.addEventListener('click', onClick);
 	};
 
 	const loadModel = async (scene: THREE.Scene, camera: THREE.PerspectiveCamera) => {
 		const loader = new GLTFLoader();
-
 		return new Promise<{
 			material: THREE.MeshBasicMaterial;
 			mixer: null | THREE.AnimationMixer;
-			modelObject: THREE.Group;
+			root: THREE.Group;
 		}>((resolve, reject) => {
 			loader.load(
 				'/models/stickman/scene.gltf',
 				(gltf) => {
-					const modelObject = gltf.scene;
-					const material = applyWireframeMaterial(modelObject);
-					const mixer = setupAnimation(gltf, modelObject);
-
-					fitModelToContainer(modelObject, camera);
-					scene.add(modelObject);
-
+					const root = gltf.scene;
+					const material = applyWireframeMaterial(root);
+					const mixer = setupAnimation(gltf, root);
+					fitModelToContainer(root, camera);
+					scene.add(root);
 					updateLoadingProgress(100);
 					hideLoader();
 					createFadeInAnimation(material);
-					createModelInteraction(modelObject, camera);
+					createModelInteraction(root, camera);
 					showInitialMessage();
-
-					resolve({ material, mixer, modelObject });
+					resolve({ material, mixer, root });
 				},
 				(progress) => {
 					if (progress.lengthComputable) {
@@ -323,19 +283,14 @@ import { messages } from '@/constants/messages';
 		mixer: null | THREE.AnimationMixer,
 	) => {
 		const clock = new THREE.Clock();
-
 		const animate = () => {
 			requestAnimationFrame(animate);
-
 			const delta = clock.getDelta();
-
 			if (mixer) {
 				mixer.update(delta);
 			}
-
 			renderer.render(scene, camera);
 		};
-
 		animate();
 	};
 
@@ -347,13 +302,10 @@ import { messages } from '@/constants/messages';
 				}
 			});
 		});
-
 		observer.observe(document.documentElement, {
 			attributeFilter: ['data-theme'],
 			attributes: true,
 		});
-
-		return observer;
 	};
 
 	const createResizeHandler = (
@@ -363,27 +315,21 @@ import { messages } from '@/constants/messages';
 		const onResize = () => {
 			const width = model.clientWidth;
 			const height = model.clientHeight;
-
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
 			renderer.setSize(width, height);
 		};
-
 		window.addEventListener('resize', onResize);
 	};
 
 	const init = async () => {
 		try {
 			updateLoadingProgress(0);
-
 			const scene = createScene();
 			const camera = createCamera();
 			const renderer = createRenderer();
-
-			createLighting(scene);
-
 			const { material, mixer } = await loadModel(scene, camera);
-
+			createLighting(scene);
 			createAnimationLoop(renderer, scene, camera, mixer);
 			createThemeObserver(material);
 			createResizeHandler(camera, renderer);

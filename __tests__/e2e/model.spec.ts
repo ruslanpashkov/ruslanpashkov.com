@@ -18,7 +18,7 @@ test.describe('3D Model', () => {
 		await page.mouse.click(centerX, centerY);
 		await expect(page.getByTestId('model-message-container')).toBeVisible();
 		await expect(messageTextLocator).not.toBeEmpty();
-		await expect(page.getByTestId('model-message-container')).toBeHidden({ timeout: 10000 });
+		await expect(page.getByTestId('model-message-container')).toBeHidden();
 	});
 
 	test('shows error message if model fails to load', async ({ page }) => {
