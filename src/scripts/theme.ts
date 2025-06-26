@@ -1,147 +1,123 @@
-import type { ColorTheme, Theme } from '@/types/Theme';
-
 import moonSvg from '@/assets/svg/moon.svg?raw';
 import sunSvg from '@/assets/svg/sun.svg?raw';
+import { debounce } from '@/utils/performance';
 
-const THEME_STORAGE_KEY = 'theme';
-const themes: Theme[] = ['system', 'light', 'dark'];
+(() => {
+	const toggler = document.getElementById('theme-toggler');
+	const darkStyles = document.getElementById('style-media-dark');
+	const darkThemeColor = document.getElementById('theme-color-dark');
+	const lightStyles = document.getElementById('style-media-light');
+	const lightThemeColor = document.getElementById('theme-color-light');
 
-const getRefs = () => ({
-	darkStyles: document.getElementById('style-media-dark') as HTMLStyleElement,
-	darkThemeColor: document.getElementById('theme-color-dark') as HTMLMetaElement,
-	lightStyles: document.getElementById('style-media-light') as HTMLStyleElement,
-	lightThemeColor: document.getElementById('theme-color-light') as HTMLMetaElement,
-	themeToggler: document.getElementById('theme-toggler') as HTMLButtonElement,
-});
-
-let refs: ReturnType<typeof getRefs>;
-
-let darkMediaQuery: MediaQueryList;
-
-const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
-
-const getSystemTheme = (): ColorTheme => (darkMediaQuery.matches ? 'dark' : 'light');
-
-const getStoredTheme = () => window.localStorage.getItem(THEME_STORAGE_KEY) as null | Theme;
-
-const removeStoredTheme = () => window.localStorage.removeItem(THEME_STORAGE_KEY);
-
-const storeTheme = (theme: ColorTheme) => window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-
-const getColorTheme = (): Theme => getStoredTheme() ?? 'system';
-
-const setLocalStorageTheme = (theme: Theme) =>
-	theme === 'system' ? removeStoredTheme() : storeTheme(theme);
-
-const setDocumentTheme = (theme: ColorTheme) => {
-	document.documentElement.dataset.theme = theme;
-};
-
-const getMediaForTheme = (theme: ColorTheme, targetTheme: ColorTheme) =>
-	theme === targetTheme ? 'all' : 'not all';
-
-const getThemeIcon = (theme: ColorTheme) => (theme === 'light' ? sunSvg : moonSvg);
-
-const getThemeConfig = (theme: Theme, systemTheme: ColorTheme) =>
-	({
-		dark: { icon: moonSvg, label: 'Use system theme', text: 'Dark' },
-		light: { icon: sunSvg, label: 'Use dark theme', text: 'Light' },
-		system: { icon: getThemeIcon(systemTheme), label: 'Use light theme', text: 'System' },
-	})[theme];
-
-const getEffectiveTheme = (theme: Theme) => (theme === 'system' ? getSystemTheme() : theme);
-
-const getNextIndex = (currentIndex: number, arrayLength: number) =>
-	(currentIndex + 1) % arrayLength;
-
-const getNextTheme = (currentTheme: Theme) => {
-	const currentIndex = themes.indexOf(currentTheme);
-	const nextIndex = getNextIndex(currentIndex, themes.length);
-
-	return themes[nextIndex];
-};
-
-const updateStylesheetsForTheme = (theme: ColorTheme) => {
-	const lightMedia = getMediaForTheme(theme, 'light');
-	const darkMedia = getMediaForTheme(theme, 'dark');
-
-	refs.lightStyles.media = lightMedia;
-	refs.darkStyles.media = darkMedia;
-	refs.lightThemeColor.media = lightMedia;
-	refs.darkThemeColor.media = darkMedia;
-};
-
-const updateTogglerUI = (theme: Theme) => {
-	const [icon, text] = Array.from(refs.themeToggler.children) as [HTMLElement, HTMLElement];
-	const {
-		icon: themeIcon,
-		label: themeLabel,
-		text: themeText,
-	} = getThemeConfig(theme, getSystemTheme());
-
-	text.innerText = themeText;
-	icon.innerHTML = themeIcon;
-	refs.themeToggler.setAttribute('aria-label', themeLabel);
-};
-
-const applyTheme = (theme: Theme) => {
-	const effectiveTheme = getEffectiveTheme(theme);
-
-	setLocalStorageTheme(theme);
-	setDocumentTheme(effectiveTheme);
-	updateStylesheetsForTheme(effectiveTheme);
-	updateTogglerUI(theme);
-};
-
-const handleSystemThemeChange = () => {
-	const currentTheme = getColorTheme();
-
-	if (currentTheme === 'system') {
-		applyTheme('system');
+	if (!toggler || !darkStyles || !darkThemeColor || !lightStyles || !lightThemeColor) {
+		console.error('Required theme elements not found');
+		return;
 	}
-};
 
-const handleThemeToggle = () => {
-	const currentTheme = getColorTheme();
-	const nextTheme = getNextTheme(currentTheme);
+	type Theme = 'dark' | 'light';
+	type ThemeMode = 'system' | Theme;
 
-	applyTheme(nextTheme);
-};
+	const THEME_STORAGE_KEY = 'theme';
+	const themes: ThemeMode[] = ['system', 'light', 'dark'];
+	const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-const setupSystemThemeListener = () => {
-	handleSystemThemeChange();
+	const getSavedTheme = () => window.localStorage.getItem(THEME_STORAGE_KEY) as null | Theme;
 
-	darkMediaQuery.addEventListener('change', handleSystemThemeChange);
-};
+	const saveTheme = (theme: Theme) => window.localStorage.setItem(THEME_STORAGE_KEY, theme);
 
-const setupThemeToggler = () => {
-	refs.themeToggler.addEventListener('click', handleThemeToggle);
-};
+	const clearTheme = () => window.localStorage.removeItem(THEME_STORAGE_KEY);
 
-const initState = () => {
-	darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	const getCurrentTheme = () => getSavedTheme() ?? 'system';
 
-	const initialTheme = getColorTheme();
+	const getSystemTheme = () => (darkMediaQuery.matches ? 'dark' : 'light');
 
-	applyTheme(initialTheme);
-};
+	const getSystemThemeIcon = () => (getSystemTheme() === 'light' ? sunSvg : moonSvg);
 
-const init = () => {
-	refs = getRefs();
+	const getNextTheme = (themeMode: ThemeMode) => {
+		const currentIndex = themes.indexOf(themeMode);
+		const nextIndex = (currentIndex + 1) % themes.length;
+		return themes[nextIndex];
+	};
 
-	if (hasRefs(refs)) {
-		initState();
-		setupThemeToggler();
-		setupSystemThemeListener();
+	const getThemeConfig = (themeMode: ThemeMode) =>
+		({
+			dark: {
+				icon: moonSvg,
+				label: 'Use system theme',
+				text: 'Dark',
+			},
+			light: {
+				icon: sunSvg,
+				label: 'Use dark theme',
+				text: 'Light',
+			},
+			system: {
+				icon: getSystemThemeIcon(),
+				label: 'Use light theme',
+				text: 'System',
+			},
+		})[themeMode];
+
+	const getMediaForTheme = (themeMode: ThemeMode, targetTheme: ThemeMode) =>
+		themeMode === targetTheme ? 'all' : 'not all';
+
+	const setDocumentTheme = (theme: Theme) => {
+		document.documentElement.dataset.theme = theme;
+	};
+
+	const updateStylesheetsForTheme = (theme: Theme) => {
+		const lightMedia = getMediaForTheme(theme, 'light');
+		const darkMedia = getMediaForTheme(theme, 'dark');
+		lightStyles.setAttribute('media', lightMedia);
+		darkStyles.setAttribute('media', darkMedia);
+		lightThemeColor.setAttribute('media', lightMedia);
+		darkThemeColor.setAttribute('media', darkMedia);
+	};
+
+	const updateTogglerUI = (themeMode: ThemeMode) => {
+		const [icon, text] = Array.from(toggler.children);
+		const themeConfig = getThemeConfig(themeMode);
+		text.textContent = themeConfig.text;
+		icon.innerHTML = themeConfig.icon;
+		toggler.setAttribute('aria-label', themeConfig.label);
+	};
+
+	const applyTheme = (themeMode: ThemeMode) => {
+		const isSystemTheme = themeMode === 'system';
+		if (isSystemTheme) {
+			clearTheme();
+		} else {
+			saveTheme(themeMode);
+		}
+		const theme = isSystemTheme ? getSystemTheme() : themeMode;
+		setDocumentTheme(theme);
+		updateStylesheetsForTheme(theme);
+		updateTogglerUI(themeMode);
+	};
+
+	const toggleTheme = () => {
+		const currentTheme = getCurrentTheme();
+		const nextTheme = getNextTheme(currentTheme);
+		applyTheme(nextTheme);
+	};
+
+	const onSchemeChange = () => {
+		if (getCurrentTheme() === 'system') {
+			applyTheme('system');
+		}
+	};
+
+	const init = () => {
+		toggler.addEventListener('click', toggleTheme);
+		darkMediaQuery.addEventListener('change', debounce(onSchemeChange));
+
+		const initialTheme = getCurrentTheme();
+		applyTheme(initialTheme);
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
 	}
-};
-
-const cleanup = () => {
-	darkMediaQuery.removeEventListener('change', handleSystemThemeChange);
-	refs?.themeToggler?.removeEventListener('click', handleThemeToggle);
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:page-load', init);
-
-export { cleanup, init };
+})();

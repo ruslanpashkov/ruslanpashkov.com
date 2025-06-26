@@ -1,140 +1,92 @@
 import { createFocusTrap } from 'focus-trap';
 
-const getRefs = () => ({
-	body: document.getElementById('body') as HTMLBodyElement,
-	feed: document.getElementById('feed') as HTMLLinkElement,
-	header: document.getElementById('header') as HTMLElement,
-	menu: document.getElementById('menu') as HTMLElement,
-	menuToggler: document.getElementById('menu-toggler') as HTMLButtonElement,
-	navigation: document.getElementById('navigation') as HTMLElement,
-});
+import { debounce } from '@/utils/performance';
 
-let refs: ReturnType<typeof getRefs>;
+(() => {
+	const body = document.getElementById('body');
+	const header = document.getElementById('header');
+	const logo = document.getElementById('logo');
+	const menu = document.getElementById('menu');
+	const navigation = document.getElementById('navigation');
+	const toggler = document.getElementById('menu-toggler');
+	const feed = document.getElementById('feed');
 
-let focusTrap: ReturnType<typeof createFocusTrap>;
-let mobileMediaQuery: MediaQueryList;
-
-const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
-
-const toggleBodyClip = (shouldClip: boolean) =>
-	refs.body.classList.toggle('page__body--clip', shouldClip);
-
-const toggleClosedMenuClass = (shouldClose: boolean) =>
-	refs.menu.classList.toggle('menu--closed', shouldClose);
-
-const toggleOpenMenuClass = (shouldOpen: boolean) =>
-	refs.menu.classList.toggle('menu--open', shouldOpen);
-
-const toggleHeaderAnimation = (shouldAnimate: boolean) =>
-	refs.header.classList.toggle('header--animation', shouldAnimate);
-
-const setMenuTogglerExpanded = (isExpanded: boolean) =>
-	refs.menuToggler.setAttribute('aria-expanded', isExpanded.toString());
-
-const setMenuTogglerLabel = (isExpanded: boolean) =>
-	refs.menuToggler.setAttribute('aria-label', isExpanded ? 'Close menu' : 'Open menu');
-
-const isClosed = () => refs.menu.classList.contains('menu--closed');
-
-const isOpen = () => refs.menu.classList.contains('menu--open');
-
-const isMenuOpen = () => refs.menuToggler.getAttribute('aria-expanded') === 'true';
-
-const showMenuIfNotClosed = () => {
-	if (!isClosed()) {
-		toggleOpenMenuClass(true);
+	if (!body || !header || !logo || !menu || !feed || !toggler || !navigation) {
+		console.error('Required menu elements not found');
+		return;
 	}
-};
 
-const hideMenuIfNotOpen = () => {
-	if (!isOpen()) {
-		toggleClosedMenuClass(true);
-	}
-};
+	const focusTrap = createFocusTrap(header);
+	const mobileMediaQuery = window.matchMedia('(max-width: 1023px)');
 
-const showMenu = () => {
-	requestAnimationFrame(showMenuIfNotClosed);
-};
+	const isMenuOpen = () => toggler.getAttribute('aria-expanded') === 'true';
 
-const hideMenu = () => {
-	refs.menu.addEventListener('transitionend', hideMenuIfNotOpen, { once: true });
-};
+	const openMenu = () => {
+		body.classList.add('page__body--clip');
+		menu.classList.remove('menu--closed');
+		header.classList.remove('header--animation');
+		logo.setAttribute('tabindex', '-1');
+		toggler.setAttribute('aria-expanded', 'true');
+		toggler.setAttribute('aria-label', 'Close menu');
+		requestAnimationFrame(() => {
+			menu.classList.add('menu--open');
+		});
+		focusTrap.activate();
+	};
 
-const openMenu = () => {
-	toggleBodyClip(true);
-	toggleClosedMenuClass(false);
-	toggleHeaderAnimation(false);
-	setMenuTogglerExpanded(true);
-	setMenuTogglerLabel(true);
-	showMenu();
-	focusTrap.activate();
-};
+	const closeMenu = () => {
+		body.classList.remove('page__body--clip');
+		menu.classList.remove('menu--open');
+		header.classList.add('header--animation');
+		logo.removeAttribute('tabindex');
+		toggler.setAttribute('aria-expanded', 'false');
+		toggler.setAttribute('aria-label', 'Open menu');
+		menu.addEventListener(
+			'transitionend',
+			() => {
+				menu.classList.add('menu--closed');
+			},
+			{ once: true },
+		);
+		focusTrap.deactivate();
+	};
 
-const closeMenu = () => {
-	toggleBodyClip(false);
-	toggleOpenMenuClass(false);
-	toggleHeaderAnimation(true);
-	setMenuTogglerExpanded(false);
-	setMenuTogglerLabel(false);
-	hideMenu();
-	focusTrap.deactivate();
-};
+	const toggleMenu = () => {
+		if (isMenuOpen()) {
+			closeMenu();
+		} else {
+			openMenu();
+		}
+	};
 
-const handleMenuToggle = () => {
-	if (isMenuOpen()) {
-		closeMenu();
+	const onEscape = (event: KeyboardEvent) => {
+		if (event.key === 'Escape' && isMenuOpen()) {
+			closeMenu();
+		}
+	};
+
+	const onResize = (event: MediaQueryListEvent) => {
+		if (event.matches) {
+			feed.after(navigation);
+		} else {
+			feed.before(navigation);
+			closeMenu();
+		}
+	};
+
+	const init = () => {
+		toggler.addEventListener('click', toggleMenu);
+		document.addEventListener('keydown', onEscape);
+		mobileMediaQuery.addEventListener('change', debounce(onResize));
+
+		if (mobileMediaQuery.matches) {
+			feed.after(navigation);
+		}
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
 	} else {
-		openMenu();
+		init();
 	}
-};
-
-const handleEscapeKey = (event: KeyboardEvent) => {
-	if (event.key === 'Escape' && isMenuOpen()) {
-		closeMenu();
-	}
-};
-
-const handleMediaQueryChange = (event: MediaQueryListEvent) => {
-	if (event.matches) {
-		refs.feed.after(refs.navigation);
-	} else {
-		refs.feed.before(refs.navigation);
-		closeMenu();
-	}
-};
-
-const initEventListeners = () => {
-	refs.menuToggler.addEventListener('click', handleMenuToggle);
-	document.addEventListener('keydown', handleEscapeKey);
-	mobileMediaQuery.addEventListener('change', handleMediaQueryChange);
-};
-
-const initState = () => {
-	focusTrap = createFocusTrap(refs.header);
-	mobileMediaQuery = window.matchMedia('(max-width: 1023px)');
-
-	if (mobileMediaQuery.matches) {
-		refs.feed.after(refs.navigation);
-	}
-};
-
-const init = () => {
-	refs = getRefs();
-
-	if (hasRefs(refs)) {
-		initState();
-		initEventListeners();
-	}
-};
-
-const cleanup = () => {
-	refs?.menuToggler?.removeEventListener('click', handleMenuToggle);
-	document.removeEventListener('keydown', handleEscapeKey);
-	mobileMediaQuery.removeEventListener('change', handleMediaQueryChange);
-	focusTrap.deactivate();
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:page-load', init);
-
-export { cleanup, init };
+})();

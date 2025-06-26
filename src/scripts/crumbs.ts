@@ -1,48 +1,31 @@
-const getRefs = () => ({
-	breadcrumbs: document.querySelector('.breadcrumbs') as HTMLElement,
-	list: document.querySelector('.breadcrumbs__list') as HTMLOListElement,
-});
+import { debounce } from '@/utils/performance';
 
-let refs: ReturnType<typeof getRefs>;
+(() => {
+	const breadcrumbs = document.getElementById('breadcrumbs');
+	const list = document.getElementById('breadcrumbs-list');
 
-const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
-
-const checkScroll = () => {
-	const isAtStart = refs.list.scrollLeft <= 1;
-	const isAtEnd = refs.list.scrollLeft + refs.list.clientWidth >= refs.list.scrollWidth - 1;
-
-	refs.breadcrumbs.classList.toggle('show-start-fade', !isAtStart);
-	refs.breadcrumbs.classList.toggle('show-end-fade', !isAtEnd);
-};
-
-const handleResize = () => {
-	requestAnimationFrame(checkScroll);
-};
-
-const initEventListeners = () => {
-	refs.list.addEventListener('scroll', checkScroll);
-	window.addEventListener('resize', handleResize);
-};
-
-const initState = () => {
-	checkScroll();
-};
-
-const init = () => {
-	refs = getRefs();
-
-	if (hasRefs(refs)) {
-		initState();
-		initEventListeners();
+	if (!breadcrumbs || !list) {
+		console.error('Required breadcrumbs elements not found');
+		return;
 	}
-};
 
-const cleanup = () => {
-	refs?.list?.removeEventListener('scroll', checkScroll);
-	window.removeEventListener('resize', handleResize);
-};
+	const updateFades = () => {
+		const isAtStart = list.scrollLeft <= 1;
+		const isAtEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 1;
+		breadcrumbs.classList.toggle('show-start-fade', !isAtStart);
+		breadcrumbs.classList.toggle('show-end-fade', !isAtEnd);
+	};
 
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:page-load', init);
+	const init = () => {
+		list.addEventListener('scroll', debounce(updateFades));
+		window.addEventListener('resize', debounce(updateFades));
 
-export { cleanup, init };
+		updateFades();
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
+})();

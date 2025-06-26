@@ -1,140 +1,93 @@
-const STORAGE_KEY = 'toc-collapsed';
+import { debounce } from '@/utils/performance';
 
-const getRefs = () => ({
-	content: document.querySelector('.table-of-contents__content') as HTMLElement,
-	list: document.querySelector('.table-of-contents__list') as HTMLOListElement,
-	toc: document.querySelector('.table-of-contents') as HTMLElement,
-	toggle: document.querySelector('.table-of-contents__toggle') as HTMLButtonElement,
-});
+(() => {
+	const toc = document.getElementById('toc');
+	const content = document.getElementById('toc-content');
+	const list = document.getElementById('toc-list');
+	const toggler = document.getElementById('toc-toggler');
 
-let refs: ReturnType<typeof getRefs>;
-
-let currentTransitionHandler: ((event: TransitionEvent) => void) | null = null;
-
-const hasRefs = (references: typeof refs) => Object.values(references).every(Boolean);
-
-const getStoredState = () => window.localStorage.getItem(STORAGE_KEY) === 'true';
-
-const storeState = (isCollapsed: boolean) =>
-	window.localStorage.setItem(STORAGE_KEY, isCollapsed.toString());
-
-const setHeight = (height: number) => {
-	requestAnimationFrame(() => {
-		refs.content.style.height = `${height}px`;
-	});
-};
-
-const setVisibility = (isVisible: boolean) => {
-	refs.content.style.visibility = isVisible ? 'visible' : 'hidden';
-	refs.content.setAttribute('aria-hidden', (!isVisible).toString());
-};
-
-const setToggleExpanded = (isExpanded: boolean) =>
-	refs.toggle.setAttribute('aria-expanded', isExpanded.toString());
-
-const isExpanded = () => refs.toggle.getAttribute('aria-expanded') === 'true';
-
-const cleanupTransition = () => {
-	if (currentTransitionHandler) {
-		refs?.content?.removeEventListener('transitionend', currentTransitionHandler);
-		currentTransitionHandler = null;
-	}
-};
-
-const expandContent = (height: number) => {
-	cleanupTransition();
-	setVisibility(true);
-
-	requestAnimationFrame(() => {
-		setHeight(height);
-		setToggleExpanded(true);
-	});
-};
-
-const collapseContent = (immediate = false) => {
-	cleanupTransition();
-
-	if (immediate) {
-		setVisibility(false);
+	if (!toc || !content || !list || !toggler) {
+		console.error('Required table of contents elements not found');
+		return;
 	}
 
-	requestAnimationFrame(() => {
-		setHeight(0);
-		setToggleExpanded(false);
-	});
-};
+	type TocStatus = 'collapsed' | 'expanded';
 
-const expand = () => {
-	const height = refs.list.offsetHeight;
+	const STORAGE_KEY = 'toc-status';
 
-	expandContent(height);
-	storeState(false);
-};
+	const isTocOpen = () => toggler.getAttribute('aria-expanded') === 'true';
 
-const collapse = () => {
-	collapseContent();
-	storeState(true);
+	const getSavedStatus = () => window.localStorage.getItem(STORAGE_KEY) as null | TocStatus;
 
-	const handleTransitionEnd = (event: TransitionEvent) => {
+	const saveStatus = (status: TocStatus) => {
+		window.localStorage.setItem(STORAGE_KEY, status);
+	};
+
+	const setTocVisibility = (isVisible: boolean) => {
+		content.style.visibility = isVisible ? 'visible' : 'hidden';
+	};
+
+	const setTocHeight = (height: number) => {
+		content.style.height = `${height}px`;
+	};
+
+	const onTransitionEnd = (event: TransitionEvent) => {
 		if (event.propertyName === 'height') {
-			setVisibility(false);
-			cleanupTransition();
+			setTocVisibility(false);
 		}
 	};
 
-	currentTransitionHandler = handleTransitionEnd;
-	refs.content.addEventListener('transitionend', handleTransitionEnd);
-};
+	const expandTocContent = (height: number) => {
+		content.removeEventListener('transitionend', onTransitionEnd);
+		setTocVisibility(true);
+		setTocHeight(height);
+		toggler.setAttribute('aria-expanded', 'true');
+	};
 
-const handleTocToggle = () => {
-	if (isExpanded()) {
-		collapse();
+	const collapseTocContent = () => {
+		setTocHeight(0);
+		toggler.setAttribute('aria-expanded', 'false');
+	};
+
+	const openToc = () => {
+		expandTocContent(list.offsetHeight);
+		saveStatus('expanded');
+	};
+
+	const closeToc = () => {
+		collapseTocContent();
+		saveStatus('collapsed');
+		content.addEventListener('transitionend', onTransitionEnd);
+	};
+
+	const toggleToc = () => {
+		if (isTocOpen()) {
+			closeToc();
+		} else {
+			openToc();
+		}
+	};
+
+	const onResize = () => {
+		if (isTocOpen()) {
+			setTocHeight(list.offsetHeight);
+		}
+	};
+
+	const init = () => {
+		toggler.addEventListener('click', toggleToc);
+		window.addEventListener('resize', debounce(onResize));
+
+		if (getSavedStatus() === 'expanded') {
+			expandTocContent(list.offsetHeight);
+		} else {
+			collapseTocContent();
+		}
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
 	} else {
-		expand();
+		init();
 	}
-};
-
-const handleResize = () => {
-	if (isExpanded()) {
-		setHeight(refs.list.offsetHeight);
-	}
-};
-
-const initState = () => {
-	const isCollapsed = getStoredState();
-	const height = refs.list.offsetHeight;
-
-	if (isCollapsed) {
-		collapseContent(true);
-	} else {
-		expandContent(height);
-	}
-};
-
-const initEventListeners = () => {
-	refs.toggle.addEventListener('click', handleTocToggle);
-
-	window.addEventListener('resize', () => {
-		requestAnimationFrame(handleResize);
-	});
-};
-
-const init = () => {
-	refs = getRefs();
-
-	if (hasRefs(refs)) {
-		initState();
-		initEventListeners();
-	}
-};
-
-const cleanup = () => {
-	cleanupTransition();
-	refs?.toggle?.removeEventListener('click', handleTocToggle);
-	window.removeEventListener('resize', handleResize);
-};
-
-document.addEventListener('astro:before-swap', cleanup);
-document.addEventListener('astro:page-load', init);
-
-export { cleanup, init };
+})();
