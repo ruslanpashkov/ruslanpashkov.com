@@ -7,7 +7,7 @@ import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 
-/** @type {import("eslint").Linter.Config} */
+/** @type {import('eslint').Linter.Config} */
 export default [
 	js.configs.recommended,
 	...tseslint.configs.recommended,

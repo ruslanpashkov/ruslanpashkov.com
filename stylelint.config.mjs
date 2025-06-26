@@ -1,6 +1,6 @@
 import { propertyGroups } from 'stylelint-config-clean-order';
 
-/** @type {import("stylelint").Config} */
+/** @type {import('stylelint').Config} */
 export default {
 	extends: [
 		'stylelint-config-standard',
