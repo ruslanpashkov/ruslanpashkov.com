@@ -1,28 +1,30 @@
+import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import Compress from '@playform/compress';
-import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
-import { defineConfig } from 'astro/config';
+import expressiveCode from 'astro-expressive-code';
+import Compress from '@playform/compress';
 import browserslist from 'browserslist';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
-
-import { getChunkName } from './build/chunk-strategies.mjs';
-import { expressiveCodeOptions } from './build/code-styles.mjs';
-import { remarkReadingTime } from './build/remark-reading-time.mjs';
+import { expressiveCodeOptions } from './build/code-styles.js';
+import { remarkReadingTime } from './build/remark-reading-time.js';
+import { getChunkName } from './build/chunk-strategies.js';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://ruslanpashkov.com',
+	trailingSlash: 'always',
+	output: 'static',
 	integrations: [
-		sitemap(),
 		icon({ iconDir: 'src/assets/svg' }),
 		expressiveCode(expressiveCodeOptions),
 		mdx(),
-		Compress({ CSS: false }),
+		sitemap(),
+		Compress(),
 	],
 	markdown: {
 		rehypePlugins: [
@@ -64,18 +66,14 @@ export default defineConfig({
 		],
 		remarkPlugins: [remarkReadingTime],
 	},
-	output: 'static',
-	site: 'https://ruslanpashkov.com',
-	trailingSlash: 'always',
 	vite: {
 		build: {
-			chunkSizeWarningLimit: 1000,
+			target: browserslistToEsbuild(browserslist()),
 			rollupOptions: {
 				output: {
 					manualChunks: (id) => getChunkName(id),
 				},
 			},
-			target: browserslistToEsbuild(browserslist()),
 		},
 		css: {
 			transformer: 'lightningcss',
