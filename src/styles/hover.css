@@ -1,10 +1,6 @@
 .hover {
 	color: var(--color-neutral);
 
-	&:focus-visible {
-		color: var(--color-contrast);
-	}
-
 	@media (hover: hover) {
 		&:hover {
 			color: var(--color-contrast);
