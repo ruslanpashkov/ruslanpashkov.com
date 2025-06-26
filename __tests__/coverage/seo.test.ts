@@ -27,34 +27,26 @@ describe('SEO utilities', () => {
 	describe('generateTitle', () => {
 		it('should generate title with author name', () => {
 			const title = 'Test Article';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe('Test Article | Ruslan Pashkov');
 		});
 
 		it('should handle empty title', () => {
 			const title = '';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe(' | Ruslan Pashkov');
 		});
 
 		it('should handle title with special characters', () => {
 			const title = 'Article with "quotes" & symbols!';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe('Article with "quotes" & symbols! | Ruslan Pashkov');
 		});
 
 		it('should handle long title', () => {
 			const title =
 				'This is a very long article title that might be used for SEO purposes and should be handled properly';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe(
 				'This is a very long article title that might be used for SEO purposes and should be handled properly | Ruslan Pashkov',
 			);
@@ -62,17 +54,13 @@ describe('SEO utilities', () => {
 
 		it('should handle title with numbers', () => {
 			const title = 'Article 123: The Best of 2025';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe('Article 123: The Best of 2025 | Ruslan Pashkov');
 		});
 
 		it('should handle title with emojis', () => {
 			const title = '🚀 Amazing Article 🎉';
-
 			const result = generateTitle(title);
-
 			expect(result).toBe('🚀 Amazing Article 🎉 | Ruslan Pashkov');
 		});
 	});
@@ -92,9 +80,7 @@ describe('SEO utilities', () => {
 				},
 				id: 'test-article',
 			};
-
 			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
-
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('BlogPosting');
 			expect(result['@id']).toBe('https://example.com/blog/test-article/');
@@ -128,9 +114,7 @@ describe('SEO utilities', () => {
 				},
 				id: 'ai-article',
 			};
-
 			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
-
 			expect(result.keywords).toBe('Tech, AI, Machine Learning');
 			expect(result.articleSection).toEqual(['Tech', 'AI', 'Machine Learning']);
 		});
@@ -166,9 +150,7 @@ describe('SEO utilities', () => {
 					id: 'article-2',
 				},
 			];
-
 			const result: SchemaObject = getBlogSchema(mockWebsite, mockArticles);
-
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('Blog');
 			expect(result['@id']).toBe('https://example.com/');
@@ -182,7 +164,6 @@ describe('SEO utilities', () => {
 
 		it('should handle empty articles array', () => {
 			const result: SchemaObject = getBlogSchema(mockWebsite, []);
-
 			expect(result.blogPost).toHaveLength(0);
 		});
 	});
@@ -190,7 +171,6 @@ describe('SEO utilities', () => {
 	describe('getPersonSchema', () => {
 		it('should generate valid person schema', () => {
 			const result: SchemaObject = getPersonSchema(mockWebsite);
-
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('Person');
 			expect(result['@id']).toBe('https://example.com/');
@@ -208,7 +188,6 @@ describe('SEO utilities', () => {
 
 		it('should include language schemas', () => {
 			const result: SchemaObject = getPersonSchema(mockWebsite);
-
 			expect(result.knowsLanguage).toHaveLength(3);
 			expect(result.knowsLanguage[0]['@type']).toBe('Language');
 			expect(result.knowsLanguage[0].name).toBe('English');
@@ -234,9 +213,7 @@ describe('SEO utilities', () => {
 					url: 'https://project2.com',
 				},
 			];
-
 			const result: SchemaObject = getProjectsSchema(mockWebsite, mockProjects);
-
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('CollectionPage');
 			expect(result['@id']).toBe('https://example.com/');
@@ -251,7 +228,6 @@ describe('SEO utilities', () => {
 
 		it('should handle empty projects array', () => {
 			const result: SchemaObject = getProjectsSchema(mockWebsite, []);
-
 			expect(result.mainEntity.itemListElement).toHaveLength(0);
 		});
 
@@ -265,11 +241,8 @@ describe('SEO utilities', () => {
 					url: 'https://test.com',
 				},
 			];
-
 			const result: SchemaObject = getProjectsSchema(mockWebsite, mockProjects);
-
 			const listItem = result.mainEntity.itemListElement[0];
-
 			expect(listItem.item['@type']).toBe('CreativeWork');
 			expect(listItem.item.name).toBe('Test Project');
 			expect(listItem.item.description).toBe('Test project');
@@ -285,9 +258,7 @@ describe('SEO utilities', () => {
 				{ title: 'Blog', url: '/blog/' },
 				{ title: 'Article', url: '/blog/article/' },
 			];
-
 			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs);
-
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('BreadcrumbList');
 			expect(result['@id']).toBe('https://example.com/');
@@ -304,15 +275,12 @@ describe('SEO utilities', () => {
 
 		it('should handle empty breadcrumbs array', () => {
 			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, []);
-
 			expect(result.itemListElement).toHaveLength(0);
 		});
 
 		it('should handle single breadcrumb', () => {
 			const mockBreadcrumbs: Link[] = [{ title: 'Home', url: '/' }];
-
 			const result: SchemaObject = getBreadcrumbsSchema(mockWebsite, mockBreadcrumbs);
-
 			expect(result.itemListElement).toHaveLength(1);
 			expect(result.itemListElement[0].position).toBe(1);
 			expect(result.itemListElement[0].item.name).toBe('Home');

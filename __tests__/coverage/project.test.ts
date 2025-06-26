@@ -43,9 +43,7 @@ describe('project utilities', () => {
 	describe('sortByType', () => {
 		it('should sort projects by type according to projectTypes order', () => {
 			const projects = [...mockProjects];
-
 			const result = sortByType(projects);
-
 			expect(result).toHaveLength(4);
 			expect(result[0].type).toBe('Web Showcases');
 			expect(result[1].type).toBe('Web Showcases');
@@ -55,17 +53,13 @@ describe('project utilities', () => {
 
 		it('should handle empty array', () => {
 			const projects: Project[] = [];
-
 			const result = sortByType(projects);
-
 			expect(result).toEqual([]);
 		});
 
 		it('should handle single project', () => {
 			const projects: Project[] = [mockProjects[0]];
-
 			const result = sortByType(projects);
-
 			expect(result).toHaveLength(1);
 			expect(result[0]).toEqual(mockProjects[0]);
 		});
@@ -73,9 +67,7 @@ describe('project utilities', () => {
 		it('should not mutate the original array', () => {
 			const projects = [...mockProjects];
 			const originalProjects = [...projects];
-
 			sortByType(projects);
-
 			expect(projects).toEqual(originalProjects);
 		});
 
@@ -98,9 +90,7 @@ describe('project utilities', () => {
 					url: 'https://example.com/second',
 				},
 			];
-
 			const result = sortByType(projects);
-
 			expect(result).toHaveLength(2);
 			expect(result[0].type).toBe('Web Showcases');
 			expect(result[1].type).toBe('Web Showcases');
@@ -111,9 +101,7 @@ describe('project utilities', () => {
 		it('should filter projects by specified type', () => {
 			const projects = [...mockProjects];
 			const type: ProjectType = 'Web Showcases';
-
 			const result = filterByType(projects, type);
-
 			expect(result).toHaveLength(2);
 			expect(result.every((project) => project.type === 'Web Showcases')).toBe(true);
 		});
@@ -121,31 +109,23 @@ describe('project utilities', () => {
 		it('should return empty array when no projects match type', () => {
 			const projects = [...mockProjects];
 			const type: ProjectType = 'Web Showcases';
-
-			// Filter out all web showcases first
 			const filteredProjects = projects.filter((project) => project.type !== 'Web Showcases');
-
 			const result = filterByType(filteredProjects, type);
-
 			expect(result).toEqual([]);
 		});
 
 		it('should handle empty projects array', () => {
 			const projects: Project[] = [];
 			const type: ProjectType = 'Web Showcases';
-
 			const result = filterByType(projects, type);
-
 			expect(result).toEqual([]);
 		});
 
 		it('should handle all project types', () => {
 			const projects = [...mockProjects];
-
 			const webShowcases = filterByType(projects, 'Web Showcases');
 			const utilities = filterByType(projects, 'Utilities');
 			const developerTools = filterByType(projects, 'Developer Tools');
-
 			expect(webShowcases).toHaveLength(2);
 			expect(utilities).toHaveLength(1);
 			expect(developerTools).toHaveLength(1);
@@ -155,9 +135,7 @@ describe('project utilities', () => {
 			const projects = [...mockProjects];
 			const originalProjects = [...projects];
 			const type: ProjectType = 'Web Showcases';
-
 			filterByType(projects, type);
-
 			expect(projects).toEqual(originalProjects);
 		});
 	});
@@ -165,9 +143,7 @@ describe('project utilities', () => {
 	describe('categorize', () => {
 		it('should categorize projects by type', () => {
 			const projects = [...mockProjects];
-
 			const result = categorize(projects);
-
 			expect(result).toHaveProperty('Web Showcases');
 			expect(result).toHaveProperty('Utilities');
 			expect(result).toHaveProperty('Developer Tools');
@@ -178,9 +154,7 @@ describe('project utilities', () => {
 
 		it('should handle empty projects array', () => {
 			const projects: Project[] = [];
-
 			const result = categorize(projects);
-
 			expect(result['Web Showcases']).toEqual([]);
 			expect(result['Utilities']).toEqual([]);
 			expect(result['Developer Tools']).toEqual([]);
@@ -205,9 +179,7 @@ describe('project utilities', () => {
 					url: 'https://example.com/showcase2',
 				},
 			];
-
 			const result = categorize(projects);
-
 			expect(result['Web Showcases']).toHaveLength(2);
 			expect(result['Utilities']).toEqual([]);
 			expect(result['Developer Tools']).toEqual([]);
@@ -216,9 +188,7 @@ describe('project utilities', () => {
 		it('should accept custom types array', () => {
 			const projects = [...mockProjects];
 			const customTypes: readonly ProjectType[] = ['Utilities', 'Developer Tools'];
-
 			const result = categorize(projects, customTypes);
-
 			expect(result).toHaveProperty('Utilities');
 			expect(result).toHaveProperty('Developer Tools');
 			expect(result).not.toHaveProperty('Web Showcases');
@@ -229,18 +199,14 @@ describe('project utilities', () => {
 		it('should handle empty types array', () => {
 			const projects = [...mockProjects];
 			const customTypes: readonly ProjectType[] = [];
-
 			const result = categorize(projects, customTypes);
-
 			expect(result).toEqual({});
 		});
 
 		it('should not mutate the original array', () => {
 			const projects = [...mockProjects];
 			const originalProjects = [...projects];
-
 			categorize(projects);
-
 			expect(projects).toEqual(originalProjects);
 		});
 
@@ -255,9 +221,7 @@ describe('project utilities', () => {
 					url: 'https://example.com/utility',
 				},
 			];
-
 			const result = categorize(projects);
-
 			expect(result['Utilities']).toHaveLength(1);
 			expect(result['Web Showcases']).toEqual([]);
 			expect(result['Developer Tools']).toEqual([]);

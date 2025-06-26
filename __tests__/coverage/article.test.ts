@@ -48,9 +48,7 @@ describe('article utilities', () => {
 					id: 'test-3',
 				},
 			];
-
 			const result = sortByDate(articles);
-
 			expect(result).toHaveLength(3);
 			expect(result[0].data.publishedAt).toBe('2025-01-03');
 			expect(result[1].data.publishedAt).toBe('2025-01-02');
@@ -59,9 +57,7 @@ describe('article utilities', () => {
 
 		it('should handle empty array', () => {
 			const articles: CollectionEntry<'blog'>[] = [];
-
 			const result = sortByDate(articles);
-
 			expect(result).toEqual([]);
 		});
 
@@ -81,9 +77,7 @@ describe('article utilities', () => {
 					id: 'test',
 				},
 			];
-
 			const result = sortByDate(articles);
-
 			expect(result).toHaveLength(1);
 			expect(result[0].data.publishedAt).toBe('2025-01-01');
 		});
@@ -117,9 +111,7 @@ describe('article utilities', () => {
 					id: 'test-2',
 				},
 			];
-
 			const result = sortByDate(articles);
-
 			expect(result).toHaveLength(2);
 			expect(result[0].data.publishedAt).toBe('2025-01-01');
 			expect(result[1].data.publishedAt).toBe('2025-01-01');
@@ -154,9 +146,7 @@ describe('article utilities', () => {
 					id: 'test-2',
 				},
 			];
-
 			const result = sortByDate(articles);
-
 			expect(result).toHaveLength(2);
 			expect(result[0].data.publishedAt).toBe('2025-01-01T00:00:00Z');
 			expect(result[1].data.publishedAt).toBe('2024-12-31T23:59:59Z');
@@ -192,9 +182,7 @@ describe('article utilities', () => {
 				},
 			];
 			const originalArticles = [...articles];
-
 			sortByDate(articles);
-
 			expect(articles).toEqual(originalArticles);
 		});
 	});
