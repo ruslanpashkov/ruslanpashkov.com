@@ -267,10 +267,10 @@ import { messages } from '@/constants/messages';
 						updateLoadingProgress(Math.min(100, Math.random() * 10 + 90));
 					}
 				},
-				(_error) => {
+				(error) => {
 					hideLoader();
 					showErrorMessage();
-					reject();
+					reject(error);
 				},
 			);
 		});
