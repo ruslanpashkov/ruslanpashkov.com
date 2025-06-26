@@ -1,5 +1,5 @@
 #!/bin/sh
 
-bunx lint-staged
+bun run lint:staged
 bun run build
 bun run test

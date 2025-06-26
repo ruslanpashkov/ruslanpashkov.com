@@ -13,6 +13,7 @@
     "lint:eslint:fix": "eslint --fix",
     "lint:stylelint:fix": "stylelint --fix \"**/*.{css,astro}\"",
     "lint:fix": "bun run lint:eslint:fix && bun run lint:stylelint:fix",
+    "lint:staged": "lint-staged",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "bun run test:unit && bun run test:e2e",
