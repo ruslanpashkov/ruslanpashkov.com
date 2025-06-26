@@ -3,12 +3,17 @@ import { getViteConfig } from 'astro/config';
 
 export default getViteConfig({
 	test: {
-		coverage: {
-			include: ['src/**/*.ts'],
-			provider: 'v8',
-			reporter: ['text', 'json', 'html'],
+		include: ['__tests__/coverage/**/*.test.ts'],
+		reporters: ['default', 'html'],
+		outputFile: {
+			html: 'test-reports/vitest/index.html',
 		},
 		environment: 'jsdom',
-		include: ['__tests__/coverage/**/*.test.ts'],
+		coverage: {
+			include: ['src/**/*.ts'],
+			reporter: ['text', 'json', 'html'],
+			reportsDirectory: 'test-reports/vitest/coverage',
+			provider: 'v8',
+		},
 	},
 });

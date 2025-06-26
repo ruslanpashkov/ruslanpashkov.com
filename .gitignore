@@ -11,8 +11,5 @@ node_modules/
 .netlify/
 
 # Test results
-/coverage/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+test-results/
+test-reports/
