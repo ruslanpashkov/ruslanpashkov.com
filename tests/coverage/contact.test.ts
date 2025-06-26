@@ -1,13 +1,11 @@
 import { describe, expect, it } from 'vitest';
-
-import type { Contact } from '@/types/Contact';
-
 import {
 	findEmail,
 	findEmailURL,
 	findOnlineProfiles,
 	findOnlineProfilesURLs,
 } from '@/utils/contact';
+import type { Contact } from '@/types/Contact';
 
 describe('contact utilities', () => {
 	const mockContacts: Contact[] = [

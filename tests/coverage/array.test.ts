@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import { generateSequence } from '@/utils/array/generateSequence';
 
 describe('array utilities', () => {

@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
-
-import type { Article } from '@/types/Article';
-
 import { sortByDate } from '@/utils/article';
+import type { Article } from '@/types/Article';
 
 describe('article utilities', () => {
 	describe('sortByDate', () => {

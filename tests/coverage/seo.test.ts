@@ -1,11 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
-
 import { describe, expect, it } from 'vitest';
-
-import type { Article } from '@/types/Article';
-import type { Link } from '@/types/Link';
-import type { Project } from '@/types/Project';
-
 import { generateTitle } from '@/utils/seo';
 import {
 	getArticleSchema,
@@ -14,6 +8,9 @@ import {
 	getPersonSchema,
 	getProjectsSchema,
 } from '@/utils/seo/schemas';
+import type { Article } from '@/types/Article';
+import type { Link } from '@/types/Link';
+import type { Project } from '@/types/Project';
 
 // The schema-dts library has complex union types that
 // TypeScript can't properly narrow for testing purposes.

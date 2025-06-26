@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import { formatDate, removeTrailingHash, shortenLanguage, slugify } from '@/utils/formatting';
 
 describe('formatting utilities', () => {

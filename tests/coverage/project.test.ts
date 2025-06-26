@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
-
-import type { Project, ProjectType } from '@/types/Project';
-
 import { categorize, filterByType, sortByType } from '@/utils/project';
+import type { Project, ProjectType } from '@/types/Project';
 
 describe('project utilities', () => {
 	const mockProjects: Project[] = [

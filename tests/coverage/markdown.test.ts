@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import { clean, cleanContent, cleanNewlines, cleanSnippets } from '@/utils/markdown';
 
 describe('markdown utilities', () => {
