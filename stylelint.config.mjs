@@ -1,3 +1,5 @@
+import { propertyGroups } from 'stylelint-config-clean-order';
+
 /** @type {import("stylelint").Config} */
 export default {
 	extends: [
@@ -32,6 +34,17 @@ export default {
 			},
 		],
 		'no-empty-source': null,
+		'order/properties-order': [
+			propertyGroups.map((properties) => ({
+				emptyLineBefore: 'never',
+				noEmptyLineBetween: true,
+				properties,
+			})),
+			{
+				severity: 'warning',
+				unspecified: 'bottomAlphabetical',
+			},
+		],
 	},
 	ignoreFiles: ['dist/**', 'node_modules/**', '.astro/**'],
 };
