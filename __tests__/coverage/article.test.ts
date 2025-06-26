@@ -1,13 +1,13 @@
-import type { CollectionEntry } from 'astro:content';
-
 import { describe, expect, it } from 'vitest';
+
+import type { Article } from '@/types/Article';
 
 import { sortByDate } from '@/utils/article';
 
 describe('article utilities', () => {
 	describe('sortByDate', () => {
 		it('should sort articles by published date in descending order', () => {
-			const articles: CollectionEntry<'blog'>[] = [
+			const articles: Article[] = [
 				{
 					body: 'content1',
 					collection: 'blog',
@@ -56,13 +56,13 @@ describe('article utilities', () => {
 		});
 
 		it('should handle empty array', () => {
-			const articles: CollectionEntry<'blog'>[] = [];
+			const articles: Article[] = [];
 			const result = sortByDate(articles);
 			expect(result).toEqual([]);
 		});
 
 		it('should handle single article', () => {
-			const articles: CollectionEntry<'blog'>[] = [
+			const articles: Article[] = [
 				{
 					body: 'content',
 					collection: 'blog',
@@ -83,7 +83,7 @@ describe('article utilities', () => {
 		});
 
 		it('should handle articles with same date', () => {
-			const articles: CollectionEntry<'blog'>[] = [
+			const articles: Article[] = [
 				{
 					body: 'content1',
 					collection: 'blog',
@@ -118,7 +118,7 @@ describe('article utilities', () => {
 		});
 
 		it('should handle different date formats', () => {
-			const articles: CollectionEntry<'blog'>[] = [
+			const articles: Article[] = [
 				{
 					body: 'content1',
 					collection: 'blog',
@@ -153,7 +153,7 @@ describe('article utilities', () => {
 		});
 
 		it('should not mutate the original array', () => {
-			const articles: CollectionEntry<'blog'>[] = [
+			const articles: Article[] = [
 				{
 					body: 'content1',
 					collection: 'blog',

@@ -2,6 +2,7 @@ import type { CollectionEntry } from 'astro:content';
 
 import { describe, expect, it } from 'vitest';
 
+import type { Article } from '@/types/Article';
 import type { Link } from '@/types/Link';
 import type { Project } from '@/types/Project';
 
@@ -67,7 +68,7 @@ describe('SEO utilities', () => {
 
 	describe('getArticleSchema', () => {
 		it('should generate valid article schema', () => {
-			const mockArticle: CollectionEntry<'blog'> = {
+			const mockArticle: Article = {
 				body: 'Test article content',
 				collection: 'blog',
 				data: {
@@ -122,7 +123,7 @@ describe('SEO utilities', () => {
 
 	describe('getBlogSchema', () => {
 		it('should generate valid blog schema', () => {
-			const mockArticles: CollectionEntry<'blog'>[] = [
+			const mockArticles: Article[] = [
 				{
 					body: 'Article 1 content',
 					collection: 'blog',
