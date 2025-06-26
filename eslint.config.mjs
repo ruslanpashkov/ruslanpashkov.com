@@ -1,19 +1,17 @@
 import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import typescriptParser from '@typescript-eslint/parser';
 import astroEslintParser from 'astro-eslint-parser';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 
 /** @type {import("eslint").Linter.Config} */
 export default [
 	js.configs.recommended,
 	...tseslint.configs.recommended,
-	...eslintPluginAstro.configs['flat/recommended'],
-	perfectionist.configs['recommended-natural'],
+	...eslintPluginAstro.configs.recommended,
 	eslintPluginJsxA11y.flatConfigs.recommended,
 	eslintPluginPrettier,
 	{
@@ -35,17 +33,6 @@ export default [
 		files: ['**/*.ts'],
 		languageOptions: {
 			parser: typescriptParser,
-		},
-		rules: {
-			'@typescript-eslint/no-non-null-assertion': 'off',
-			'@typescript-eslint/no-unused-vars': [
-				'error',
-				{
-					argsIgnorePattern: '^_',
-					destructuredArrayIgnorePattern: '^_',
-				},
-			],
-			'no-unused-vars': 'off',
 		},
 	},
 	{

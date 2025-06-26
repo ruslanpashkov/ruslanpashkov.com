@@ -1,5 +1,3 @@
-import { propertyGroups } from 'stylelint-config-clean-order';
-
 /** @type {import("stylelint").Config} */
 export default {
 	extends: [
@@ -7,15 +5,23 @@ export default {
 		'stylelint-prettier/recommended',
 		'stylelint-config-clean-order',
 	],
-	ignoreFiles: ['dist/**', 'node_modules/**', '.astro/**'],
+	plugins: ['stylelint-prettier'],
 	overrides: [
 		{
 			extends: ['stylelint-config-html'],
 			files: ['*.astro'],
 		},
 	],
-	plugins: ['stylelint-prettier'],
 	rules: {
+		'selector-class-pattern': [
+			'^[a-z]([-]?[a-z0-9]+)*(__[a-z0-9]([-]?[a-z0-9]+)*)?(--[a-z0-9]([-]?[a-z0-9]+)*)?$',
+			{
+				message: function expected(selectorValue) {
+					return `Expected class selector "${selectorValue}" to match BEM CSS pattern https://en.bem.info/methodology/css.`;
+				},
+				resolveNestedSelectors: true,
+			},
+		],
 		'custom-property-pattern': [
 			'^([a-z]+(-[a-z]+)*|[a-z]+([A-Z][a-z]*)*)$',
 			{
@@ -26,25 +32,6 @@ export default {
 			},
 		],
 		'no-empty-source': null,
-		'order/properties-order': [
-			propertyGroups.map((properties) => ({
-				emptyLineBefore: 'never',
-				noEmptyLineBetween: true,
-				properties,
-			})),
-			{
-				severity: 'warning',
-				unspecified: 'bottomAlphabetical',
-			},
-		],
-		'selector-class-pattern': [
-			'^[a-z]([-]?[a-z0-9]+)*(__[a-z0-9]([-]?[a-z0-9]+)*)?(--[a-z0-9]([-]?[a-z0-9]+)*)?$',
-			{
-				message: function expected(selectorValue) {
-					return `Expected class selector "${selectorValue}" to match BEM CSS pattern https://en.bem.info/methodology/css.`;
-				},
-				resolveNestedSelectors: true,
-			},
-		],
 	},
+	ignoreFiles: ['dist/**', 'node_modules/**', '.astro/**'],
 };

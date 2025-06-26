@@ -1,5 +1,10 @@
 /** @type {import("prettier").Config} */
 export default {
+	singleQuote: true,
+	useTabs: true,
+	tabWidth: 4,
+	printWidth: 100,
+	plugins: ['prettier-plugin-astro'],
 	overrides: [
 		{
 			files: ['*.astro'],
@@ -16,14 +21,9 @@ export default {
 		{
 			files: ['*.json', '*.yml', '*.toml', '*.webmanifest'],
 			options: {
-				tabWidth: 2,
 				useTabs: false,
+				tabWidth: 2,
 			},
 		},
 	],
-	plugins: ['prettier-plugin-astro'],
-	printWidth: 100,
-	singleQuote: true,
-	tabWidth: 4,
-	useTabs: true,
 };
