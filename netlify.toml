@@ -10,6 +10,7 @@ Content-Security-Policy = """
     default-src 'self';
     frame-ancestors 'self';
     style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
     """
 
 [[headers]]
