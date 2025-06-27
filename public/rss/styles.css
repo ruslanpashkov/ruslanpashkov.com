@@ -18,7 +18,6 @@ body {
 	font-size: 14px;
 	line-height: 1.5;
 	color: #24292e;
-
 	background-color: #fff;
 }
 
@@ -39,12 +38,10 @@ strong {
 .rule,
 hr {
 	overflow: hidden;
-
 	height: 0;
 	margin: 15px 0;
 	border: 0;
 	border-bottom: 1px solid #dfe2e5;
-
 	background: 0 0;
 }
 
@@ -3372,28 +3369,21 @@ pre {
 
 .sr-only {
 	position: absolute;
-
 	overflow: hidden;
-
 	width: 1px;
 	height: 1px;
 	padding: 0;
 	border: 0;
-
 	word-wrap: normal;
-
 	clip: rect(0, 0, 0, 0);
 }
 
 .show-on-focus {
 	position: absolute;
-
 	overflow: hidden;
-
 	width: 1px;
 	height: 1px;
 	margin: 0;
-
 	clip: rect(1px, 1px, 1px, 1px);
 }
 
@@ -3495,7 +3485,6 @@ pre {
 	margin: 24px 0;
 	padding: 0;
 	border: 0;
-
 	background-color: #e1e4e8;
 }
 
@@ -3515,17 +3504,14 @@ pre {
 
 .markdown-body kbd {
 	display: inline-block;
-
 	padding: 3px 5px;
 	border: solid 1px #c6cbd1;
 	border-bottom-color: #959da5;
 	border-radius: 3px;
-
 	font-size: 11px;
 	line-height: 10px;
 	color: #444d56;
 	vertical-align: middle;
-
 	background-color: #fafbfc;
 	box-shadow: inset 0 -1px 0 #959da5;
 }
@@ -3609,7 +3595,6 @@ pre {
 .markdown-body dl dt {
 	margin-top: 16px;
 	padding: 0;
-
 	font-size: 1em;
 	font-weight: 600;
 	font-style: italic;
