@@ -19,6 +19,12 @@ export default {
 			},
 		},
 		{
+			files: ['*.md', '*.mdx'],
+			options: {
+				embeddedLanguageFormatting: 'off',
+			},
+		},
+		{
 			files: ['*.json', '*.yml', '*.webmanifest'],
 			options: {
 				useTabs: false,

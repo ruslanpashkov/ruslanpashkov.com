@@ -107,16 +107,16 @@ Sure, we've figured out how to properly markup breadcrumbs, but for screen reade
 </audio>
 
 <details>
-<summary>Audio Transcript</summary>
-<div>
-	navigation, list 3 items:
-    <ol>
-        <li>link, Home, 1 of 3, right-pointing double arrow</li>
-        <li>link, New Buildings, 2 of 3, right-pointing double arrow</li>
-        <li>Green Quarter Complex</li>
-    </ol>
-    end of list. end of, navigation
-</div>
+	<summary>Audio Transcript</summary>
+	<div>
+		navigation, list 3 items:
+		<ol>
+			<li>link, Home, 1 of 3, right-pointing double arrow</li>
+			<li>link, New Buildings, 2 of 3, right-pointing double arrow</li>
+			<li>Green Quarter Complex</li>
+		</ol>
+		end of list. end of, navigation
+	</div>
 </details>
 
 And this is where it gets interesting — it's time to teach screen readers how to properly read our breadcrumbs!
@@ -183,16 +183,16 @@ Now our breadcrumbs sound much better to screen readers:
 </audio>
 
 <details>
-<summary>Audio Transcript</summary>
-<div>
-    Breadcrumbs, navigation. list 3 items:
-    <ol>
-        <li>link, Home, 1 of 3</li>
-        <li>link, New Buildings 2 of 3</li>
-        <li>Green Quarter Complex, current page</li>
-    </ol>
-    end of list. end of, Breadcrumbs, navigation.
-</div>
+	<summary>Audio Transcript</summary>
+	<div>
+		Breadcrumbs, navigation. list 3 items:
+		<ol>
+			<li>link, Home, 1 of 3</li>
+			<li>link, New Buildings 2 of 3</li>
+			<li>Green Quarter Complex, current page</li>
+		</ol>
+		end of list. end of, Breadcrumbs, navigation.
+	</div>
 </details>
 
 One final note on accessibility: if you're using a custom separator (like an SVG icon), make sure it has sufficient [color contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) — at least **4.5:1** ratio. Though hidden from screen readers, these visual markers help partially sighted users understand content structure.
@@ -703,7 +703,7 @@ By the way, since we used `overflow: hidden`, we need to add a small negative of
 
 <Image
 	src={focusedBreadcrumbsPreview}
-	alt="‘New Buildings’ link with adjusted outline offset for keyboard navigation visibility"
+	alt="'New Buildings' link with adjusted outline offset for keyboard navigation visibility"
 	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${focusedBreadcrumbsPreview.width}px`}
 	widths={[400, 800, 1200]}
 	decoding="async"
