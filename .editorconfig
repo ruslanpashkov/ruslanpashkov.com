@@ -8,9 +8,9 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[{*.json,*.yml,*toml,*.webmanifest}]
+[{*.json,*.yml,*.webmanifest}]
 indent_style = space
 indent_size = 2
 
-[*.md]
+[*.md,*.mdx]
 trim_trailing_whitespace = false
