@@ -1,10 +1,7 @@
+import type { projectTypes } from '@/data/projects';
 import type { Link } from '@/types/Link';
 
-export const projectTypes = ['Web Showcases', 'Utilities', 'Developer Tools'] as const;
-
-export type CategorizedProjects = {
-	[K in ProjectType]: Project[];
-};
+export type ProjectType = (typeof projectTypes)[number];
 
 export interface Project extends Link {
 	description: string;
@@ -12,4 +9,6 @@ export interface Project extends Link {
 	type: ProjectType;
 }
 
-export type ProjectType = (typeof projectTypes)[number];
+export type CategorizedProjects = {
+	[K in ProjectType]: Project[];
+};

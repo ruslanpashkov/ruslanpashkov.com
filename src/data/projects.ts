@@ -1,5 +1,7 @@
 import type { Project } from '@/types/Project';
 
+export const projectTypes = ['Web Showcases', 'Utilities', 'Developer Tools'] as const;
+
 export const projects: Project[] = [
 	{
 		title: 'Just One More',

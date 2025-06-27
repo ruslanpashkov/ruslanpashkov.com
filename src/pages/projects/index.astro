@@ -5,10 +5,9 @@ import ProjectSection from '@/components/Projects/ProjectSection.astro';
 import ProjectList from '@/components/Projects/ProjectList.astro';
 import Glow from '@/components/shared/Glow.astro';
 import { descriptions } from '@/data/descriptions';
-import { projects } from '@/data/projects';
+import { projects, projectTypes } from '@/data/projects';
 import { categorize, sortByType } from '@/utils/project';
 import { generateTitle, getBreadcrumbsSchema, getProjectsSchema } from '@/utils/seo';
-import { projectTypes } from '@/types/Project';
 import type { Link } from '@/types/Link';
 
 const title = generateTitle('Projects');
