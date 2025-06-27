@@ -46,5 +46,5 @@ export default {
 			},
 		],
 	},
-	ignoreFiles: ['dist/**', 'node_modules/**', '.astro/**'],
+	ignoreFiles: ['dist/**', 'node_modules/**', '.astro/**', 'test-results/**', 'test-reports/**'],
 };
