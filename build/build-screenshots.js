@@ -10,12 +10,12 @@ const CONFIG = {
 	},
 	dimensions: {
 		desktop: {
-			height: 720,
 			width: 1280,
+			height: 720,
 		},
 		mobile: {
-			height: 800,
 			width: 360,
+			height: 800,
 		},
 	},
 };

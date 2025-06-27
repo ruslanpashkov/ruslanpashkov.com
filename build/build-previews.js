@@ -10,8 +10,8 @@ const CONFIG = {
 		output: join(process.cwd(), 'public/images/previews'),
 	},
 	dimensions: {
-		height: 630,
 		width: 1200,
+		height: 630,
 	},
 	template: {
 		color: {
