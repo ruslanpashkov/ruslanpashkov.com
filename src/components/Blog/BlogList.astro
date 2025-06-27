@@ -1,11 +1,8 @@
 ---
-import type { Page } from 'astro';
-
-import type { Article } from '@/types/Article';
-
-import Pagination from '@/components/shared/Pagination.astro';
-
 import ArticleList from './ArticleList.astro';
+import Pagination from '@/components/shared/Pagination.astro';
+import type { Page } from 'astro';
+import type { Article } from '@/types/Article';
 
 interface Props {
 	page: Page<Article>;

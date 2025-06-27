@@ -1,25 +1,24 @@
 ---
-import type { Link } from '@/types/Link';
-
-import ProjectList from '@/components/Projects/ProjectList.astro';
+import Layout from '@/layouts/Layout.astro';
+import ContentLayout from '@/layouts/ContentLayout.astro';
 import ProjectSection from '@/components/Projects/ProjectSection.astro';
+import ProjectList from '@/components/Projects/ProjectList.astro';
 import Glow from '@/components/shared/Glow.astro';
 import { descriptions } from '@/data/descriptions';
 import { projects } from '@/data/projects';
-import ContentLayout from '@/layouts/ContentLayout.astro';
-import Layout from '@/layouts/Layout.astro';
-import { projectTypes } from '@/types/Project';
 import { categorize, sortByType } from '@/utils/project';
 import { generateTitle, getBreadcrumbsSchema, getProjectsSchema } from '@/utils/seo';
+import { projectTypes } from '@/types/Project';
+import type { Link } from '@/types/Link';
 
 const title = generateTitle('Projects');
 
 const sortedProjects = sortByType(projects);
 
 const {
-	'Developer Tools': developerTools,
-	Utilities: utilities,
 	'Web Showcases': webShowcases,
+	Utilities: utilities,
+	'Developer Tools': developerTools,
 } = categorize(sortedProjects, projectTypes);
 
 const breadcrumbs: Link[] = [

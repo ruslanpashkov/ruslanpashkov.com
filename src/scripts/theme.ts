@@ -84,11 +84,13 @@ import { debounce } from '@/utils/performance';
 
 	const applyTheme = (themeMode: ThemeMode) => {
 		const isSystemTheme = themeMode === 'system';
+
 		if (isSystemTheme) {
 			clearTheme();
 		} else {
 			saveTheme(themeMode);
 		}
+
 		const theme = isSystemTheme ? getSystemTheme() : themeMode;
 		setDocumentTheme(theme);
 		updateStylesheetsForTheme(theme);

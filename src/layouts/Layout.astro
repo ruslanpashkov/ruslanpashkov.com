@@ -1,34 +1,32 @@
 ---
+import '@/styles/global.css';
+import Header from '@/components/shared/Header.astro';
+import Footer from '@/components/shared/Footer.astro';
+import SkipToContent from '@/components/shared/SkipToContent.astro';
+import { global } from '@/data/global';
+import { colors } from '@/constants/colors';
+import lightStyles from '@/styles/light.css?raw';
+import darkStyles from '@/styles/dark.css?raw';
 import type { Thing, WithContext } from 'schema-dts';
-
 import type { Article } from '@/types/Article';
 
-import Footer from '@/components/shared/Footer.astro';
-import Header from '@/components/shared/Header.astro';
-import SkipToContent from '@/components/shared/SkipToContent.astro';
-import { colors } from '@/constants/colors';
-import { global } from '@/data/global';
-import darkStyles from '@/styles/dark.css?raw';
-import lightStyles from '@/styles/light.css?raw';
-import '@/styles/global.css';
+interface DefaultProps {
+	title: string;
+	description: string;
+	cover: string;
+	schemas?: WithContext<Thing>[];
+}
 
 interface ArticleProps extends DefaultProps {
-	article: Article;
 	type: 'article';
+	article: Article;
 }
-
-interface DefaultProps {
-	cover: string;
-	description: string;
-	schemas?: WithContext<Thing>[];
-	title: string;
-}
-
-type Props = ArticleProps | WebsiteProps;
 
 interface WebsiteProps extends DefaultProps {
 	type: 'website';
 }
+
+type Props = ArticleProps | WebsiteProps;
 
 const props = Astro.props;
 const { cover, description, schemas = [], title, type } = props;

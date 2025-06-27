@@ -1,16 +1,14 @@
-import type { BlogPosting, WithContext } from 'schema-dts';
-
-import type { Article } from '@/types/Article';
-
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
 import { clean } from '@/utils/markdown';
+import type { BlogPosting, WithContext } from 'schema-dts';
+import type { Article } from '@/types/Article';
 
 export const getArticleSchema = (website: URL, article: Article): WithContext<BlogPosting> => {
 	const {
 		body,
-		data: { categories, description, publishedAt, slug, title, topic },
+		data: { publishedAt, slug, title, description, categories, topic },
 	} = article;
 	const email = findEmailURL(contacts);
 	const onlineProfiles = findOnlineProfilesURLs(contacts);
@@ -22,43 +20,43 @@ export const getArticleSchema = (website: URL, article: Article): WithContext<Bl
 
 	return {
 		'@context': 'https://schema.org',
-		'@id': articleURL.href,
 		'@type': 'BlogPosting',
+		'@id': articleURL.href,
+		headline: title,
+		description: description,
+		url: articleURL.href,
+		author: {
+			'@type': 'Person',
+			name: global.author,
+			email: email,
+			url: website.origin,
+			sameAs: onlineProfiles,
+		},
+		publisher: {
+			'@type': 'Person',
+			name: global.author,
+			email: email,
+			url: website.origin,
+			sameAs: onlineProfiles,
+		},
+		datePublished: datePublished,
+		articleBody: cleanContent,
 		about: {
 			'@type': 'Thing',
 			name: topic,
 		},
-		articleBody: cleanContent,
-		articleSection: categories,
-		author: {
-			'@type': 'Person',
-			email: email,
-			name: global.author,
-			sameAs: onlineProfiles,
-			url: website.origin,
-		},
-		datePublished: datePublished,
-		description: description,
-		headline: title,
 		image: {
 			'@type': 'ImageObject',
-			height: '630',
 			url: previewImageURL.href,
 			width: '1200',
+			height: '630',
 		},
-		inLanguage: 'en',
-		keywords: keywords,
 		mainEntityOfPage: {
-			'@id': articleURL.href,
 			'@type': 'WebPage',
+			'@id': articleURL.href,
 		},
-		publisher: {
-			'@type': 'Person',
-			email: email,
-			name: global.author,
-			sameAs: onlineProfiles,
-			url: website.origin,
-		},
-		url: articleURL.href,
+		articleSection: categories,
+		keywords: keywords,
+		inLanguage: 'en',
 	};
 };

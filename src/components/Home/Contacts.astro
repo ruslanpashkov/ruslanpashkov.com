@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-
 import type { Contact } from '@/types/Contact';
 
 interface Props {
@@ -12,7 +11,7 @@ const { contacts } = Astro.props;
 
 <ul class="contact-list" data-testid="home-contacts-list">
 	{
-		contacts.map(({ icon, label, title, url }) => {
+		contacts.map(({ title, url, label, icon }) => {
 			const isPhoneLink = url.startsWith('tel:');
 			const isMailLink = url.startsWith('mailto:');
 			const isStandardLink = !isPhoneLink && !isMailLink;

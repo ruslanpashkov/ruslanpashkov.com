@@ -1,17 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components';
-
+import Layout from '@/layouts/Layout.astro';
 import Glow from '@/components/shared/Glow.astro';
 import { global } from '@/data/global';
-import Layout from '@/layouts/Layout.astro';
 import { generateTitle } from '@/utils/seo';
 
 const title = generateTitle('404');
 
 const emailDetails = {
-	body: `I was trying to access the page at: ${Astro.url.href}`,
 	recipient: global.email,
 	subject: 'Page not found',
+	body: `I was trying to access the page at: ${Astro.url.href}`,
 };
 
 const mailToURL =
@@ -46,9 +45,9 @@ const githubIssueURL = 'https://github.com/ruslanpashkov/ruslanpashkov.com/issue
 					{' '}
 					If you believe this is an error, please
 
-					<a class="not-found__contact" data-testid="404-contact-link" href={mailToURL}>
-						contact me
-					</a>.
+					<a class="not-found__contact" data-testid="404-contact-link" href={mailToURL}
+						>contact me</a
+					><span aria-hidden="true">.</span>
 				</p>
 
 				<a class="not-found__back hover" data-testid="404-back-link" href="/">

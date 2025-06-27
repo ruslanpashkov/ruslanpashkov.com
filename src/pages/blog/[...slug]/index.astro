@@ -1,19 +1,17 @@
 ---
-import { Icon } from 'astro-icon/components';
+import '@/styles/markdown.css';
 import { getCollection, render } from 'astro:content';
-
-import type { Article } from '@/types/Article';
-import type { Link } from '@/types/Link';
-
-import TableOfContents from '@/components/Article/TableOfContents.astro';
+import { Icon } from 'astro-icon/components';
+import Layout from '@/layouts/Layout.astro';
 import Breadcrumbs from '@/components/shared/Breadcrumbs.astro';
+import TableOfContents from '@/components/Article/TableOfContents.astro';
 import Glow from '@/components/shared/Glow.astro';
 import { contacts } from '@/data/contacts';
-import Layout from '@/layouts/Layout.astro';
 import { findEmail, findOnlineProfiles } from '@/utils/contact';
 import { formatDate } from '@/utils/formatting';
 import { generateTitle, getArticleSchema, getBreadcrumbsSchema } from '@/utils/seo';
-import '@/styles/markdown.css';
+import type { Article } from '@/types/Article';
+import type { Link } from '@/types/Link';
 
 interface Props {
 	article: Article;
@@ -30,7 +28,7 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 
-const { categories, description, publishedAt, slug, title, topic, updatedAt } = article.data;
+const { publishedAt, updatedAt, slug, title, description, categories, topic } = article.data;
 
 const {
 	Content,
@@ -48,9 +46,9 @@ const publishedDate = formatDate(publishedAt);
 const updatedDate = updatedAt && formatDate(updatedAt);
 
 const emailDetails = {
-	body: 'Hi, I just read your article and have some questions/feedback.',
 	recipient: email.url,
 	subject: `Re: ${title} - Questions/Feedback`,
+	body: 'Hi, I just read your article and have some questions/feedback.',
 };
 
 const mailToURL =
@@ -167,7 +165,7 @@ const breadcrumbsSchema = getBreadcrumbsSchema(Astro.url, breadcrumbs);
 
 					<ul class="article__social" data-testid="blog-article-social">
 						{
-							onlineProfiles.map(({ icon, label, url }) => (
+							onlineProfiles.map(({ url, label, icon }) => (
 								<li data-testid="blog-article-social-item">
 									<a
 										class="article__social-link hover"

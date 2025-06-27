@@ -1,5 +1,4 @@
 import { createFocusTrap } from 'focus-trap';
-
 import { debounce } from '@/utils/performance';
 
 (() => {

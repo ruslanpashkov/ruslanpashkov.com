@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-
 import type { Project } from '@/types/Project';
 
 interface Props {
@@ -12,7 +11,7 @@ const { projects } = Astro.props;
 
 <ul class="project-list" data-testid="home-projects-list">
 	{
-		projects.map(({ tags, title, url }) => (
+		projects.map(({ title, url, tags }) => (
 			<li data-testid="home-project-item">
 				<article class="project-card" data-testid="home-project-card">
 					<a

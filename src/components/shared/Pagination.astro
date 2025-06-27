@@ -1,9 +1,7 @@
 ---
-import type { Page } from 'astro';
-
 import { Icon } from 'astro-icon/components';
-
 import { generateSequence } from '@/utils/array/generateSequence';
+import type { Page } from 'astro';
 
 interface Props {
 	page: Page;
@@ -11,7 +9,7 @@ interface Props {
 
 const { page } = Astro.props;
 
-const { currentPage, lastPage, url } = page;
+const { url, currentPage, lastPage } = page;
 
 const pages = generateSequence(lastPage);
 ---

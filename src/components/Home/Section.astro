@@ -1,17 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components';
-
+import { slugify } from '@/utils/formatting';
 import type { Link } from '@/types/Link';
 
-import { slugify } from '@/utils/formatting';
-
 interface Props {
+	title: string;
 	counter?: number;
 	link?: Link;
-	title: string;
 }
 
-const { counter, link, title } = Astro.props;
+const { title, counter, link } = Astro.props;
 
 const slug = slugify(title);
 ---

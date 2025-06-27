@@ -1,7 +1,3 @@
-import type { Blog, BlogPosting, WithContext } from 'schema-dts';
-
-import type { Article } from '@/types/Article';
-
 import { contacts } from '@/data/contacts';
 import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
@@ -9,6 +5,8 @@ import { sortByDate } from '@/utils/article';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
 import { clean } from '@/utils/markdown';
 import { generateTitle } from '@/utils/seo';
+import type { Blog, BlogPosting, WithContext } from 'schema-dts';
+import type { Article } from '@/types/Article';
 
 export const getBlogSchema = (website: URL, articles: Article[]): WithContext<Blog> => {
 	const email = findEmailURL(contacts);
@@ -19,26 +17,26 @@ export const getBlogSchema = (website: URL, articles: Article[]): WithContext<Bl
 
 	return {
 		'@context': 'https://schema.org',
-		'@id': website.href,
 		'@type': 'Blog',
+		'@id': website.href,
+		name: title,
+		description: descriptions.articles,
 		author: {
 			'@type': 'Person',
 			name: global.author,
 			url: website.origin,
 		},
-		blogPost: posts,
-		description: descriptions.articles,
-		mainEntityOfPage: {
-			'@id': website.href,
-			'@type': 'WebPage',
-		},
-		name: title,
 		publisher: {
 			'@type': 'Person',
-			email: email,
 			name: global.author,
-			sameAs: onlineProfiles,
+			email: email,
 			url: website.origin,
+			sameAs: onlineProfiles,
+		},
+		blogPost: posts,
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': website.href,
 		},
 	};
 };
@@ -46,7 +44,7 @@ export const getBlogSchema = (website: URL, articles: Article[]): WithContext<Bl
 function buildBlogPostSchema(article: Article): BlogPosting {
 	const {
 		body,
-		data: { categories, description, publishedAt, slug, title, topic },
+		data: { publishedAt, slug, title, description, categories, topic },
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
@@ -56,36 +54,36 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 
 	return {
 		'@type': 'BlogPosting',
-		about: {
-			'@type': 'Thing',
-			name: topic,
-		},
-		articleBody: cleanContent,
-		articleSection: categories,
+		headline: title,
+		description: description,
+		url: articleURL.href,
 		author: {
 			'@type': 'Person',
 			name: global.author,
 			url: import.meta.env.SITE,
 		},
-		datePublished: datePublished,
-		description: description,
-		headline: title,
-		image: {
-			'@type': 'ImageObject',
-			height: '630',
-			url: previewImageURL.href,
-			width: '1200',
-		},
-		inLanguage: 'en',
-		keywords: keywords,
-		mainEntityOfPage: {
-			'@id': articleURL.href,
-			'@type': 'WebPage',
-		},
 		publisher: {
 			'@type': 'Person',
 			name: global.author,
 		},
-		url: articleURL.href,
+		datePublished: datePublished,
+		articleBody: cleanContent,
+		about: {
+			'@type': 'Thing',
+			name: topic,
+		},
+		image: {
+			'@type': 'ImageObject',
+			url: previewImageURL.href,
+			width: '1200',
+			height: '630',
+		},
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': articleURL.href,
+		},
+		articleSection: categories,
+		keywords: keywords,
+		inLanguage: 'en',
 	};
 }

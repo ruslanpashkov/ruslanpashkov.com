@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Typewriter from 'typewriter-effect/dist/core';
-
 import { messages } from '@/constants/messages';
 
 (() => {
@@ -29,13 +28,16 @@ import { messages } from '@/constants/messages';
 	const getRandomMessage = (category: MessageCategory) => {
 		const categoryMessages = messages[category];
 		const availableMessages = categoryMessages.filter((msg) => !shownMessages.has(msg));
+
 		if (availableMessages.length === 0) {
 			shownMessages.clear();
 			availableMessages.push(...categoryMessages);
 		}
+
 		const selectedMessage =
 			availableMessages[Math.floor(Math.random() * availableMessages.length)];
 		shownMessages.add(selectedMessage);
+
 		return selectedMessage;
 	};
 
@@ -48,9 +50,11 @@ import { messages } from '@/constants/messages';
 			{ category: 'philosophical' as const, threshold: 20 },
 		];
 		const matchedThreshold = messageThresholds.find(({ threshold }) => count <= threshold);
+
 		if (matchedThreshold) {
 			return matchedThreshold.category;
 		}
+
 		return 'surrender';
 	};
 
@@ -96,6 +100,7 @@ import { messages } from '@/constants/messages';
 	const createFadeInAnimation = (material: THREE.MeshBasicMaterial) => {
 		const startTime = performance.now();
 		const duration = 1000;
+
 		const animate = (currentTime: number) => {
 			const elapsed = currentTime - startTime;
 			const progress = Math.min(elapsed / duration, 1);
@@ -105,6 +110,7 @@ import { messages } from '@/constants/messages';
 				requestAnimationFrame(animate);
 			}
 		};
+
 		material.opacity = 0;
 		requestAnimationFrame(animate);
 	};
@@ -117,11 +123,14 @@ import { messages } from '@/constants/messages';
 	const showMessage = (msg: string, category: MessageCategory) => {
 		message.classList.add('model-message--open');
 		writeMessage(msg);
+
 		if (['annoyed', 'sassy', 'surrender'].includes(category)) {
 			message.classList.add('model-message--shake');
 		}
+
 		const readingSpeed = 80;
 		const hideDelay = Math.max(3000, msg.length * readingSpeed);
+
 		window.setTimeout(() => {
 			message.classList.remove('model-message--open', 'model-message--shake');
 		}, hideDelay);
@@ -140,6 +149,7 @@ import { messages } from '@/constants/messages';
 
 	const applyWireframeMaterial = (object: THREE.Object3D) => {
 		const wireframeMaterial = createMaterial();
+
 		object.traverse((child) => {
 			if (child instanceof THREE.Mesh) {
 				child.material = wireframeMaterial;
@@ -147,6 +157,7 @@ import { messages } from '@/constants/messages';
 				child.receiveShadow = true;
 			}
 		});
+
 		return wireframeMaterial;
 	};
 
@@ -193,52 +204,63 @@ import { messages } from '@/constants/messages';
 			mixer.clipAction(gltf.animations[0]).play();
 			return mixer;
 		}
+
 		return null;
 	};
 
 	const createModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {
 		const raycaster = new THREE.Raycaster();
 		const mouse = new THREE.Vector2();
+
 		let clickCount = 0;
 		let lastClickTime = 0;
+
 		const handleClick = () => {
 			const currentTime = Date.now();
+
 			if (currentTime - lastClickTime > 30000) {
 				clickCount = 0;
 			}
+
 			clickCount++;
 			lastClickTime = currentTime;
 			const category = getMessageCategory(clickCount);
 			const text = getRandomMessage(category);
 			showMessage(text, category);
 		};
+
 		const updateMousePosition = (event: MouseEvent) => {
 			const rect = model.getBoundingClientRect();
 			mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
 			mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 		};
+
 		const onMouseMove = (event: MouseEvent) => {
 			updateMousePosition(event);
 			raycaster.setFromCamera(mouse, camera);
 			const intersects = raycaster.intersectObjects(root.children, true);
 			model.style.cursor = intersects.length > 0 ? 'pointer' : 'default';
 		};
+
 		const onClick = (event: MouseEvent) => {
 			if (!message.classList.contains('model-message--open')) {
 				updateMousePosition(event);
 				raycaster.setFromCamera(mouse, camera);
 				const intersects = raycaster.intersectObjects(root.children, true);
+
 				if (intersects.length > 0) {
 					handleClick();
 				}
 			}
 		};
+
 		model.addEventListener('mousemove', onMouseMove);
 		model.addEventListener('click', onClick);
 	};
 
 	const loadModel = async (scene: THREE.Scene, camera: THREE.PerspectiveCamera) => {
 		const loader = new GLTFLoader();
+
 		return new Promise<{
 			material: THREE.MeshBasicMaterial;
 			mixer: null | THREE.AnimationMixer;
@@ -283,14 +305,18 @@ import { messages } from '@/constants/messages';
 		mixer: null | THREE.AnimationMixer,
 	) => {
 		const clock = new THREE.Clock();
+
 		const animate = () => {
 			requestAnimationFrame(animate);
 			const delta = clock.getDelta();
+
 			if (mixer) {
 				mixer.update(delta);
 			}
+
 			renderer.render(scene, camera);
 		};
+
 		animate();
 	};
 
@@ -302,6 +328,7 @@ import { messages } from '@/constants/messages';
 				}
 			});
 		});
+
 		observer.observe(document.documentElement, {
 			attributeFilter: ['data-theme'],
 			attributes: true,
@@ -319,6 +346,7 @@ import { messages } from '@/constants/messages';
 			camera.updateProjectionMatrix();
 			renderer.setSize(width, height);
 		};
+
 		window.addEventListener('resize', onResize);
 	};
 

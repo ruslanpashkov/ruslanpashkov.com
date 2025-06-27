@@ -1,5 +1,4 @@
 import type { BreadcrumbList, ListItem, WithContext } from 'schema-dts';
-
 import type { Link } from '@/types/Link';
 
 export const getBreadcrumbsSchema = (
@@ -10,8 +9,8 @@ export const getBreadcrumbsSchema = (
 
 	return {
 		'@context': 'https://schema.org',
-		'@id': website.href,
 		'@type': 'BreadcrumbList',
+		'@id': website.href,
 		itemListElement: breadcrumbsList,
 	};
 };
@@ -22,11 +21,11 @@ function buildListItemSchema(crumb: Link, index: number): ListItem {
 
 	return {
 		'@type': 'ListItem',
+		position: position,
 		item: {
-			'@id': crumbURL.href,
 			'@type': 'WebPage',
+			'@id': crumbURL.href,
 			name: crumb.title,
 		},
-		position: position,
 	};
 }

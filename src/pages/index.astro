@@ -1,19 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
-
+import Layout from '@/layouts/Layout.astro';
+import Hero from '@/components/Home/Hero.astro';
+import Section from '@/components/Home/Section.astro';
 import Articles from '@/components/Home/Articles.astro';
+import Projects from '@/components/Home/Projects.astro';
 import Contacts from '@/components/Home/Contacts.astro';
 import Credits from '@/components/Home/Credits.astro';
-import Hero from '@/components/Home/Hero.astro';
-import Projects from '@/components/Home/Projects.astro';
-import Section from '@/components/Home/Section.astro';
 import Glow from '@/components/shared/Glow.astro';
+import { descriptions } from '@/data/descriptions';
 import { contacts } from '@/data/contacts';
 import { credits } from '@/data/credits';
-import { descriptions } from '@/data/descriptions';
-import { global } from '@/data/global';
 import { projects } from '@/data/projects';
-import Layout from '@/layouts/Layout.astro';
+import { global } from '@/data/global';
 import { sortByDate } from '@/utils/article';
 import { getPersonSchema } from '@/utils/seo';
 
