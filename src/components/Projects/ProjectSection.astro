@@ -1,21 +1,17 @@
 ---
+import { slugify } from '@/utils/formatting';
+
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
+
+const slug = slugify(title);
 ---
 
-<section
-	aria-labelledby="project-section-title"
-	class="project-section"
-	data-testid="project-section"
->
-	<h2
-		class="project-section__title"
-		data-testid="project-section-title"
-		id="project-section-title"
-	>
+<section aria-labelledby={slug} class="project-section" data-testid="project-section">
+	<h2 class="project-section__title" data-testid="project-section-title" id={slug}>
 		{title}
 	</h2>
 
