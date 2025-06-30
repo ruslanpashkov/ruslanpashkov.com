@@ -6,8 +6,8 @@
 	--color-contrast: oklch(var(--color-night));
 	--color-accent: oklch(var(--color-mindaro) / 75%);
 	--color-focus: oklch(var(--color-rebecca-purple));
-	--color-link: oklch(var(--color-dodger-blue));
-	--color-visited: oklch(var(--color-amethyst));
+	--color-link: oklch(var(--color-slate-blue));
+	--color-visited: oklch(var(--color-dark-orchid));
 
 	color-scheme: light;
 }
