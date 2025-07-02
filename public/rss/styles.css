@@ -301,7 +301,7 @@ pre {
 	}
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.border-md-top {
 		border-top: 1px #e1e4e8 solid !important;
 	}
@@ -1145,7 +1145,7 @@ pre {
 	}
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.m-md-0 {
 		margin: 0 !important;
 	}
@@ -2506,7 +2506,7 @@ pre {
 	}
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.p-md-0 {
 		padding: 0 !important;
 	}
@@ -3165,7 +3165,7 @@ pre {
 	font-size: 26px !important;
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.h1 {
 		font-size: 32px !important;
 	}
@@ -3175,7 +3175,7 @@ pre {
 	font-size: 22px !important;
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.h2 {
 		font-size: 24px !important;
 	}
@@ -3185,7 +3185,7 @@ pre {
 	font-size: 18px !important;
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.h3 {
 		font-size: 20px !important;
 	}
@@ -3258,7 +3258,7 @@ pre {
 	}
 }
 
-@media (width >= 768px) {
+@media (width >= 48rem) {
 	.text-md-right {
 		text-align: right !important;
 	}
