@@ -1,0 +1,5 @@
+@media (inverted-colors: inverted) {
+	:is(img, video) {
+		filter: invert(100%);
+	}
+}
