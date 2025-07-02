@@ -3367,7 +3367,7 @@ pre {
 	table-layout: fixed !important;
 }
 
-.sr-only {
+.visually-hidden {
 	position: absolute;
 	overflow: hidden;
 	width: 1px;

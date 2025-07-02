@@ -5,6 +5,6 @@
 @import url("focus.css");
 @import url("fonts.css");
 @import url("hover.css");
-@import url("sr-only.css");
 @import url("container.css");
 @import url("transitions.css");
+@import url("visually-hidden.css");

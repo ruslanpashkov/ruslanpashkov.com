@@ -24,7 +24,7 @@ const pages = generateSequence(lastPage);
 						data-testid="pagination-prev-link"
 						href={url.prev}
 					>
-						<span class="sr-only">Previous page</span>
+						<span class="visually-hidden">Previous page</span>
 
 						<Icon
 							aria-hidden="true"
@@ -53,7 +53,7 @@ const pages = generateSequence(lastPage);
 								class="pagination__label"
 								data-testid="pagination-current"
 							>
-								<span class="sr-only">Page</span> {pageNumber}
+								<span class="visually-hidden">Page</span> {pageNumber}
 							</span>
 						) : (
 							<a
@@ -61,7 +61,7 @@ const pages = generateSequence(lastPage);
 								data-testid="pagination-link"
 								href={pageURL}
 							>
-								<span class="sr-only">Page</span> {pageNumber}
+								<span class="visually-hidden">Page</span> {pageNumber}
 							</a>
 						)}
 					</li>
@@ -77,7 +77,7 @@ const pages = generateSequence(lastPage);
 						data-testid="pagination-next-link"
 						href={url.next}
 					>
-						<span class="sr-only">Next page</span>
+						<span class="visually-hidden">Next page</span>
 
 						<Icon
 							aria-hidden="true"
