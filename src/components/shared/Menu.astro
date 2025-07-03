@@ -59,7 +59,7 @@ const currentPath = Astro.url.pathname;
 
 <style>
 	.menu {
-		@media (width < 1024px) {
+		@media (width < 64rem) {
 			position: fixed;
 			z-index: var(--z-index-menu);
 			inset: 0;
@@ -90,7 +90,7 @@ const currentPath = Astro.url.pathname;
 		}
 	}
 
-	@media (width < 1024px) {
+	@media (width < 64rem) {
 		.menu--closed {
 			display: none;
 		}
