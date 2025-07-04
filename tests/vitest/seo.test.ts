@@ -26,19 +26,19 @@ describe('SEO utilities', () => {
 		it('should generate title with author name', () => {
 			const title = 'Test Article';
 			const result = generateTitle(title);
-			expect(result).toBe('Test Article | Ruslan Pashkov');
+			expect(result).toBe('Test Article — Ruslan Pashkov');
 		});
 
 		it('should handle empty title', () => {
 			const title = '';
 			const result = generateTitle(title);
-			expect(result).toBe(' | Ruslan Pashkov');
+			expect(result).toBe(' — Ruslan Pashkov');
 		});
 
 		it('should handle title with special characters', () => {
 			const title = 'Article with "quotes" & symbols!';
 			const result = generateTitle(title);
-			expect(result).toBe('Article with "quotes" & symbols! | Ruslan Pashkov');
+			expect(result).toBe('Article with "quotes" & symbols! — Ruslan Pashkov');
 		});
 
 		it('should handle long title', () => {
@@ -46,20 +46,20 @@ describe('SEO utilities', () => {
 				'This is a very long article title that might be used for SEO purposes and should be handled properly';
 			const result = generateTitle(title);
 			expect(result).toBe(
-				'This is a very long article title that might be used for SEO purposes and should be handled properly | Ruslan Pashkov',
+				'This is a very long article title that might be used for SEO purposes and should be handled properly — Ruslan Pashkov',
 			);
 		});
 
 		it('should handle title with numbers', () => {
 			const title = 'Article 123: The Best of 2025';
 			const result = generateTitle(title);
-			expect(result).toBe('Article 123: The Best of 2025 | Ruslan Pashkov');
+			expect(result).toBe('Article 123: The Best of 2025 — Ruslan Pashkov');
 		});
 
 		it('should handle title with emojis', () => {
 			const title = '🚀 Amazing Article 🎉';
 			const result = generateTitle(title);
-			expect(result).toBe('🚀 Amazing Article 🎉 | Ruslan Pashkov');
+			expect(result).toBe('🚀 Amazing Article 🎉 — Ruslan Pashkov');
 		});
 	});
 
@@ -152,7 +152,7 @@ describe('SEO utilities', () => {
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('Blog');
 			expect(result['@id']).toBe('https://example.com/');
-			expect(result.name).toBe('Blog | Ruslan Pashkov');
+			expect(result.name).toBe('Blog — Ruslan Pashkov');
 			expect(result.author['@type']).toBe('Person');
 			expect(result.publisher['@type']).toBe('Person');
 			expect(result.blogPost).toHaveLength(2);
@@ -215,7 +215,7 @@ describe('SEO utilities', () => {
 			expect(result['@context']).toBe('https://schema.org');
 			expect(result['@type']).toBe('CollectionPage');
 			expect(result['@id']).toBe('https://example.com/');
-			expect(result.name).toBe('Projects | Ruslan Pashkov');
+			expect(result.name).toBe('Projects — Ruslan Pashkov');
 			expect(result.creator['@type']).toBe('Person');
 			expect(result.mainEntity['@type']).toBe('ItemList');
 			expect(result.mainEntity.itemListElement).toHaveLength(2);
