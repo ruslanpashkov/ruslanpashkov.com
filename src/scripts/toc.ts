@@ -78,10 +78,10 @@ import { debounce } from '@/utils/performance';
 		toggler.addEventListener('click', toggleToc);
 		window.addEventListener('resize', debounce(onResize));
 
-		if (getSavedStatus() === 'expanded') {
-			expandTocContent(list.offsetHeight);
-		} else {
+		if (getSavedStatus() === 'collapsed') {
 			collapseTocContent();
+		} else {
+			expandTocContent(list.offsetHeight);
 		}
 	};
 
