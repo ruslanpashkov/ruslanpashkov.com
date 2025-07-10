@@ -112,33 +112,29 @@ export default defineConfig({
 					},
 				},
 			],
-			[
-				function rehypeWrapHeadings() {
-					return (tree) => {
-						visit(tree, 'element', (node, index, parent) => {
-							if (node.tagName && /^h[1-6]$/.test(node.tagName)) {
-								const nextSibling = parent.children[index + 1];
+			() => (tree) => {
+				visit(tree, 'element', (node, index, parent) => {
+					if (node.tagName && /^h[1-6]$/.test(node.tagName)) {
+						const nextSibling = parent.children[index + 1];
 
-								if (
-									nextSibling &&
-									nextSibling.type === 'element' &&
-									nextSibling.tagName === 'a'
-								) {
-									const wrapper = {
-										type: 'element',
-										tagName: 'div',
-										children: [node, nextSibling],
-										properties: { className: ['heading-wrapper'] },
-									};
+						if (
+							nextSibling &&
+							nextSibling.type === 'element' &&
+							nextSibling.tagName === 'a'
+						) {
+							const wrapper = {
+								type: 'element',
+								tagName: 'div',
+								children: [node, nextSibling],
+								properties: { className: ['heading-wrapper'] },
+							};
 
-									parent.children[index] = wrapper;
-									parent.children.splice(index + 1, 1);
-								}
-							}
-						});
-					};
-				},
-			],
+							parent.children[index] = wrapper;
+							parent.children.splice(index + 1, 1);
+						}
+					}
+				});
+			},
 		],
 		remarkPlugins: [
 			function remarkReadingTime() {
