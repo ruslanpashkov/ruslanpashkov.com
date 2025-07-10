@@ -1,15 +1,16 @@
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import expressiveCode from 'astro-expressive-code';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import partytown from '@astrojs/partytown';
 import Compress from '@playform/compress';
 import browserslist from 'browserslist';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { expressiveCodeOptions } from './build/code-styles.js';
 import { remarkReadingTime } from './build/remark-reading-time.js';
 import { getChunkName } from './build/chunk-strategies.js';
@@ -19,11 +20,13 @@ export default defineConfig({
 	site: 'https://ruslanpashkov.com',
 	trailingSlash: 'always',
 	output: 'static',
+	prefetch: true,
 	integrations: [
 		icon({ iconDir: 'src/assets/svg' }),
 		expressiveCode(expressiveCodeOptions),
 		mdx(),
 		sitemap(),
+		partytown(),
 		Compress(),
 	],
 	markdown: {
