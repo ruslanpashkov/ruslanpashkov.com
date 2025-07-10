@@ -26,10 +26,6 @@ export const vite: AstroUserConfig['vite'] = {
 							matches: (id: string) => id.includes('three'),
 							name: 'three-misc',
 						},
-						{
-							matches: (id: string) => id.includes('node_modules'),
-							name: 'vendor',
-						},
 					];
 
 					const matchedStrategy = chunkStrategies.find((strategy) =>
