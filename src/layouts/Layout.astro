@@ -47,10 +47,27 @@ const generator = Astro.generator;
 
 		<title>{title}</title>
 
+		{
+			schemas.length > 0 &&
+				schemas.map((schema) => (
+					<script
+						is:inline
+						set:html={JSON.stringify(schema)}
+						type="application/ld+json"
+					/>
+				))
+		}
+
 		<style id="style-media-light" media="(prefers-color-scheme: light)" set:html={lightStyles}
 		></style>
 		<style id="style-media-dark" media="(prefers-color-scheme: dark)" set:html={darkStyles}
 		></style>
+
+		<script
+			data-website-id="82928ad7-9523-493f-8232-048002cbb8b8"
+			is:inline
+			src="https://cloud.umami.is/script.js"
+			type="text/partytown"></script>
 
 		<link href="/favicon.ico" rel="icon" sizes="48x48" />
 		<link href="/icon.svg" rel="icon" type="image/svg+xml" />
@@ -121,23 +138,6 @@ const generator = Astro.generator;
 			media="(prefers-color-scheme: dark)"
 			name="theme-color"
 		/>
-
-		{
-			schemas.length > 0 &&
-				schemas.map((schema) => (
-					<script
-						is:inline
-						set:html={JSON.stringify(schema)}
-						type="application/ld+json"
-					/>
-				))
-		}
-
-		<script
-			data-website-id="82928ad7-9523-493f-8232-048002cbb8b8"
-			is:inline
-			src="https://cloud.umami.is/script.js"
-			type="text/partytown"></script>
 	</head>
 
 	<body class="page__body" id="body">
