@@ -1,0 +1,315 @@
+---
+import '@/styles/markdown.css';
+import { Icon } from 'astro-icon/components';
+import TableOfContents from '@/components/Article/TableOfContents.astro';
+import Glow from '@/components/shared/Glow.astro';
+import { contacts } from '@/data/contacts';
+import { findEmail, findOnlineProfiles } from '@/utils/contact';
+import { formatDate } from '@/utils/formatting';
+import type { MarkdownHeading } from 'astro';
+import type { Article } from '@/types/Article';
+
+interface Props {
+	article: Article;
+	headings: MarkdownHeading[];
+	minutesRead: string;
+}
+
+const { article, headings, minutesRead } = Astro.props;
+
+const { title, publishedAt, updatedAt, categories, topic } = article.data;
+
+const email = findEmail(contacts);
+const onlineProfiles = findOnlineProfiles(contacts);
+const publishedDate = formatDate(publishedAt);
+const updatedDate = updatedAt && formatDate(updatedAt);
+
+const emailDetails = {
+	recipient: email.url,
+	subject: `Re: ${title} - Questions/Feedback`,
+	body: 'Hi, I just read your article and have some questions/feedback.',
+};
+
+const mailToURL =
+	`${emailDetails.recipient}?` +
+	`subject=${encodeURIComponent(emailDetails.subject)}&` +
+	`body=${encodeURIComponent(emailDetails.body)}`;
+---
+
+<article class="article" data-testid="blog-article">
+	<header class="article__header" data-testid="blog-article-header">
+		<h1 class="article__title" data-testid="blog-article-title">{title}</h1>
+
+		<div class="article__meta" data-testid="blog-article-meta">
+			<div class="article__dates" data-testid="blog-article-dates">
+				<time
+					class="article__published-at"
+					data-testid="blog-article-published-at"
+					datetime={publishedAt}
+				>
+					{publishedDate}
+				</time>
+
+				{
+					updatedAt && (
+						<time
+							class="article__updated-at"
+							data-testid="blog-article-updated-at"
+							datetime={updatedAt}
+						>
+							(updated at {updatedDate})
+						</time>
+					)
+				}
+			</div>
+
+			<div class="article__info" data-testid="blog-article-info">
+				<h2 class="article__reading-time" data-testid="blog-article-reading-time">
+					{minutesRead}
+				</h2>
+
+				<p class="article__topic" data-testid="blog-article-topic">{topic}</p>
+			</div>
+		</div>
+
+		<span class="article__glow article__glow--start" data-testid="blog-article-glow-start">
+			<Glow />
+		</span>
+	</header>
+
+	{headings.length > 0 && <TableOfContents headings={headings} />}
+
+	<div class="article__content markdown" data-testid="blog-article-content">
+		<slot />
+	</div>
+
+	<div class="article__divider" data-testid="blog-article-divider" role="presentation"></div>
+
+	<footer class="article__footer" data-testid="blog-article-footer">
+		<ul class="article-tags" data-testid="blog-article-tags">
+			{
+				categories.map((category) => (
+					<li class="article-tags__item" data-testid="blog-article-tag">
+						{category}
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="article__contacts" data-testid="blog-article-contacts">
+			<div class="article__contact" data-testid="blog-article-contact">
+				<p class="article__contact-text" data-testid="blog-article-contact-text">
+					Got questions or feedback? Feel free to reach out!
+				</p>
+
+				<a
+					class="article__contact-link hover"
+					data-testid="blog-article-contact-link"
+					href={mailToURL}
+				>
+					<Icon
+						aria-label="Email"
+						class="article__contact-icon"
+						data-testid="blog-article-contact-icon"
+						name="email-outlined"
+					/>
+
+					{email.title}
+				</a>
+			</div>
+
+			<ul class="article__social" data-testid="blog-article-social">
+				{
+					onlineProfiles.map(({ url, label, icon }) => (
+						<li data-testid="blog-article-social-item">
+							<a
+								class="article__social-link hover"
+								data-testid="blog-article-social-link"
+								href={url}
+								rel="noreferrer"
+							>
+								<Icon
+									aria-label={label}
+									class="article__social-icon"
+									data-testid="blog-article-social-icon"
+									name={`${icon}-outlined`}
+								/>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<span class="article__glow article__glow--end" data-testid="blog-article-glow-end">
+			<Glow />
+		</span>
+	</footer>
+</article>
+
+<style>
+	.article {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		max-width: 800px;
+		margin-inline: auto;
+		padding-block: 20px;
+	}
+
+	.article__header {
+		position: relative;
+	}
+
+	.article__title {
+		margin-bottom: 20px;
+		font-size: 1.875rem;
+		line-height: 1.2;
+
+		@media (width >= 48rem) {
+			font-size: 2.25rem;
+			text-align: center;
+		}
+
+		@media (width >= 64rem) {
+			font-size: 3rem;
+		}
+	}
+
+	.article__meta {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__dates {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.article__published-at {
+		font-size: 1.25rem;
+	}
+
+	.article__updated-at {
+		font-size: 1.125rem;
+		font-style: italic;
+	}
+
+	.article__info {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.article__reading-time {
+		font-size: 1.125rem;
+		font-style: italic;
+	}
+
+	.article__topic {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+
+	.article__content {
+		position: relative;
+	}
+
+	.article__divider {
+		height: 1px;
+		background-color: var(--color-contrast);
+	}
+
+	.article__footer {
+		position: relative;
+	}
+
+	.article-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: start;
+		margin-bottom: 40px;
+	}
+
+	.article-tags__item {
+		padding: 2px 8px;
+		border: 1px solid var(--color-contrast);
+		border-radius: 24px;
+	}
+
+	.article__contacts {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.article__contact {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+		text-align: center;
+	}
+
+	.article__contact-text {
+		font-size: 1.125rem;
+		color: var(--color-neutral);
+	}
+
+	.article__contact-link {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		font-size: 1.125rem;
+		text-decoration: underline;
+	}
+
+	.article__contact-icon {
+		--icon-size: 20px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+
+	.article__social {
+		display: flex;
+		gap: 24px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__social-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.article__social-icon {
+		--icon-size: 28px;
+
+		width: var(--icon-size);
+		height: var(--icon-size);
+	}
+
+	.article__glow {
+		position: absolute;
+		z-index: var(--z-index-glow);
+	}
+
+	.article__glow--start {
+		top: 200%;
+	}
+
+	.article__glow--end {
+		right: 0;
+		bottom: 0;
+	}
+</style>
