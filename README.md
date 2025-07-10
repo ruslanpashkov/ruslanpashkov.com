@@ -13,8 +13,13 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 - `bun run dev`: Start the development server
 - `bun run build`: Build the production-ready site
 - `bun run preview`: Preview the built site
-- `bun run lint`: Run ESLint and Stylelint
+- `bun run typecheck`: Check TypeScript types with Astro
+- `bun run lint`: Lint code with ESLint and Stylelint
 - `bun run format`: Format code with Prettier
+- `bun run test`: Test code with Vitest and Playwright
+- `bun run check`: Run type checking, format checking, and linting
+- `bun run build-previews`: Build preview images for blog posts
+- `bun run build-screenshots`: Build screenshots for the website
 - `bun run html-validate`: Validate HTML using W3C validator
 
 ## Contributing
