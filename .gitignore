@@ -7,9 +7,6 @@ node_modules/
 # Generated types
 .astro/
 
-# Platform specific files
-.netlify/
-
 # Test results
 test-results/
 test-reports/
