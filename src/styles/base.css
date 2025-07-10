@@ -10,7 +10,7 @@
 	--container-width: 1440px;
 	--header-min-height: 60px;
 	--header-max-height: 80px;
-	--text-spacing: 0.265em;
+	--footer-text-spacing: 0.265em;
 
 	/* Timings */
 	--motion-duration: 0.3s;
