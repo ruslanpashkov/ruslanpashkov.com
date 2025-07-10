@@ -82,4 +82,7 @@ export default defineConfig({
 			transformer: 'lightningcss',
 		},
 	},
+	experimental: {
+		contentIntellisense: true,
+	},
 });

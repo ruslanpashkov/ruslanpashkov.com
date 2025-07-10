@@ -1,4 +1,5 @@
 {
+  "astro.content-intellisense": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["css", "postcss", "astro"],
   "eslint.validate": ["javascript", "typescript", "astro"]
