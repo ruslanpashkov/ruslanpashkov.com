@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import Typewriter from 'typewriter-effect/dist/core';
+import Typed from 'typed.js';
 import { messages } from '@/constants/messages';
+import { debounce } from '@/utils/performance';
 
 (() => {
 	const model = document.getElementById('model');
@@ -20,6 +21,7 @@ import { messages } from '@/constants/messages';
 	type MessageCategory = keyof typeof messages;
 
 	const shownMessages = new Set<string>();
+	let isInteractive = false;
 
 	const getCurrentTheme = () => document.documentElement.getAttribute('data-theme');
 
@@ -106,6 +108,7 @@ import { messages } from '@/constants/messages';
 			const progress = Math.min(elapsed / duration, 1);
 			const easeOutCubic = 1 - Math.pow(1 - progress, 3);
 			material.opacity = easeOutCubic;
+
 			if (progress < 1) {
 				requestAnimationFrame(animate);
 			}
@@ -115,14 +118,14 @@ import { messages } from '@/constants/messages';
 		requestAnimationFrame(animate);
 	};
 
-	const writeMessage = (msg: string) => {
-		const typewriter = new Typewriter(text, { delay: 30 });
-		typewriter.typeString(msg).start();
-	};
-
 	const showMessage = (msg: string, category: MessageCategory) => {
+		isInteractive = false;
 		message.classList.add('model-message--open');
-		writeMessage(msg);
+
+		const typed = new Typed(text, {
+			strings: [msg],
+			typeSpeed: 30,
+		});
 
 		if (['annoyed', 'sassy', 'surrender'].includes(category)) {
 			message.classList.add('model-message--shake');
@@ -133,6 +136,14 @@ import { messages } from '@/constants/messages';
 
 		window.setTimeout(() => {
 			message.classList.remove('model-message--open', 'model-message--shake');
+			message.addEventListener(
+				'transitionend',
+				() => {
+					typed.destroy();
+					isInteractive = true;
+				},
+				{ once: true },
+			);
 		}, hideDelay);
 	};
 
@@ -243,7 +254,7 @@ import { messages } from '@/constants/messages';
 		};
 
 		const onClick = (event: MouseEvent) => {
-			if (!message.classList.contains('model-message--open')) {
+			if (isInteractive) {
 				updateMousePosition(event);
 				raycaster.setFromCamera(mouse, camera);
 				const intersects = raycaster.intersectObjects(root.children, true);
@@ -254,7 +265,7 @@ import { messages } from '@/constants/messages';
 			}
 		};
 
-		model.addEventListener('mousemove', onMouseMove);
+		model.addEventListener('mousemove', debounce(onMouseMove));
 		model.addEventListener('click', onClick);
 	};
 

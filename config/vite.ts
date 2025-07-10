@@ -27,10 +27,6 @@ export const vite: AstroUserConfig['vite'] = {
 							name: 'three-misc',
 						},
 						{
-							matches: (id: string) => id.includes('typewriter'),
-							name: 'typewriter',
-						},
-						{
 							matches: (id: string) => id.includes('node_modules'),
 							name: 'vendor',
 						},
