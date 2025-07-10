@@ -123,13 +123,14 @@ const mailToURL =
 					onlineProfiles.map(({ url, label, icon }) => (
 						<li data-testid="blog-article-social-item">
 							<a
+								aria-label={label}
 								class="article__social-link hover"
 								data-testid="blog-article-social-link"
 								href={url}
 								rel="noreferrer"
 							>
 								<Icon
-									aria-label={label}
+									aria-hidden="true"
 									class="article__social-icon"
 									data-testid="blog-article-social-icon"
 									name={`${icon}-outlined`}
