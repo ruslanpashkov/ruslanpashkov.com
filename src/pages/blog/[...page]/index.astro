@@ -20,7 +20,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
 const { page } = Astro.props;
 
-const title = page.currentPage === 1 ? 'Blog' : `Blog — Page ${page.currentPage}`;
+const title = page.currentPage === 1 ? 'Blog' : `Blog, Page ${page.currentPage}`;
 const pageTitle = generateTitle(title);
 
 const breadcrumbs: Link[] = [
