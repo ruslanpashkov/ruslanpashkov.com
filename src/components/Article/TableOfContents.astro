@@ -51,7 +51,7 @@ const { headings } = Astro.props;
 						data-testid="table-of-contents-item"
 					>
 						<a
-							class="hover"
+							class="table-of-contents__link hover"
 							data-testid="table-of-contents-link"
 							href={`#${heading.slug}`}
 						>
@@ -103,6 +103,12 @@ const { headings } = Astro.props;
 
 	.table-of-contents__item--4 {
 		margin-left: 40px;
+	}
+
+	.table-of-contents__link {
+		@media (width >= 48rem) {
+			font-size: 1.125rem;
+		}
 	}
 
 	.table-of-contents__toggle {
