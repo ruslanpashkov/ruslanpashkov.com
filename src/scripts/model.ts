@@ -272,41 +272,35 @@ import { debounce } from '@/utils/performance';
 	const loadModel = async (scene: THREE.Scene, camera: THREE.PerspectiveCamera) => {
 		const loader = new GLTFLoader();
 
-		return new Promise<{
-			material: THREE.MeshBasicMaterial;
-			mixer: null | THREE.AnimationMixer;
-			root: THREE.Group;
-		}>((resolve, reject) => {
-			loader.load(
-				'/models/stickman/scene.gltf',
-				(gltf) => {
-					const root = gltf.scene;
-					const material = applyWireframeMaterial(root);
-					const mixer = setupAnimation(gltf, root);
-					fitModelToContainer(root, camera);
-					scene.add(root);
-					updateLoadingProgress(100);
-					hideLoader();
-					createFadeInAnimation(material);
-					createModelInteraction(root, camera);
-					showInitialMessage();
-					resolve({ material, mixer, root });
-				},
-				(progress) => {
-					if (progress.lengthComputable) {
-						const percentComplete = (progress.loaded / progress.total) * 100;
-						updateLoadingProgress(percentComplete);
-					} else {
-						updateLoadingProgress(Math.min(100, Math.random() * 10 + 90));
-					}
-				},
-				(error) => {
-					hideLoader();
-					showErrorMessage();
-					reject(error);
-				},
-			);
-		});
+		try {
+			const progressInterval = window.setInterval(() => {
+				const currentProgress = parseFloat(progress.style.width.replace('%', '')) || 0;
+				const newProgress = Math.min(95, currentProgress + Math.random() * 15);
+				updateLoadingProgress(newProgress);
+			}, 100);
+
+			const gltf = await loader.loadAsync('/models/stickman/scene.gltf');
+
+			window.clearInterval(progressInterval);
+
+			const root = gltf.scene;
+			const material = applyWireframeMaterial(root);
+			const mixer = setupAnimation(gltf, root);
+
+			fitModelToContainer(root, camera);
+			scene.add(root);
+			updateLoadingProgress(100);
+			hideLoader();
+			createFadeInAnimation(material);
+			createModelInteraction(root, camera);
+			showInitialMessage();
+
+			return { material, mixer, root };
+		} catch (error) {
+			hideLoader();
+			showErrorMessage();
+			throw error;
+		}
 	};
 
 	const createAnimationLoop = (
