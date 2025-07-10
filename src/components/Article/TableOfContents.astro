@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { removeTrailingHash } from '@/utils/formatting';
 import type { MarkdownHeading } from 'astro';
 
 interface Props {
@@ -43,27 +42,23 @@ const { headings } = Astro.props;
 	>
 		<ol class="table-of-contents__list" data-testid="table-of-contents-list" id="toc-list">
 			{
-				headings.map((heading) => {
-					const headingText = removeTrailingHash(heading.text);
-
-					return (
-						<li
-							class:list={[
-								'table-of-contents__item',
-								`table-of-contents__item--${heading.depth}`,
-							]}
-							data-testid="table-of-contents-item"
+				headings.map((heading) => (
+					<li
+						class:list={[
+							'table-of-contents__item',
+							`table-of-contents__item--${heading.depth}`,
+						]}
+						data-testid="table-of-contents-item"
+					>
+						<a
+							class="hover"
+							data-testid="table-of-contents-link"
+							href={`#${heading.slug}`}
 						>
-							<a
-								class="hover"
-								data-testid="table-of-contents-link"
-								href={`#${heading.slug}`}
-							>
-								{headingText}
-							</a>
-						</li>
-					);
-				})
+							{heading.text}
+						</a>
+					</li>
+				))
 			}
 		</ol>
 	</div>

@@ -6,8 +6,6 @@ export const slugify = (text: string): string =>
 		.replace(/[^\p{L}\p{N}]+/gu, '-')
 		.replace(/^-+|-+$/g, '');
 
-export const removeTrailingHash = (text: string): string => text.replace(/[\s#]+$/, '');
-
 export const shortenLanguage = (language: string): string => language.substring(0, 2).toLowerCase();
 
 export const formatDate = (date: string): string =>

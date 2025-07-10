@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate, removeTrailingHash, shortenLanguage, slugify } from '@/utils/formatting';
+import { formatDate, shortenLanguage, slugify } from '@/utils/formatting';
 
 describe('formatting utilities', () => {
 	describe('slugify', () => {
@@ -49,44 +49,6 @@ describe('formatting utilities', () => {
 			const text = '-Hello World-';
 			const result = slugify(text);
 			expect(result).toBe('hello-world');
-		});
-	});
-
-	describe('removeTrailingHash', () => {
-		it('should remove trailing hash from text', () => {
-			const text = 'Hello World #';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('Hello World');
-		});
-
-		it('should remove trailing hash and spaces', () => {
-			const text = 'Hello World   #   ';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('Hello World');
-		});
-
-		it('should handle text without trailing hash', () => {
-			const text = 'Hello World';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('Hello World');
-		});
-
-		it('should handle text with hash in the middle', () => {
-			const text = 'Hello # World';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('Hello # World');
-		});
-
-		it('should handle empty string', () => {
-			const text = '';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('');
-		});
-
-		it('should handle text with only hash and spaces', () => {
-			const text = '   #   ';
-			const result = removeTrailingHash(text);
-			expect(result).toBe('');
 		});
 	});
 

@@ -13,20 +13,6 @@
 		font-weight: bold;
 	}
 
-	& h2 {
-		margin-top: 20px;
-		font-size: 1.875rem;
-	}
-
-	& h3 {
-		margin-top: 12px;
-		font-size: 1.25rem;
-	}
-
-	& h4 {
-		margin-top: 8px;
-	}
-
 	& p {
 		display: block;
 	}
@@ -43,14 +29,32 @@
 		text-decoration: line-through;
 	}
 
+	/* Styles for auto-generated heading wrapper */
+	& .heading-wrapper {
+		display: flex;
+		gap: 0.5ch;
+		align-items: center;
+	}
+
+	& .heading-wrapper:has(> h2) {
+		padding-top: 20px;
+		font-size: 1.875rem;
+	}
+
+	& .heading-wrapper:has(> h3) {
+		padding-top: 12px;
+	}
+
+	& .heading-wrapper:has(> h4) {
+		padding-top: 8px;
+	}
+
 	/* Styles for auto-generated anchor links next to headings */
 	& .heading-link {
 		user-select: none;
-		margin-left: 8px;
-
-		@media (width >= 48rem) {
-			margin-left: 12px;
-		}
+		padding: 0.125em 0.25em;
+		font-weight: bold;
+		line-height: 1;
 	}
 
 	& a:not(.heading-link) {

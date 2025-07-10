@@ -9,6 +9,7 @@ import Compress from '@playform/compress';
 import rehypeSlug from 'rehype-slug';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import { visit } from 'unist-util-visit';
 import { toString } from 'mdast-util-to-string';
 import { readingTime } from 'reading-time-estimator';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
@@ -91,17 +92,51 @@ export default defineConfig({
 			[
 				rehypeAutolinkHeadings,
 				{
-					behavior: 'append',
-					content: {
-						children: [{ type: 'text', value: '#' }],
-						tagName: 'span',
-						type: 'element',
-					},
+					behavior: 'after',
+					content: [
+						{
+							type: 'element',
+							tagName: 'span',
+							children: [{ type: 'text', value: '#' }],
+							properties: { ariaHidden: 'true' },
+						},
+						{
+							type: 'element',
+							tagName: 'span',
+							children: [{ type: 'text', value: 'anchor' }],
+							properties: { className: 'visually-hidden' },
+						},
+					],
 					properties: {
-						ariaHidden: 'true',
 						className: ['heading-link', 'hover'],
-						tabIndex: -1,
 					},
+				},
+			],
+			[
+				function rehypeWrapHeadings() {
+					return (tree) => {
+						visit(tree, 'element', (node, index, parent) => {
+							if (node.tagName && /^h[1-6]$/.test(node.tagName)) {
+								const nextSibling = parent.children[index + 1];
+
+								if (
+									nextSibling &&
+									nextSibling.type === 'element' &&
+									nextSibling.tagName === 'a'
+								) {
+									const wrapper = {
+										type: 'element',
+										tagName: 'div',
+										children: [node, nextSibling],
+										properties: { className: ['heading-wrapper'] },
+									};
+
+									parent.children[index] = wrapper;
+									parent.children.splice(index + 1, 1);
+								}
+							}
+						});
+					};
 				},
 			],
 		],
