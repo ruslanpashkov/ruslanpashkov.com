@@ -4,7 +4,6 @@ import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-s
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import partytown from '@astrojs/partytown';
 import Compress from '@playform/compress';
 import type { AstroIntegration } from 'astro';
 
@@ -60,6 +59,5 @@ export const integrations: AstroIntegration[] = [
 	}),
 	mdx(),
 	sitemap(),
-	partytown(),
 	Compress(),
 ];
