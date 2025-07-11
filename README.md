@@ -10,6 +10,7 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 
 ## Scripts
 
+- `bun run astro`: Run Astro CLI commands directly
 - `bun run dev`: Start the development server
 - `bun run build`: Build the production-ready site
 - `bun run preview`: Preview the built site
@@ -21,6 +22,7 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 - `bun run build-previews`: Build preview images for blog posts
 - `bun run build-screenshots`: Build screenshots for the website
 - `bun run html-validate`: Validate HTML using W3C validator
+- `bun run prepare`: Set up git hooks with Husky
 
 ## Contributing
 
