@@ -8,6 +8,7 @@
         "@astrojs/rss": "^4.0.12",
         "@astrojs/sitemap": "3.4.1",
         "@astrojs/ts-plugin": "^1.10.4",
+        "@axe-core/playwright": "^4.10.2",
         "@eslint/js": "^9.30.1",
         "@expressive-code/plugin-collapsible-sections": "^0.41.3",
         "@expressive-code/plugin-line-numbers": "^0.41.3",
@@ -23,6 +24,7 @@
         "astro-expressive-code": "^0.41.3",
         "astro-icon": "^1.1.5",
         "autoprefixer": "^10.4.21",
+        "axe-core": "^4.10.3",
         "browserlist": "^1.0.1",
         "browserslist-to-esbuild": "^2.1.1",
         "eslint": "^9.30.1",
@@ -125,6 +127,8 @@
     "@atproto/syntax": ["@atproto/syntax@0.3.4", "", {}, "sha512-8CNmi5DipOLaVeSMPggMe7FCksVag0aO6XZy9WflbduTKM4dFZVCs4686UeMLfGRXX+X966XgwECHoLYrovMMg=="],
 
     "@atproto/xrpc": ["@atproto/xrpc@0.6.12", "", { "dependencies": { "@atproto/lexicon": "^0.4.10", "zod": "^3.23.8" } }, "sha512-Ut3iISNLujlmY9Gu8sNU+SPDJDvqlVzWddU8qUr0Yae5oD4SguaUFjjhireMGhQ3M5E0KljQgDbTmnBo1kIZ3w=="],
+
+    "@axe-core/playwright": ["@axe-core/playwright@4.10.2", "", { "dependencies": { "axe-core": "~4.10.3" }, "peerDependencies": { "playwright-core": ">= 1.0.0" } }, "sha512-6/b5BJjG6hDaRNtgzLIfKr5DfwyiLHO4+ByTLB0cJgWSM8Ll7KqtdblIS6bEkwSF642/Ex91vNqIl3GLXGlceg=="],
 
     "@babel/code-frame": ["@babel/code-frame@7.27.1", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.27.1", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg=="],
 
