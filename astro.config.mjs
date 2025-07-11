@@ -140,7 +140,7 @@ export default defineConfig({
 			function remarkReadingTime() {
 				return function (tree, file) {
 					const textOnPage = toString(tree);
-					const timeToRead = readingTime(textOnPage);
+					const timeToRead = readingTime(textOnPage, 200);
 					file.data.astro.frontmatter.minutesRead = timeToRead.text;
 				};
 			},
