@@ -6,7 +6,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/ruslanpashkov/ruslanpashkov.com)](https://github.com/ruslanpashkov/ruslanpashkov.com/commit/HEAD)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3636665e-3793-40ea-9632-ac79a4edba44/deploy-status)](https://app.netlify.com/sites/ruslanpashkov/deploys)
 
-This is the source code for my personal website, [ruslanpashkov.com](https://ruslanpashkov.com). It's built with [Astro](https://astro.build), a static site generator, and hosted on [Netlify](https://www.netlify.com).
+This is the source code for my personal website, [ruslanpashkov.com](https://ruslanpashkov.com). It's built with [Astro](https://astro.build), a static site generator, and hosted on [Netlify](https://www.netlify.com). Powered by [Bun](https://bun.sh) as the JavaScript runtime and package manager.
 
 ## Scripts
 
