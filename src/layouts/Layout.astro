@@ -34,6 +34,7 @@ const { cover, description, schemas = [], title, type } = props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const previewImageURL = new URL(`/images/previews/${cover}`, Astro.site);
 const rssURL = new URL('/rss.xml', Astro.site);
+const siteURL = new URL('/', Astro.site);
 
 const generator = Astro.generator;
 ---
@@ -49,6 +50,8 @@ const generator = Astro.generator;
 
 		<script
 			async
+			data-do-not-track="true"
+			data-domains={siteURL.hostname}
 			data-website-id="82928ad7-9523-493f-8232-048002cbb8b8"
 			is:inline
 			src="https://cloud.umami.is/script.js"></script>
