@@ -3374,8 +3374,8 @@ pre {
 	height: 1px;
 	padding: 0;
 	border: 0;
-	word-wrap: normal;
-	clip: rect(0, 0, 0, 0);
+	overflow-wrap: normal;
+	clip-path: inset(50%);
 }
 
 .show-on-focus {
@@ -3384,14 +3384,14 @@ pre {
 	width: 1px;
 	height: 1px;
 	margin: 0;
-	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
 }
 
 .show-on-focus:focus {
 	z-index: 20;
 	width: auto;
 	height: auto;
-	clip: auto;
+	clip-path: none;
 }
 
 .container {
@@ -3442,7 +3442,7 @@ pre {
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	font-size: 16px;
 	line-height: 1.5;
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .markdown-body::before {
@@ -3577,7 +3577,7 @@ pre {
 }
 
 .markdown-body li {
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .markdown-body li > p {
