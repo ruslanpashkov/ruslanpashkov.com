@@ -19,7 +19,7 @@
     "test:vitest": "vitest run",
     "test:vitest:coverage": "bun run test:vitest -- --coverage",
     "test:playwright": "bun run test:playwright:install && playwright test",
-    "test:playwright:install": "bunx --bun playwright install",
+    "test:playwright:install": "bunx --bun playwright install --with-deps",
     "check": "bun run typecheck && bun run format:check && bun run lint",
     "html-validate": "w3c-html-validator dist",
     "build-previews": "bun build/build-previews",
