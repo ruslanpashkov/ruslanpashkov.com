@@ -2,6 +2,7 @@
 import { getViteConfig } from 'astro/config';
 
 export default getViteConfig({
+	// @ts-expect-error - Astro's getViteConfig types don't include Vitest's test property
 	test: {
 		include: ['tests/vitest/**/*.test.ts'],
 		reporters: ['default', 'html'],
