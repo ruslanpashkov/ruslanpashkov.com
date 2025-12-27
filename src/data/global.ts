@@ -1,14 +1,14 @@
 export const global = {
 	author: 'Ruslan Pashkov',
-	about: 'Software Engineer, JavaScript enthusiast and Producer. Currently working at Wiew as a Lead Frontend Engineer.',
+	about: 'Creative Engineer, JavaScript enthusiast and Producer. Currently working at Magnoli as a Software Engineer.',
 	email: 'hi@ruslanpashkov.com',
 	birthDate: '2002-10-16',
 	gender: 'Male',
-	country: 'Ukraine',
+	country: 'Czechia',
 	languages: ['English', 'Russian', 'Ukrainian'],
 	job: {
-		name: 'Wiew',
-		position: 'Lead Frontend Engineer',
+		name: 'Magnoli',
+		position: 'Software Engineer',
 	},
 	proficiencies: [
 		'JavaScript',

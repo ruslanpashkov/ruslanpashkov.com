@@ -175,7 +175,7 @@ describe('SEO utilities', () => {
 			expect(result.name).toBe('Ruslan Pashkov');
 			expect(result.givenName).toBe('Ruslan');
 			expect(result.familyName).toBe('Pashkov');
-			expect(result.jobTitle).toBe('Lead Frontend Engineer');
+			expect(result.jobTitle).toBe('Software Engineer');
 			expect(result.alumniOf).toBe('Unknown');
 			expect(result.gender).toBe('Male');
 			expect(result.nationality['@type']).toBe('Country');
