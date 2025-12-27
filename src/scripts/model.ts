@@ -20,10 +20,17 @@ import { debounce } from '@/utils/performance';
 
 	type MessageCategory = keyof typeof messages;
 
+	const MODEL_PATH = '/models/stickman/scene.gltf';
+	const MEDIA_DARK = '(prefers-color-scheme: dark)';
+	const colorSchemeDark = document.getElementById('color-scheme-dark');
+	const darkMediaQuery = window.matchMedia(MEDIA_DARK);
 	const shownMessages = new Set<string>();
 	let isInteractive = false;
 
-	const getCurrentTheme = () => document.documentElement.getAttribute('data-theme');
+	const getCurrentTheme = () => {
+		const { colorScheme } = window.getComputedStyle(document.documentElement);
+		return colorScheme === 'dark' ? 'dark' : 'light';
+	};
 
 	const getModelColor = () => (getCurrentTheme() === 'light' ? 0x553399 : 0xccff77);
 
@@ -100,7 +107,7 @@ import { debounce } from '@/utils/performance';
 		});
 
 	const createFadeInAnimation = (material: THREE.MeshBasicMaterial) => {
-		const startTime = performance.now();
+		const startTime = window.performance.now();
 		const duration = 1000;
 
 		const animate = (currentTime: number) => {
@@ -110,12 +117,12 @@ import { debounce } from '@/utils/performance';
 			material.opacity = easeOutCubic;
 
 			if (progress < 1) {
-				requestAnimationFrame(animate);
+				window.requestAnimationFrame(animate);
 			}
 		};
 
 		material.opacity = 0;
-		requestAnimationFrame(animate);
+		window.requestAnimationFrame(animate);
 	};
 
 	const showMessage = (msg: string, category: MessageCategory) => {
@@ -136,21 +143,24 @@ import { debounce } from '@/utils/performance';
 
 		window.setTimeout(() => {
 			message.classList.remove('model-message--open', 'model-message--shake');
-			message.addEventListener(
-				'transitionend',
-				() => {
-					typed.destroy();
-					isInteractive = true;
-				},
-				{ once: true },
-			);
+
+			const cleanup = () => {
+				typed.destroy();
+				isInteractive = true;
+			};
+
+			if (getComputedStyle(message).transitionDuration !== '0s') {
+				message.addEventListener('transitionend', cleanup, { once: true });
+			} else {
+				cleanup();
+			}
 		}, hideDelay);
 	};
 
 	const showInitialMessage = () => {
 		window.setTimeout(() => {
-			const text = getRandomMessage('initial');
-			showMessage(text, 'friendly');
+			const initialMessage = getRandomMessage('initial');
+			showMessage(initialMessage, 'friendly');
 		}, 1000);
 	};
 
@@ -236,8 +246,8 @@ import { debounce } from '@/utils/performance';
 			clickCount++;
 			lastClickTime = currentTime;
 			const category = getMessageCategory(clickCount);
-			const text = getRandomMessage(category);
-			showMessage(text, category);
+			const messageText = getRandomMessage(category);
+			showMessage(messageText, category);
 		};
 
 		const updateMousePosition = (event: MouseEvent) => {
@@ -270,7 +280,7 @@ import { debounce } from '@/utils/performance';
 	};
 
 	const loadModel = async (scene: THREE.Scene, camera: THREE.PerspectiveCamera) => {
-		const loader = new GLTFLoader();
+		const gltfLoader = new GLTFLoader();
 
 		try {
 			const progressInterval = window.setInterval(() => {
@@ -279,7 +289,7 @@ import { debounce } from '@/utils/performance';
 				updateLoadingProgress(newProgress);
 			}, 100);
 
-			const gltf = await loader.loadAsync('/models/stickman/scene.gltf');
+			const gltf = await gltfLoader.loadAsync(MODEL_PATH);
 
 			window.clearInterval(progressInterval);
 
@@ -297,9 +307,9 @@ import { debounce } from '@/utils/performance';
 
 			return { material, mixer, root };
 		} catch (error) {
+			console.error('Failed to load 3D model:', error);
 			hideLoader();
 			showErrorMessage();
-			throw error;
 		}
 	};
 
@@ -312,7 +322,7 @@ import { debounce } from '@/utils/performance';
 		const clock = new THREE.Clock();
 
 		const animate = () => {
-			requestAnimationFrame(animate);
+			window.requestAnimationFrame(animate);
 			const delta = clock.getDelta();
 
 			if (mixer) {
@@ -326,18 +336,29 @@ import { debounce } from '@/utils/performance';
 	};
 
 	const createThemeObserver = (material: THREE.MeshBasicMaterial) => {
-		const observer = new MutationObserver((mutations) => {
-			mutations.forEach((mutation) => {
-				if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-					material.color.setHex(getModelColor());
+		const updateColor = () => material.color.setHex(getModelColor());
+
+		let observer: MutationObserver | null = null;
+
+		if (colorSchemeDark) {
+			observer = new MutationObserver((mutations) => {
+				const hasMediaChange = mutations.some(
+					(mutation) =>
+						mutation.type === 'attributes' && mutation.attributeName === 'media',
+				);
+
+				if (hasMediaChange) {
+					updateColor();
 				}
 			});
-		});
 
-		observer.observe(document.documentElement, {
-			attributeFilter: ['data-theme'],
-			attributes: true,
-		});
+			observer.observe(colorSchemeDark, {
+				attributeFilter: ['media'],
+				attributes: true,
+			});
+		}
+
+		darkMediaQuery.addEventListener('change', updateColor);
 	};
 
 	const createResizeHandler = (
@@ -352,7 +373,7 @@ import { debounce } from '@/utils/performance';
 			renderer.setSize(width, height);
 		};
 
-		window.addEventListener('resize', onResize);
+		window.addEventListener('resize', debounce(onResize));
 	};
 
 	const init = async () => {
@@ -361,12 +382,17 @@ import { debounce } from '@/utils/performance';
 			const scene = createScene();
 			const camera = createCamera();
 			const renderer = createRenderer();
-			const { material, mixer } = await loadModel(scene, camera);
-			createLighting(scene);
-			createAnimationLoop(renderer, scene, camera, mixer);
-			createThemeObserver(material);
-			createResizeHandler(camera, renderer);
-		} catch {
+			const result = await loadModel(scene, camera);
+
+			if (result) {
+				const { material, mixer } = result;
+				createLighting(scene);
+				createAnimationLoop(renderer, scene, camera, mixer);
+				createThemeObserver(material);
+				createResizeHandler(camera, renderer);
+			}
+		} catch (error) {
+			console.error('Failed to initialize 3D model:', error);
 			hideLoader();
 			showErrorMessage();
 		}

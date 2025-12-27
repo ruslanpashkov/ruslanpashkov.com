@@ -27,7 +27,7 @@ import { debounce } from '@/utils/performance';
 		logo.setAttribute('tabindex', '-1');
 		toggler.setAttribute('aria-expanded', 'true');
 		toggler.setAttribute('aria-label', 'Close menu');
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			menu.classList.add('menu--open');
 		});
 		focusTrap.activate();

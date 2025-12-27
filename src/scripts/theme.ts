@@ -4,12 +4,12 @@ import { debounce } from '@/utils/performance';
 
 (() => {
 	const toggler = document.getElementById('theme-toggler');
-	const darkStyles = document.getElementById('style-media-dark');
-	const darkThemeColor = document.getElementById('theme-color-dark');
-	const lightStyles = document.getElementById('style-media-light');
-	const lightThemeColor = document.getElementById('theme-color-light');
+	const colorSchemeLight = document.getElementById('color-scheme-light');
+	const colorSchemeDark = document.getElementById('color-scheme-dark');
+	const themeColorLight = document.getElementById('theme-color-light');
+	const themeColorDark = document.getElementById('theme-color-dark');
 
-	if (!toggler || !darkStyles || !darkThemeColor || !lightStyles || !lightThemeColor) {
+	if (!toggler || !colorSchemeLight || !colorSchemeDark || !themeColorLight || !themeColorDark) {
 		console.error('Required theme elements not found');
 		return;
 	}
@@ -18,18 +18,21 @@ import { debounce } from '@/utils/performance';
 	type ThemeMode = 'system' | Theme;
 
 	const THEME_STORAGE_KEY = 'theme';
+	const MEDIA_LIGHT = '(prefers-color-scheme: light)';
+	const MEDIA_DARK = '(prefers-color-scheme: dark)';
 	const themes: ThemeMode[] = ['system', 'light', 'dark'];
-	const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	const darkMediaQuery = window.matchMedia(MEDIA_DARK);
 
-	const getSavedTheme = () => window.localStorage.getItem(THEME_STORAGE_KEY) as null | Theme;
+	const getSavedTheme = () => window.localStorage.getItem(THEME_STORAGE_KEY) as null | ThemeMode;
 
-	const saveTheme = (theme: Theme) => window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+	const saveTheme = (themeMode: ThemeMode) =>
+		window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
 
 	const clearTheme = () => window.localStorage.removeItem(THEME_STORAGE_KEY);
 
 	const getCurrentTheme = () => getSavedTheme() ?? 'system';
 
-	const getSystemTheme = () => (darkMediaQuery.matches ? 'dark' : 'light');
+	const getSystemTheme = (): Theme => (darkMediaQuery.matches ? 'dark' : 'light');
 
 	const getSystemThemeIcon = () => (getSystemTheme() === 'light' ? sunSvg : moonSvg);
 
@@ -58,20 +61,24 @@ import { debounce } from '@/utils/performance';
 			},
 		})[themeMode];
 
-	const getMediaForTheme = (themeMode: ThemeMode, targetTheme: ThemeMode) =>
-		themeMode === targetTheme ? 'all' : 'not all';
+	const getSchemeMedia = (themeMode: ThemeMode) => {
+		if (themeMode === 'system') {
+			return { light: MEDIA_LIGHT, dark: MEDIA_DARK };
+		}
 
-	const setDocumentTheme = (theme: Theme) => {
-		document.documentElement.dataset.theme = theme;
+		return {
+			light: themeMode === 'light' ? 'all' : 'not all',
+			dark: themeMode === 'dark' ? 'all' : 'not all',
+		};
 	};
 
-	const updateStylesheetsForTheme = (theme: Theme) => {
-		const lightMedia = getMediaForTheme(theme, 'light');
-		const darkMedia = getMediaForTheme(theme, 'dark');
-		lightStyles.setAttribute('media', lightMedia);
-		darkStyles.setAttribute('media', darkMedia);
-		lightThemeColor.setAttribute('media', lightMedia);
-		darkThemeColor.setAttribute('media', darkMedia);
+	const switchScheme = (themeMode: ThemeMode) => {
+		const media = getSchemeMedia(themeMode);
+
+		colorSchemeLight.setAttribute('media', media.light);
+		colorSchemeDark.setAttribute('media', media.dark);
+		themeColorLight.setAttribute('media', media.light);
+		themeColorDark.setAttribute('media', media.dark);
 	};
 
 	const updateTogglerUI = (themeMode: ThemeMode) => {
@@ -83,17 +90,13 @@ import { debounce } from '@/utils/performance';
 	};
 
 	const applyTheme = (themeMode: ThemeMode) => {
-		const isSystemTheme = themeMode === 'system';
-
-		if (isSystemTheme) {
+		if (themeMode === 'system') {
 			clearTheme();
 		} else {
 			saveTheme(themeMode);
 		}
 
-		const theme = isSystemTheme ? getSystemTheme() : themeMode;
-		setDocumentTheme(theme);
-		updateStylesheetsForTheme(theme);
+		switchScheme(themeMode);
 		updateTogglerUI(themeMode);
 	};
 
@@ -104,8 +107,10 @@ import { debounce } from '@/utils/performance';
 	};
 
 	const onSchemeChange = () => {
-		if (getCurrentTheme() === 'system') {
-			applyTheme('system');
+		const currentTheme = getCurrentTheme();
+
+		if (currentTheme === 'system') {
+			updateTogglerUI('system');
 		}
 	};
 
