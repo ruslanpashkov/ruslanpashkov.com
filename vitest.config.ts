@@ -4,6 +4,7 @@ import { getViteConfig } from 'astro/config';
 export default getViteConfig({
 	test: {
 		include: ['tests/vitest/**/*.test.ts'],
+		passWithNoTests: true,
 		reporters: ['default', 'html'],
 		outputFile: {
 			html: 'test-reports/vitest/index.html',
