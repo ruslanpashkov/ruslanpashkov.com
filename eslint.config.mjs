@@ -15,6 +15,7 @@ export default [
 	eslintPluginJsxA11y.flatConfigs.recommended,
 	eslintPluginPrettier,
 	{
+		files: ['src/**/*'],
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -52,6 +53,6 @@ export default [
 		},
 	},
 	{
-		ignores: ['dist', 'node_modules', '.astro', 'test-results', 'test-reports'],
+		ignores: ['node_modules', 'dist', '.astro', 'test-reports'],
 	},
 ];
