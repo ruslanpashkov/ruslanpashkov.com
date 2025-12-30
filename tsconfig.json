@@ -1,12 +1,11 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "astro/tsconfigs/strictest",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["dist", "node_modules", "test-reports"],
   "compilerOptions": {
     "plugins": [{ "name": "@astrojs/ts-plugin" }],
-    "strictNullChecks": true,
-    "allowJs": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": { "@/*": ["src/*"] },
+    "exactOptionalPropertyTypes": false
   }
 }
