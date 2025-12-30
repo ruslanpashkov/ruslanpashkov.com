@@ -1,6 +1,8 @@
 /** @type {import('lint-staged').Configuration} */
 export default {
-	'*.{astro,js,mjs,ts,css,md,mdx,json,yml,webmanifest}': 'prettier --write',
-	'*.{astro,js,mjs,ts}': 'eslint --fix',
-	'*.{astro,css}': 'stylelint --fix',
+	'*.{js,mjs,ts}': ['eslint --fix', 'prettier --write'],
+	'*.astro': ['eslint --fix', 'stylelint --fix', 'prettier --write'],
+	'*.css': ['stylelint --fix', 'prettier --write'],
+	'*.{md,mdx}': ['markdownlint --fix', 'prettier --write'],
+	'*.{json,yml,webmanifest}': 'prettier --write',
 };
