@@ -21,8 +21,6 @@ export default {
 		{
 			files: ['*.md', '*.mdx'],
 			options: {
-				useTabs: false,
-				tabWidth: 2,
 				embeddedLanguageFormatting: 'off',
 			},
 		},
