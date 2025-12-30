@@ -10,19 +10,23 @@ This is the source code for my personal website, [ruslanpashkov.com](https://rus
 
 ## Scripts
 
-- `bun run astro`: Run Astro CLI commands directly
-- `bun run dev`: Start the development server
-- `bun run build`: Build the production-ready site
-- `bun run preview`: Preview the built site
-- `bun run typecheck`: Check TypeScript types with Astro
-- `bun run lint`: Lint code with ESLint and Stylelint
-- `bun run format`: Format code with Prettier
-- `bun run test`: Test code with Vitest and Playwright
-- `bun run check`: Run type checking, format checking, and linting
-- `bun run build-previews`: Build preview images for blog posts
-- `bun run build-screenshots`: Build screenshots for the website
-- `bun run html-validate`: Validate HTML using W3C validator
-- `bun run prepare`: Set up git hooks with Husky
+- `bun astro`: Run Astro CLI commands directly
+- `bun dev`: Start the development server
+- `bun build`: Build the production-ready site
+- `bun preview`: Preview the built site
+- `bun typecheck`: Check TypeScript types with Astro
+- `bun lint`: Lint code with ESLint, Stylelint, and Markdownlint
+- `bun lint:fix`: Auto-fix linting issues where possible
+- `bun format`: Format code with Prettier
+- `bun format:check`: Check code formatting without modifying files
+- `bun test`: Test code with Vitest and Playwright
+- `bun test:vitest:coverage`: Run Vitest tests with coverage report
+- `bun check`: Run type checking, format checking, and linting
+- `bun verify`: Run all checks and tests (typecheck, lint, format, test)
+- `bun build-previews`: Build preview images for blog posts
+- `bun build-screenshots`: Build screenshots for the website
+- `bun html-validate`: Validate HTML using W3C validator
+- `bun prepare`: Set up git hooks with Husky
 
 ## Contributing
 
