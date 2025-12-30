@@ -25,8 +25,8 @@
     "check": "bun typecheck && bun lint && bun format:check",
     "verify": "bun check && bun test",
     "html-validate": "w3c-html-validator dist",
-    "build-previews": "bun build/build-previews",
-    "build-screenshots": "bun build/build-screenshots",
+    "build-previews": "bun tasks/build-previews",
+    "build-screenshots": "bun tasks/build-screenshots",
     "prepare": "husky"
   },
   "devDependencies": {
