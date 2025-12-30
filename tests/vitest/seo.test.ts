@@ -71,7 +71,7 @@ describe('SEO utilities', () => {
 				data: {
 					categories: ['Technology', 'Programming'],
 					description: 'Test article description',
-					publishedAt: '2025-01-01',
+					publishedAt: new Date('2025-01-01'),
 					slug: 'test-article',
 					title: 'Test Article',
 					topic: 'Web Development',
@@ -105,7 +105,7 @@ describe('SEO utilities', () => {
 				data: {
 					categories: ['Tech', 'AI', 'Machine Learning'],
 					description: 'Test description',
-					publishedAt: '2025-01-01',
+					publishedAt: new Date('2025-01-01'),
 					slug: 'ai-article',
 					title: 'AI Article',
 					topic: 'Artificial Intelligence',
@@ -115,6 +115,26 @@ describe('SEO utilities', () => {
 			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
 			expect(result.keywords).toBe('Tech, AI, Machine Learning');
 			expect(result.articleSection).toEqual(['Tech', 'AI', 'Machine Learning']);
+		});
+
+		it('should use updatedAt for dateModified when provided', () => {
+			const mockArticle: Article = {
+				body: 'Test content',
+				collection: 'blog',
+				data: {
+					categories: ['Tech'],
+					description: 'Test description',
+					publishedAt: new Date('2025-01-01'),
+					updatedAt: new Date('2025-01-15'),
+					slug: 'updated-article',
+					title: 'Updated Article',
+					topic: 'Technology',
+				},
+				id: 'updated-article',
+			};
+			const result: SchemaObject = getArticleSchema(mockWebsite, mockArticle);
+			expect(result.datePublished).toMatch(/^2025-01-01/);
+			expect(result.dateModified).toMatch(/^2025-01-15/);
 		});
 	});
 
@@ -127,7 +147,7 @@ describe('SEO utilities', () => {
 					data: {
 						categories: ['Tech'],
 						description: 'Article 1 description',
-						publishedAt: '2025-01-01',
+						publishedAt: new Date('2025-01-01'),
 						slug: 'article-1',
 						title: 'Article 1',
 						topic: 'Technology',
@@ -140,7 +160,7 @@ describe('SEO utilities', () => {
 					data: {
 						categories: ['Programming'],
 						description: 'Article 2 description',
-						publishedAt: '2025-01-02',
+						publishedAt: new Date('2025-01-02'),
 						slug: 'article-2',
 						title: 'Article 2',
 						topic: 'Programming',

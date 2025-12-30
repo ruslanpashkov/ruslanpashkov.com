@@ -85,38 +85,38 @@ describe('formatting utilities', () => {
 	});
 
 	describe('formatDate', () => {
-		it('should format date string correctly', () => {
-			const date = '2023-12-25';
+		it('should format date correctly', () => {
+			const date = new Date('2023-12-25');
 			const result = formatDate(date);
 			expect(result).toBe('December 25, 2023');
 		});
 
-		it('should handle ISO date string', () => {
-			const date = '2023-12-25T10:30:00Z';
+		it('should handle ISO date', () => {
+			const date = new Date('2023-12-25T10:30:00Z');
 			const result = formatDate(date);
 			expect(result).toBe('December 25, 2023');
 		});
 
-		it('should handle different date formats', () => {
-			const date = '2023-01-01';
+		it('should handle different dates', () => {
+			const date = new Date('2023-01-01');
 			const result = formatDate(date);
 			expect(result).toBe('January 1, 2023');
 		});
 
 		it('should handle leap year date', () => {
-			const date = '2024-02-29';
+			const date = new Date('2024-02-29');
 			const result = formatDate(date);
 			expect(result).toBe('February 29, 2024');
 		});
 
 		it('should handle date with timezone', () => {
-			const date = '2023-06-15T14:30:00-05:00';
+			const date = new Date('2023-06-15T14:30:00-05:00');
 			const result = formatDate(date);
 			expect(result).toBe('June 15, 2023');
 		});
 
 		it('should handle invalid date gracefully', () => {
-			const date = 'invalid-date';
+			const date = new Date('invalid-date');
 			const result = formatDate(date);
 			expect(result).toBe('Invalid Date');
 		});
