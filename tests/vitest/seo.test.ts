@@ -12,10 +12,9 @@ import type { Article } from '@/types/Article';
 import type { Link } from '@/types/Link';
 import type { Project } from '@/types/Project';
 
-// The schema-dts library has complex union types that
-// TypeScript can't properly narrow for testing purposes.
-// Using an any type allows us to test the actual schema
-// structure without dealing with the complex type system.
+// Using Record<string, any> for simpler test assertions.
+// The schema-dts types are deeply nested unions that would
+// require verbose type assertions for each property access.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SchemaObject = Record<string, any>;
 

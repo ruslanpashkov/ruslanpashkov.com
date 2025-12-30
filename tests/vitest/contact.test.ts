@@ -37,7 +37,7 @@ describe('contact utilities', () => {
 
 	describe('findEmail', () => {
 		it('should find email contact', () => {
-			const contacts = [...mockContacts];
+			const contacts = Array.from(mockContacts);
 			const result = findEmail(contacts);
 			expect(result).toEqual({
 				icon: 'email',
@@ -69,7 +69,7 @@ describe('contact utilities', () => {
 
 	describe('findEmailURL', () => {
 		it('should return email URL', () => {
-			const contacts = [...mockContacts];
+			const contacts = Array.from(mockContacts);
 			const result = findEmailURL(contacts);
 			expect(result).toBe('mailto:test@example.com');
 		});
@@ -89,7 +89,7 @@ describe('contact utilities', () => {
 
 	describe('findOnlineProfiles', () => {
 		it('should find all online profiles excluding email', () => {
-			const contacts = [...mockContacts];
+			const contacts = Array.from(mockContacts);
 			const result = findOnlineProfiles(contacts);
 			expect(result).toHaveLength(3);
 			expect(result).toEqual([
@@ -150,13 +150,13 @@ describe('contact utilities', () => {
 			];
 			const result = findOnlineProfiles(contacts);
 			expect(result).toHaveLength(1);
-			expect(result[0].label).toBe('LinkedIn');
+			expect(result[0]!.label).toBe('LinkedIn');
 		});
 	});
 
 	describe('findOnlineProfilesURLs', () => {
 		it('should return URLs of all online profiles', () => {
-			const contacts = [...mockContacts];
+			const contacts = Array.from(mockContacts);
 			const result = findOnlineProfilesURLs(contacts);
 			expect(result).toHaveLength(3);
 			expect(result).toEqual([

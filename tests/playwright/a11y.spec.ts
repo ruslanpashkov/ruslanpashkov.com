@@ -37,7 +37,7 @@ async function getPages(): Promise<string[]> {
 			return route === '' ? '/' : route;
 		});
 
-		return [...new Set(pages)].toSorted();
+		return Array.from(new Set(pages)).toSorted();
 	} catch (error) {
 		throw new Error(`Failed to discover pages: ${error}`);
 	}

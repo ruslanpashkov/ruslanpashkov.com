@@ -48,9 +48,9 @@ describe('article utilities', () => {
 			];
 			const result = sortByDate(articles);
 			expect(result).toHaveLength(3);
-			expect(result[0].data.publishedAt).toEqual(new Date('2025-01-03'));
-			expect(result[1].data.publishedAt).toEqual(new Date('2025-01-02'));
-			expect(result[2].data.publishedAt).toEqual(new Date('2025-01-01'));
+			expect(result[0]!.data.publishedAt).toEqual(new Date('2025-01-03'));
+			expect(result[1]!.data.publishedAt).toEqual(new Date('2025-01-02'));
+			expect(result[2]!.data.publishedAt).toEqual(new Date('2025-01-01'));
 		});
 
 		it('should handle empty array', () => {
@@ -77,7 +77,7 @@ describe('article utilities', () => {
 			];
 			const result = sortByDate(articles);
 			expect(result).toHaveLength(1);
-			expect(result[0].data.publishedAt).toEqual(new Date('2025-01-01'));
+			expect(result[0]!.data.publishedAt).toEqual(new Date('2025-01-01'));
 		});
 
 		it('should handle articles with same date', () => {
@@ -111,8 +111,8 @@ describe('article utilities', () => {
 			];
 			const result = sortByDate(articles);
 			expect(result).toHaveLength(2);
-			expect(result[0].data.publishedAt).toEqual(new Date('2025-01-01'));
-			expect(result[1].data.publishedAt).toEqual(new Date('2025-01-01'));
+			expect(result[0]!.data.publishedAt).toEqual(new Date('2025-01-01'));
+			expect(result[1]!.data.publishedAt).toEqual(new Date('2025-01-01'));
 		});
 
 		it('should handle different date formats', () => {
@@ -146,8 +146,8 @@ describe('article utilities', () => {
 			];
 			const result = sortByDate(articles);
 			expect(result).toHaveLength(2);
-			expect(result[0].data.publishedAt).toEqual(new Date('2025-01-01T00:00:00Z'));
-			expect(result[1].data.publishedAt).toEqual(new Date('2024-12-31T23:59:59Z'));
+			expect(result[0]!.data.publishedAt).toEqual(new Date('2025-01-01T00:00:00Z'));
+			expect(result[1]!.data.publishedAt).toEqual(new Date('2024-12-31T23:59:59Z'));
 		});
 
 		it('should not mutate the original array', () => {
@@ -179,7 +179,7 @@ describe('article utilities', () => {
 					id: 'test-2',
 				},
 			];
-			const originalArticles = [...articles];
+			const originalArticles = Array.from(articles);
 			sortByDate(articles);
 			expect(articles).toEqual(originalArticles);
 		});
