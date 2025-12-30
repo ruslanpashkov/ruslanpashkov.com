@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
@@ -91,12 +92,28 @@ async function waitForServer(url) {
 async function generateScreenshotImages() {
 	console.log('Generating screenshots…');
 
+	const pendingProfiles = SCREENSHOT_PROFILES.filter((profile) => {
+		const outputPath = join(CONFIG.paths.output, profile.filename);
+
+		if (existsSync(outputPath)) {
+			console.log(`Skipping: ${profile.name} (image already exists)`);
+			return false;
+		}
+
+		return true;
+	});
+
+	if (pendingProfiles.length === 0) {
+		console.log('All screenshots already exist');
+		return;
+	}
+
 	let browser = null;
 
 	try {
 		browser = await chromium.launch();
 
-		for (const profile of SCREENSHOT_PROFILES) {
+		for (const profile of pendingProfiles) {
 			const outputPath = join(CONFIG.paths.output, profile.filename);
 
 			console.log(`Processing ${profile.name}…`);
@@ -107,7 +124,9 @@ async function generateScreenshotImages() {
 			}, profile.theme);
 
 			await page.goto(CONFIG.paths.server, { waitUntil: 'networkidle' });
-			await page.waitForTimeout(2500);
+			await page.waitForSelector('.model-message--open .typed-cursor--blink', {
+				timeout: 30000,
+			});
 
 			await mkdir(CONFIG.paths.output, { recursive: true });
 
