@@ -30,7 +30,7 @@ const clearTheme = () => window.localStorage.removeItem(THEME_STORAGE_KEY);
 
 const getCurrentTheme = () => getSavedTheme() ?? 'system';
 
-const getSystemTheme = (): Theme => (darkMediaQuery.matches ? 'dark' : 'light');
+const getSystemTheme = () => (darkMediaQuery.matches ? 'dark' : 'light');
 
 const getSystemThemeIcon = () => (getSystemTheme() === 'light' ? sunSvg : moonSvg);
 
