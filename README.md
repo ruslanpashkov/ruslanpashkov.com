@@ -1,12 +1,10 @@
 # Ruslan Pashkov's Website
 
-[![Deploy](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/deploy.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/deploy.yml)
-[![HTML Validate](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/html-validate.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/html-validate.yml)
-[![Lighthouse](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lighthouse.yml)
+[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
+[![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=white)](https://bun.sh)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Lint](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lint.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/lint.yml)
-[![Security](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/security.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/security.yml)
 [![Test](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/test.yml/badge.svg)](https://github.com/ruslanpashkov/ruslanpashkov.com/actions/workflows/test.yml)
-[![Last Commit](https://img.shields.io/github/last-commit/ruslanpashkov/ruslanpashkov.com)](https://github.com/ruslanpashkov/ruslanpashkov.com/commit/HEAD)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3636665e-3793-40ea-9632-ac79a4edba44/deploy-status)](https://app.netlify.com/sites/ruslanpashkov/deploys)
 
 This is the source code for my personal website, [ruslanpashkov.com](https://ruslanpashkov.com). It's built with [Astro](https://astro.build), a static site generator, and hosted on [Netlify](https://www.netlify.com). Powered by [Bun](https://bun.sh) as the JavaScript runtime and package manager.
