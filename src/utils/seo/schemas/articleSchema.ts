@@ -1,13 +1,11 @@
 import { contacts } from '@/data/contacts';
 import { global } from '@/data/global';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
-import { clean } from '@/utils/markdown';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import type { Article } from '@/types/Article';
 
 export const getArticleSchema = (website: URL, article: Article): WithContext<BlogPosting> => {
 	const {
-		body,
 		data: { publishedAt, updatedAt, slug, title, description, categories, topic },
 	} = article;
 	const email = findEmailURL(contacts);
@@ -17,7 +15,6 @@ export const getArticleSchema = (website: URL, article: Article): WithContext<Bl
 	const datePublished = publishedAt.toISOString();
 	const dateModified = updatedAt ? updatedAt.toISOString() : datePublished;
 	const keywords = categories.join(', ');
-	const cleanContent = clean(body ?? '');
 
 	return {
 		'@context': 'https://schema.org',
@@ -42,7 +39,6 @@ export const getArticleSchema = (website: URL, article: Article): WithContext<Bl
 		},
 		datePublished: datePublished,
 		dateModified: dateModified,
-		articleBody: cleanContent,
 		about: {
 			'@type': 'Thing',
 			name: topic,

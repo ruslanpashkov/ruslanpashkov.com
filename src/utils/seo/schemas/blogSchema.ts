@@ -3,7 +3,6 @@ import { descriptions } from '@/data/descriptions';
 import { global } from '@/data/global';
 import { sortByDate } from '@/utils/article';
 import { findEmailURL, findOnlineProfilesURLs } from '@/utils/contact';
-import { clean } from '@/utils/markdown';
 import { generateTitle } from '@/utils/seo';
 import type { Blog, BlogPosting, WithContext } from 'schema-dts';
 import type { Article } from '@/types/Article';
@@ -43,14 +42,12 @@ export const getBlogSchema = (website: URL, articles: Article[]): WithContext<Bl
 
 function buildBlogPostSchema(article: Article): BlogPosting {
 	const {
-		body,
 		data: { publishedAt, slug, title, description, categories, topic },
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
 	const datePublished = publishedAt.toISOString();
 	const keywords = categories.join(', ');
-	const cleanContent = clean(body ?? '');
 
 	return {
 		'@type': 'BlogPosting',
@@ -67,7 +64,6 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 			name: global.author,
 		},
 		datePublished: datePublished,
-		articleBody: cleanContent,
 		about: {
 			'@type': 'Thing',
 			name: topic,
