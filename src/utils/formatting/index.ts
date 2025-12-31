@@ -8,8 +8,8 @@ export const slugify = (text: string): string =>
 
 export const shortenLanguage = (language: string): string => language.substring(0, 2).toLowerCase();
 
-export const formatDate = (date: string): string =>
-	new Date(date).toLocaleDateString('en-US', {
+export const formatDate = (date: Date): string =>
+	date.toLocaleDateString('en-US', {
 		day: 'numeric',
 		month: 'long',
 		year: 'numeric',

@@ -1,5 +1,5 @@
 import { projectTypes } from '@/data/projects';
-import { type CategorizedProjects, type Project, type ProjectType } from '@/types/Project';
+import type { CategorizedProjects, Project, ProjectType } from '@/types/Project';
 
 export const sortByType = (projects: Project[]): Project[] =>
 	projects.toSorted(

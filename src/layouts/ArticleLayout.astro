@@ -45,7 +45,7 @@ const mailToURL =
 				<time
 					class="article__published-at"
 					data-testid="blog-article-published-at"
-					datetime={publishedAt}
+					datetime={publishedAt.toISOString()}
 				>
 					{publishedDate}
 				</time>
@@ -55,7 +55,7 @@ const mailToURL =
 						<time
 							class="article__updated-at"
 							data-testid="blog-article-updated-at"
-							datetime={updatedAt}
+							datetime={updatedAt.toISOString()}
 						>
 							(updated at {updatedDate})
 						</time>

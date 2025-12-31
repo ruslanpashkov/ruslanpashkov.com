@@ -48,9 +48,9 @@ function buildBlogPostSchema(article: Article): BlogPosting {
 	} = article;
 	const articleURL = new URL(`/blog/${slug}/`, import.meta.env.SITE);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, import.meta.env.SITE);
-	const datePublished = new Date(publishedAt).toISOString();
+	const datePublished = publishedAt.toISOString();
 	const keywords = categories.join(', ');
-	const cleanContent = clean(body as string);
+	const cleanContent = clean(body ?? '');
 
 	return {
 		'@type': 'BlogPosting',

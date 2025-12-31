@@ -8,15 +8,16 @@ import type { Article } from '@/types/Article';
 export const getArticleSchema = (website: URL, article: Article): WithContext<BlogPosting> => {
 	const {
 		body,
-		data: { publishedAt, slug, title, description, categories, topic },
+		data: { publishedAt, updatedAt, slug, title, description, categories, topic },
 	} = article;
 	const email = findEmailURL(contacts);
 	const onlineProfiles = findOnlineProfilesURLs(contacts);
 	const articleURL = new URL(`/blog/${slug}/`, website);
 	const previewImageURL = new URL(`/images/previews/${slug}.png`, website);
-	const datePublished = new Date(publishedAt).toISOString();
+	const datePublished = publishedAt.toISOString();
+	const dateModified = updatedAt ? updatedAt.toISOString() : datePublished;
 	const keywords = categories.join(', ');
-	const cleanContent = clean(body as string);
+	const cleanContent = clean(body ?? '');
 
 	return {
 		'@context': 'https://schema.org',
@@ -40,6 +41,7 @@ export const getArticleSchema = (website: URL, article: Article): WithContext<Bl
 			sameAs: onlineProfiles,
 		},
 		datePublished: datePublished,
+		dateModified: dateModified,
 		articleBody: cleanContent,
 		about: {
 			'@type': 'Thing',

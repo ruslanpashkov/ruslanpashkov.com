@@ -11,13 +11,12 @@ export async function GET(context: APIContext) {
 		site: context.site!,
 		title: `${global.author}'s Blog`,
 		description: global.about,
-		stylesheet: '/rss/styles.xsl',
 		items: sortByDate(blog).map(({ data: post }) => ({
 			title: post.title,
 			description: post.description,
 			categories: post.categories,
 			link: `/blog/${post.slug}/`,
-			pubDate: new Date(post.publishedAt),
+			pubDate: post.publishedAt,
 		})),
 	});
 }

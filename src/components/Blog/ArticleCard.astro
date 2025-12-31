@@ -15,7 +15,11 @@ const publishedDate = formatDate(publishedAt);
 
 <article class="article-card" data-testid="blog-article-card">
 	<header class="article-card__header" data-testid="blog-article-header">
-		<time class="article-card__date" data-testid="blog-article-date" datetime={publishedAt}>
+		<time
+			class="article-card__date"
+			data-testid="blog-article-date"
+			datetime={publishedAt.toISOString()}
+		>
 			{publishedDate}
 		</time>
 
