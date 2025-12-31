@@ -1,81 +1,92 @@
-<button class="model" data-testid="model" id="model" type="button">
-	<span class="visually-hidden">Interact with 3D model</span>
-
+<div data-testid="model-container" id="model-container">
 	<span class="visually-hidden" id="model-message-announcement" role="status"></span>
 
-	<div aria-hidden="true" class="model-message" data-testid="model-message" id="model-message">
-		<div class="model-message__content" data-testid="model-message-content">
-			<span
-				class="model-message__text"
-				data-testid="model-message-text"
-				id="model-message-text"
-			>
-				Hi!
-			</span>
+	<button class="model" data-testid="model" id="model" type="button">
+		<span class="visually-hidden">Interact with 3D model</span>
+
+		<div
+			aria-hidden="true"
+			class="model-message"
+			data-testid="model-message"
+			id="model-message"
+		>
+			<div class="model-message__content" data-testid="model-message-content">
+				<span
+					class="model-message__text"
+					data-testid="model-message-text"
+					id="model-message-text"
+				>
+					Hi!
+				</span>
+			</div>
 		</div>
-	</div>
 
-	<div
-		aria-busy="true"
-		class="model-notification"
-		data-testid="model-loader"
-		id="model-loader"
-		role="status"
-	>
-		<div class="model-notification__content" data-testid="model-loader-content">
-			<span class="model-notification__text" data-testid="model-loader-text" id="loader-text">
-				Loading Model…
-			</span>
+		<div
+			aria-busy="true"
+			class="model-notification"
+			data-testid="model-loader"
+			id="model-loader"
+			role="status"
+		>
+			<div class="model-notification__content" data-testid="model-loader-content">
+				<span
+					class="model-notification__text"
+					data-testid="model-loader-text"
+					id="loader-text"
+				>
+					Loading Model…
+				</span>
 
-			<div
-				aria-valuemax="100"
-				aria-valuemin="0"
-				aria-valuenow="0"
-				class="model-notification__progress"
-				data-testid="model-loader-progress"
-				id="model-progress"
-				role="progressbar"
-			>
-				<span class="visually-hidden">Loading progress</span>
+				<div
+					aria-valuemax="100"
+					aria-valuemin="0"
+					aria-valuenow="0"
+					class="model-notification__progress"
+					data-testid="model-loader-progress"
+					id="model-progress"
+					role="progressbar"
+				>
+					<span class="visually-hidden">Loading progress</span>
+
+					<div
+						aria-hidden="true"
+						class="model-notification__progress-bar"
+						data-testid="model-progress-bar"
+						id="model-progress-bar"
+					>
+					</div>
+				</div>
 
 				<div
 					aria-hidden="true"
-					class="model-notification__progress-bar"
-					data-testid="model-progress-bar"
-					id="model-progress-bar"
+					class="model-notification__percentage"
+					data-testid="model-percentage"
+					id="model-percentage"
 				>
+					0%
 				</div>
 			</div>
+		</div>
 
-			<div
-				aria-hidden="true"
-				class="model-notification__percentage"
-				data-testid="model-percentage"
-				id="model-percentage"
-			>
-				0%
+		<div
+			aria-live="assertive"
+			class="model-notification model-notification--hidden"
+			data-testid="model-error"
+			id="model-error"
+			role="alert"
+		>
+			<div class="model-notification__content" data-testid="model-error-content">
+				<span
+					class="model-notification__text"
+					data-testid="model-error-text"
+					id="model-error-text"
+				>
+					Failed to load 3D model. Try to refresh the page.
+				</span>
 			</div>
 		</div>
-	</div>
-
-	<div
-		aria-live="assertive"
-		class="model-notification model-notification--hidden"
-		data-testid="model-error"
-		id="model-error"
-		role="alert"
-	>
-		<div class="model-notification__content" data-testid="model-error-content">
-			<span
-				class="model-notification__text"
-				data-testid="model-error-text"
-				id="model-error-text"
-			>
-				Failed to load 3D model. Try to refresh the page.
-			</span>
-		</div>
-	</div>
-</button>
+	</button>
+</div>
 
 <style>
 	.model {

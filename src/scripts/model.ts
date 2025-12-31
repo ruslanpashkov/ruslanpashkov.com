@@ -55,7 +55,7 @@ let isInteractive = false;
 let clickCount = 0;
 let lastClickTime = 0;
 
-const getCurrentTheme = () => {
+const getResolvedTheme = () => {
 	const savedTheme = window.localStorage.getItem('theme');
 
 	if (savedTheme === 'dark' || savedTheme === 'light') {
@@ -65,9 +65,9 @@ const getCurrentTheme = () => {
 	return darkMediaQuery.matches ? 'dark' : 'light';
 };
 
-const getModelColor = () => (getCurrentTheme() === 'light' ? LIGHT_THEME_COLOR : DARK_THEME_COLOR);
+const getModelColor = () => (getResolvedTheme() === 'light' ? LIGHT_THEME_COLOR : DARK_THEME_COLOR);
 
-const getFocusColor = () => (getCurrentTheme() === 'light' ? LIGHT_FOCUS_COLOR : DARK_FOCUS_COLOR);
+const getFocusColor = () => (getResolvedTheme() === 'light' ? LIGHT_FOCUS_COLOR : DARK_FOCUS_COLOR);
 
 const getRandomMessage = (category: MessageCategory) => {
 	const categoryMessages = messages[category];
@@ -332,10 +332,10 @@ const setupModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamer
 	const raycaster = new THREE.Raycaster();
 	const mouse = new THREE.Vector2();
 
-	const updateMousePosition = (event: MouseEvent) => {
+	const updatePointerPosition = (clientX: number, clientY: number) => {
 		const rect = model.getBoundingClientRect();
-		mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-		mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+		mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+		mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 	};
 
 	const isModelHit = () => {
@@ -345,7 +345,7 @@ const setupModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamer
 	};
 
 	const onMouseDown = (event: MouseEvent) => {
-		updateMousePosition(event);
+		updatePointerPosition(event.clientX, event.clientY);
 
 		if (!isModelHit()) {
 			event.preventDefault();
@@ -353,13 +353,24 @@ const setupModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamer
 	};
 
 	const onMouseMove = (event: MouseEvent) => {
-		updateMousePosition(event);
+		updatePointerPosition(event.clientX, event.clientY);
 		model.style.cursor = isModelHit() ? 'pointer' : 'default';
 	};
 
 	const onClick = (event: MouseEvent) => {
 		if (isInteractive) {
-			updateMousePosition(event);
+			updatePointerPosition(event.clientX, event.clientY);
+
+			if (isModelHit()) {
+				handleInteraction();
+			}
+		}
+	};
+
+	const onTouchEnd = (event: TouchEvent) => {
+		if (isInteractive && event.changedTouches.length > 0) {
+			const touch = event.changedTouches[0]!;
+			updatePointerPosition(touch.clientX, touch.clientY);
 
 			if (isModelHit()) {
 				handleInteraction();
@@ -377,6 +388,7 @@ const setupModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamer
 	model.addEventListener('mousedown', onMouseDown);
 	model.addEventListener('mousemove', debounce(onMouseMove));
 	model.addEventListener('click', onClick);
+	model.addEventListener('touchend', onTouchEnd);
 	model.addEventListener('keydown', onKeyDown);
 };
 
