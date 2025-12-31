@@ -9,6 +9,23 @@
 
 This is the source code for my personal website, [ruslanpashkov.com](https://ruslanpashkov.com). It's built with [Astro](https://astro.build), a static site generator, and hosted on [Netlify](https://www.netlify.com). Powered by [Bun](https://bun.sh) as the JavaScript runtime and package manager.
 
+## Installation
+
+0. Install [Bun](https://bun.sh) if you haven't already
+
+1. Clone the repository
+
+   ```bash
+   git clone https://github.com/ruslanpashkov/ruslanpashkov.com.git
+   ```
+
+2. Install dependencies
+
+   ```bash
+   cd ruslanpashkov.com
+   bun install
+   ```
+
 ## Scripts
 
 - `bun astro`: Run Astro CLI commands directly
