@@ -12,7 +12,12 @@
 		width: var(--glow-sm);
 		height: var(--glow-sm);
 		border-radius: 50%;
-		background-color: var(--color-accent);
+		background: radial-gradient(
+			circle,
+			var(--color-accent) 0%,
+			color-mix(in oklch, var(--color-accent), transparent 40%) 50%,
+			color-mix(in oklch, var(--color-accent), transparent 80%) 100%
+		);
 		filter: blur(100px);
 
 		@media (width >= 48rem) {
