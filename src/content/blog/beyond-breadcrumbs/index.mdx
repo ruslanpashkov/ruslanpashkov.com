@@ -8,8 +8,6 @@ categories: ["Web Development", "Accessibility", "Technical SEO", "UX Design"]
 topic: "Frontend Development"
 ---
 
-{/* snippet:start */}
-
 import { Image } from 'astro:assets';
 import googleSearchCentralBreadcrumbs from './google-search-central-breadcrumbs.png';
 import breadcrumbsBasicAudio from './breadcrumbs-screenreader-basic.mp3';
@@ -19,8 +17,6 @@ import styledBreadcrumbsFoundation from './styled-breadcrumbs-foundation.png';
 import breadcrumbsExpandExample from './breadcrumbs-expand-example.gif';
 import focusedBreadcrumbsPreview from './focused-breadcrumbs-preview.png';
 import mobileBreadcrumbsWithMask from './mobile-breadcrumbs-with-mask.gif';
-
-{/* snippet:end */}
 
 I've been wanting to write my first technical article for quite some time. I knew right away that I wanted to write about [breadcrumbs](https://en.wikipedia.org/wiki/Breadcrumb_navigation) — after working on a real estate project, I discovered that they're way more interesting than they might seem at first glance.
 
@@ -65,13 +61,13 @@ That's exactly why it's semantically correct to use `<ol>` — it explicitly tel
 By the way, while [Google Search Central documentation](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb) recommends using `<ol>` for breadcrumbs, if you inspect their own website, you'll find they use `<ul>` instead. Do as I say, not as I do, right, Google? 😄
 
 <Image
-	src={googleSearchCentralBreadcrumbs}
-	alt="Google Search Central breadcrumbs inspected in DevTools, showing an unordered list"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${googleSearchCentralBreadcrumbs.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={googleSearchCentralBreadcrumbs}
+  alt="Google Search Central breadcrumbs inspected in DevTools, showing an unordered list"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${googleSearchCentralBreadcrumbs.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 In the end, our breadcrumbs structure looks something like this:
@@ -96,26 +92,22 @@ Note that the last breadcrumb item **isn't a link** since it represents the curr
 
 Sure, we've figured out how to properly markup breadcrumbs, but for screen readers (in our case — [VoiceOver](https://support.apple.com/guide/voiceover/welcome/mac)), our construction currently sounds something like this:
 
-<audio
-	controls
-	preload="metadata"
-	title="Screen reader demonstration of unoptimized breadcrumbs"
->
-	<source src={breadcrumbsBasicAudio} type="audio/mpeg" />
-	<a href={breadcrumbsBasicAudio}>Download audio</a>
+<audio controls preload="metadata" title="Screen reader demonstration of unoptimized breadcrumbs">
+  <source src={breadcrumbsBasicAudio} type="audio/mpeg" />
+  <a href={breadcrumbsBasicAudio}>Download audio</a>
 </audio>
 
 <details>
-	<summary>Audio Transcript</summary>
-	<div>
-		navigation, list 3 items:
-		<ol>
-			<li>link, Home, 1 of 3, right-pointing double arrow</li>
-			<li>link, New Buildings, 2 of 3, right-pointing double arrow</li>
-			<li>Green Quarter Complex</li>
-		</ol>
-		end of list. end of, navigation
-	</div>
+  <summary>Audio Transcript</summary>
+  <div>
+    navigation, list 3 items:
+    <ol>
+      <li>link, Home, 1 of 3, right-pointing double arrow</li>
+      <li>link, New Buildings, 2 of 3, right-pointing double arrow</li>
+      <li>Green Quarter Complex</li>
+    </ol>
+    end of list. end of, navigation
+  </div>
 </details>
 
 And this is where it gets interesting — it's time to teach screen readers how to properly read our breadcrumbs!
@@ -171,26 +163,22 @@ Let's put all these improvements together:
 
 Now our breadcrumbs sound much better to screen readers:
 
-<audio
-	controls
-	preload="metadata"
-	title="Screen reader demonstration of optimized breadcrumbs"
->
-	<source src={breadcrumbsAccessibleAudio} type="audio/mpeg" />
-	<a href={breadcrumbsAccessibleAudio}>Download audio</a>
+<audio controls preload="metadata" title="Screen reader demonstration of optimized breadcrumbs">
+  <source src={breadcrumbsAccessibleAudio} type="audio/mpeg" />
+  <a href={breadcrumbsAccessibleAudio}>Download audio</a>
 </audio>
 
 <details>
-	<summary>Audio Transcript</summary>
-	<div>
-		Breadcrumbs, navigation. list 3 items:
-		<ol>
-			<li>link, Home, 1 of 3</li>
-			<li>link, New Buildings 2 of 3</li>
-			<li>Green Quarter Complex, current page</li>
-		</ol>
-		end of list. end of, Breadcrumbs, navigation.
-	</div>
+  <summary>Audio Transcript</summary>
+  <div>
+    Breadcrumbs, navigation. list 3 items:
+    <ol>
+      <li>link, Home, 1 of 3</li>
+      <li>link, New Buildings 2 of 3</li>
+      <li>Green Quarter Complex, current page</li>
+    </ol>
+    end of list. end of, Breadcrumbs, navigation.
+  </div>
 </details>
 
 One final note on accessibility: if you're using a custom separator (like an SVG icon), make sure it has sufficient [color contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) — at least **4.5:1** ratio. Though hidden from screen readers, these visual markers help partially sighted users understand content structure.
@@ -286,9 +274,9 @@ Let's break down the key parts here:
 - The `itemscope` and `itemtype` on `<ol>` tell search engines that this list represents a [BreadcrumbList](https://schema.org/BreadcrumbList)
 - Each `<li>` needs `itemscope` and `itemprop="itemListElement"` to mark it as a part of our breadcrumbs list
 - Inside each item, we need three required properties:
-    - `itemprop="name"` for the text label
-    - `itemprop="item"` for the URL (omitted in the last item)
-    - `itemprop="position"` for the numerical position
+  - `itemprop="name"` for the text label
+  - `itemprop="item"` for the URL (omitted in the last item)
+  - `itemprop="position"` for the numerical position
 
 And here's a nice bonus — unlike JSON-LD, you can safely use relative URLs here since Microdata works directly with your HTML markup, using the same URLs as your links.
 
@@ -301,13 +289,13 @@ So which format should you choose? While both approaches get the job done, they 
 In addition, Google [recommends using JSON-LD](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data#structured-data-format) for structured data, as it's easier to implement and maintain. And while using both formats simultaneously is technically possible, it's best to stick with one to keep your code clean and maintainable.
 
 <Image
-	src={googleBreadcrumbsExample}
-	alt="Breadcrumbs in Google search results, separated by arrows"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${googleBreadcrumbsExample.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={googleBreadcrumbsExample}
+  alt="Breadcrumbs in Google search results, separated by arrows"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${googleBreadcrumbsExample.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 A properly implemented breadcrumb structure (whether in JSON-LD or Microdata) turns into these helpful search snippets, letting users preview their path through your site right from Google's results page.
@@ -442,13 +430,13 @@ Also, it would be better to extend the clickable area of the links to make them 
 Now, we have such simple, but already quite nice-looking, breadcrumbs:
 
 <Image
-	src={styledBreadcrumbsFoundation}
-	alt="Styled breadcrumbs with Home, New Buildings, Green Quarter Complex, and Gallery links"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${styledBreadcrumbsFoundation.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={styledBreadcrumbsFoundation}
+  alt="Styled breadcrumbs with Home, New Buildings, Green Quarter Complex, and Gallery links"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${styledBreadcrumbsFoundation.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 Everything looks great so far! Well… at least until someone decides to name their page _"The Most Amazing Real Estate Complex That Will Change Your Life Forever"_. Or when marketing asks to add [five more levels](https://imgur.com/a/0WGgTBz) to your navigation hierarchy. And we haven't even mentioned responsiveness yet…
@@ -616,13 +604,13 @@ document.addEventListener('DOMContentLoaded', initBreadcrumbsNavigation);
 Nice! Now, our breadcrumbs will collapse when there are too many items, showing only the first and last two. Users can expand the full path by clicking the ellipsis button:
 
 <Image
-	src={breadcrumbsExpandExample}
-	alt="Breadcrumbs with an ellipsis button that expands the full path when clicked"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${breadcrumbsExpandExample.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={breadcrumbsExpandExample}
+  alt="Breadcrumbs with an ellipsis button that expands the full path when clicked"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${breadcrumbsExpandExample.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 But we still have the issue with responsiveness — what if our breadcrumbs don't fit on smaller screens? Let's solve this problem with a few more CSS tricks.
@@ -700,13 +688,13 @@ By the way, since we used `overflow: hidden`, we need to add a small negative of
 ```
 
 <Image
-	src={focusedBreadcrumbsPreview}
-	alt="'New Buildings' link with adjusted outline offset for keyboard navigation visibility"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${focusedBreadcrumbsPreview.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={focusedBreadcrumbsPreview}
+  alt="'New Buildings' link with adjusted outline offset for keyboard navigation visibility"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${focusedBreadcrumbsPreview.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 And finally, let's add the JavaScript to handle our fancy scroll effects:
@@ -744,13 +732,13 @@ document.addEventListener('DOMContentLoaded', initBreadcrumbsScroll);
 And that's it! Now our breadcrumbs will scroll smoothly on smaller screens, with fancy fading edges to show the beginning and end of the path:
 
 <Image
-	src={mobileBreadcrumbsWithMask}
-	alt="Breadcrumbs with a fading mask effect on the left and right edges for horizontal scrolling"
-	sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${mobileBreadcrumbsWithMask.width}px`}
-	widths={[400, 800, 1200]}
-	decoding="async"
-	loading="lazy"
-	quality="max"
+  src={mobileBreadcrumbsWithMask}
+  alt="Breadcrumbs with a fading mask effect on the left and right edges for horizontal scrolling"
+  sizes={`(max-width: 768px) 100vw, (max-width: 1536px) 2x, ${mobileBreadcrumbsWithMask.width}px`}
+  widths={[400, 800, 1200]}
+  decoding="async"
+  loading="lazy"
+  quality="max"
 />
 
 In fact, we can add some more advanced enhancements, which we won't cover in this article, but you can keep in mind:
@@ -764,19 +752,19 @@ In fact, we can add some more advanced enhancements, which we won't cover in thi
 Below you can see the final result of our implementation:
 
 <iframe
-	height="300"
-	style="width: 100%"
-	scrolling="no"
-	title="Beyond Breadcrumbs"
-	src="https://codepen.io/ruslanpashkov/embed/preview/ByBdZYa?default-tab=html%2Cresult&editable=true&theme-id=dark"
-	frameBorder="no"
-	loading="lazy"
-	allowTransparency="true"
-	allowFullScreen="true"
+  height="300"
+  style="width: 100%"
+  scrolling="no"
+  title="Beyond Breadcrumbs"
+  src="https://codepen.io/ruslanpashkov/embed/preview/ByBdZYa?default-tab=html%2Cresult&editable=true&theme-id=dark"
+  frameBorder="no"
+  loading="lazy"
+  allowTransparency="true"
+  allowFullScreen="true"
 >
-	See the Pen <a href="https://codepen.io/ruslanpashkov/pen/ByBdZYa">Beyond Breadcrumbs</a> by
-	Ruslan Pashkov (<a href="https://codepen.io/ruslanpashkov">@ruslanpashkov</a>) on{' '}
-	<a href="https://codepen.io">CodePen</a>.
+  See the Pen <a href="https://codepen.io/ruslanpashkov/pen/ByBdZYa">Beyond Breadcrumbs</a> by
+  Ruslan Pashkov (<a href="https://codepen.io/ruslanpashkov">@ruslanpashkov</a>) on{' '}
+  <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
 ## What About the Frameworks?
