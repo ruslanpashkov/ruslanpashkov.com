@@ -1,14 +1,9 @@
 <button class="model" data-testid="model" id="model" type="button">
 	<span class="visually-hidden">Interact with 3D model</span>
 
-	<div
-		aria-atomic="true"
-		aria-live="polite"
-		class="model-message"
-		data-testid="model-message"
-		id="model-message"
-		role="status"
-	>
+	<span class="visually-hidden" id="model-message-announcement" role="status"></span>
+
+	<div aria-hidden="true" class="model-message" data-testid="model-message" id="model-message">
 		<div class="model-message__content" data-testid="model-message-content">
 			<span
 				class="model-message__text"

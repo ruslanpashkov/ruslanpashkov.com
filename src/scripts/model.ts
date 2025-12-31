@@ -7,6 +7,7 @@ import { debounce } from '@/utils/performance';
 const model = document.getElementById('model');
 const message = document.getElementById('model-message');
 const messageText = document.getElementById('model-message-text');
+const messageAnnouncement = document.getElementById('model-message-announcement');
 const percentage = document.getElementById('model-percentage');
 const progress = document.getElementById('model-progress');
 const progressBar = document.getElementById('model-progress-bar');
@@ -17,6 +18,7 @@ if (
 	!model ||
 	!message ||
 	!messageText ||
+	!messageAnnouncement ||
 	!percentage ||
 	!progress ||
 	!progressBar ||
@@ -54,8 +56,13 @@ let clickCount = 0;
 let lastClickTime = 0;
 
 const getCurrentTheme = () => {
-	const { colorScheme } = window.getComputedStyle(document.documentElement);
-	return colorScheme === 'dark' ? 'dark' : 'light';
+	const savedTheme = window.localStorage.getItem('theme');
+
+	if (savedTheme === 'dark' || savedTheme === 'light') {
+		return savedTheme;
+	}
+
+	return darkMediaQuery.matches ? 'dark' : 'light';
 };
 
 const getModelColor = () => (getCurrentTheme() === 'light' ? LIGHT_THEME_COLOR : DARK_THEME_COLOR);
@@ -64,7 +71,7 @@ const getFocusColor = () => (getCurrentTheme() === 'light' ? LIGHT_FOCUS_COLOR :
 
 const getRandomMessage = (category: MessageCategory) => {
 	const categoryMessages = messages[category];
-	const availableMessages = categoryMessages.filter((msg) => !shownMessages.has(msg));
+	const availableMessages = categoryMessages.filter((content) => !shownMessages.has(content));
 
 	if (availableMessages.length === 0) {
 		shownMessages.clear();
@@ -143,12 +150,13 @@ const createFadeInAnimation = (material: THREE.MeshBasicMaterial) => {
 	window.requestAnimationFrame(animate);
 };
 
-const showMessage = (msg: string, category: MessageCategory) => {
+const showMessage = (content: string, category: MessageCategory) => {
 	isInteractive = false;
 	message.classList.add('model-message--open');
+	messageAnnouncement.textContent = content;
 
 	const typed = new Typed(messageText, {
-		strings: [msg],
+		strings: [content],
 		typeSpeed: TYPING_SPEED_MS,
 	});
 
@@ -156,7 +164,7 @@ const showMessage = (msg: string, category: MessageCategory) => {
 		message.classList.add('model-message--shake');
 	}
 
-	const hideDelay = Math.max(MIN_MESSAGE_DISPLAY_MS, msg.length * READING_SPEED_MS_PER_CHAR);
+	const hideDelay = Math.max(MIN_MESSAGE_DISPLAY_MS, content.length * READING_SPEED_MS_PER_CHAR);
 
 	window.setTimeout(() => {
 		message.classList.remove('model-message--open', 'model-message--shake');
