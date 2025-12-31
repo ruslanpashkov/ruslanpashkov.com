@@ -118,6 +118,9 @@ jobs:
           name: dist
           path: dist
 
+      - name: Install Playwright browsers
+        run: bunx --bun playwright install --with-deps
+
       - name: Run Playwright
         run: bun run test:playwright
 
