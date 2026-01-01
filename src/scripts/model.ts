@@ -31,7 +31,6 @@ if (
 type MessageCategory = keyof typeof messages;
 
 const MODEL_PATH = '/models/stickman/scene.gltf';
-const MEDIA_DARK = '(prefers-color-scheme: dark)';
 const FADE_IN_DURATION_MS = 1000;
 const INITIAL_MESSAGE_DELAY_MS = 1000;
 const CLICK_COUNT_RESET_MS = 30000;
@@ -43,31 +42,33 @@ const MODEL_SCALE = 0.8;
 const MODEL_ROTATION_Y = -Math.PI / 12;
 const LIGHT_THEME_COLOR = 0x553399;
 const DARK_THEME_COLOR = 0xccff77;
-const LIGHT_FOCUS_COLOR = 0xff66ff;
-const DARK_FOCUS_COLOR = 0x00ffff;
-const FOCUS_TRANSITION_DURATION_MS = 200;
 
 const colorSchemeDark = document.getElementById('color-scheme-dark');
-const darkMediaQuery = window.matchMedia(MEDIA_DARK);
 const shownMessages = new Set<string>();
 
 let isInteractive = false;
 let clickCount = 0;
 let lastClickTime = 0;
 
-const getResolvedTheme = () => {
-	const savedTheme = window.localStorage.getItem('theme');
-
-	if (savedTheme === 'dark' || savedTheme === 'light') {
-		return savedTheme;
+const isDarkTheme = () => {
+	if (!colorSchemeDark) {
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
 	}
 
-	return darkMediaQuery.matches ? 'dark' : 'light';
+	const media = colorSchemeDark.getAttribute('media');
+
+	if (media === 'all') {
+		return true;
+	}
+
+	if (media === 'not all') {
+		return false;
+	}
+
+	return window.matchMedia(media || '(prefers-color-scheme: dark)').matches;
 };
 
-const getModelColor = () => (getResolvedTheme() === 'light' ? LIGHT_THEME_COLOR : DARK_THEME_COLOR);
-
-const getFocusColor = () => (getResolvedTheme() === 'light' ? LIGHT_FOCUS_COLOR : DARK_FOCUS_COLOR);
+const getModelColor = () => (isDarkTheme() ? DARK_THEME_COLOR : LIGHT_THEME_COLOR);
 
 const getRandomMessage = (category: MessageCategory) => {
 	const categoryMessages = messages[category];
@@ -98,19 +99,11 @@ const getMessageCategory = (count: number) => {
 	return matchedThreshold ? matchedThreshold.category : 'surrender';
 };
 
-const createScene = () => new THREE.Scene();
-
-const createCamera = () => {
-	const aspect = model.clientWidth / model.clientHeight;
-	const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-	camera.position.set(0, 1, 3);
-	return camera;
-};
-
 const createRenderer = () => {
-	const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+	const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+	const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isMobile });
 	renderer.setSize(model.clientWidth, model.clientHeight);
-	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 	renderer.setClearColor(0x000000, 0);
 	model.appendChild(renderer.domElement);
 	return renderer;
@@ -273,125 +266,6 @@ const handleInteraction = () => {
 	showMessage(randomMessage, category);
 };
 
-const createFocusHandler = (material: THREE.MeshBasicMaterial) => {
-	const baseColor = new THREE.Color(getModelColor());
-	const focusColor = new THREE.Color(getFocusColor());
-	const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-	let animationId: number | null = null;
-	let targetBlend = 0;
-	let currentBlend = 0;
-
-	const animateColor = () => {
-		const diff = targetBlend - currentBlend;
-		const step = (1 / FOCUS_TRANSITION_DURATION_MS) * 16;
-
-		if (Math.abs(diff) > step) {
-			currentBlend += Math.sign(diff) * step;
-			material.color.copy(baseColor).lerp(focusColor, currentBlend);
-			animationId = window.requestAnimationFrame(animateColor);
-		} else {
-			currentBlend = targetBlend;
-			material.color.copy(baseColor).lerp(focusColor, currentBlend);
-			animationId = null;
-		}
-	};
-
-	const setFocused = (focused: boolean) => {
-		targetBlend = focused ? 1 : 0;
-
-		if (reducedMotionQuery.matches) {
-			currentBlend = targetBlend;
-			material.color.copy(baseColor).lerp(focusColor, currentBlend);
-			return;
-		}
-
-		if (animationId === null) {
-			animationId = window.requestAnimationFrame(animateColor);
-		}
-	};
-
-	const updateColors = () => {
-		baseColor.setHex(getModelColor());
-		focusColor.setHex(getFocusColor());
-
-		if (currentBlend === 0) {
-			material.color.copy(baseColor);
-		} else {
-			material.color.copy(baseColor).lerp(focusColor, currentBlend);
-		}
-	};
-
-	model.addEventListener('focus', () => setFocused(true));
-	model.addEventListener('blur', () => setFocused(false));
-
-	return { updateColors };
-};
-
-const setupModelInteraction = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {
-	const raycaster = new THREE.Raycaster();
-	const mouse = new THREE.Vector2();
-
-	const updatePointerPosition = (clientX: number, clientY: number) => {
-		const rect = model.getBoundingClientRect();
-		mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-		mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-	};
-
-	const isModelHit = () => {
-		raycaster.setFromCamera(mouse, camera);
-		const intersects = raycaster.intersectObjects(root.children, true);
-		return intersects.length > 0;
-	};
-
-	const onMouseDown = (event: MouseEvent) => {
-		updatePointerPosition(event.clientX, event.clientY);
-
-		if (!isModelHit()) {
-			event.preventDefault();
-		}
-	};
-
-	const onMouseMove = (event: MouseEvent) => {
-		updatePointerPosition(event.clientX, event.clientY);
-		model.style.cursor = isModelHit() ? 'pointer' : 'default';
-	};
-
-	const onClick = (event: MouseEvent) => {
-		if (isInteractive) {
-			updatePointerPosition(event.clientX, event.clientY);
-
-			if (isModelHit()) {
-				handleInteraction();
-			}
-		}
-	};
-
-	const onTouchEnd = (event: TouchEvent) => {
-		if (isInteractive && event.changedTouches.length > 0) {
-			const touch = event.changedTouches[0]!;
-			updatePointerPosition(touch.clientX, touch.clientY);
-
-			if (isModelHit()) {
-				handleInteraction();
-			}
-		}
-	};
-
-	const onKeyDown = (event: KeyboardEvent) => {
-		if (isInteractive && (event.key === 'Enter' || event.key === ' ')) {
-			event.preventDefault();
-			handleInteraction();
-		}
-	};
-
-	model.addEventListener('mousedown', onMouseDown);
-	model.addEventListener('mousemove', debounce(onMouseMove));
-	model.addEventListener('click', onClick);
-	model.addEventListener('touchend', onTouchEnd);
-	model.addEventListener('keydown', onKeyDown);
-};
-
 const loadGLTF = () => {
 	const gltfLoader = new GLTFLoader();
 
@@ -419,19 +293,8 @@ const setupLoadedModel = (gltf: GLTF, scene: THREE.Scene, camera: THREE.Perspect
 	scene.add(root);
 
 	const mixer = setupModelAnimation(gltf, root);
-	const focusHandler = createFocusHandler(material);
 
-	return { focusHandler, material, mixer, root };
-};
-
-const initializeModelInteractivity = (
-	material: THREE.MeshBasicMaterial,
-	root: THREE.Group,
-	camera: THREE.PerspectiveCamera,
-) => {
-	createFadeInAnimation(material);
-	setupModelInteraction(root, camera);
-	showInitialMessage();
+	return { material, mixer };
 };
 
 const createAnimationLoop = (
@@ -456,8 +319,8 @@ const createAnimationLoop = (
 	animate();
 };
 
-const createThemeObserver = (focusHandler: { updateColors: () => void }) => {
-	const updateColor = () => focusHandler.updateColors();
+const createThemeObserver = (material: THREE.MeshBasicMaterial) => {
+	const updateColor = () => material.color.setHex(getModelColor());
 
 	if (colorSchemeDark) {
 		new MutationObserver((mutations) => {
@@ -473,8 +336,6 @@ const createThemeObserver = (focusHandler: { updateColors: () => void }) => {
 			attributes: true,
 		});
 	}
-
-	darkMediaQuery.addEventListener('change', updateColor);
 };
 
 const createResizeHandler = (camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer) => {
@@ -489,26 +350,36 @@ const createResizeHandler = (camera: THREE.PerspectiveCamera, renderer: THREE.We
 	window.addEventListener('resize', debounce(onResize));
 };
 
+const onModelClick = () => {
+	if (isInteractive) {
+		handleInteraction();
+	}
+};
+
 const init = async () => {
 	try {
 		updateLoadingProgress(0);
 
-		const scene = createScene();
-		const camera = createCamera();
+		const scene = new THREE.Scene();
+		const aspect = model.clientWidth / model.clientHeight;
+		const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 		const renderer = createRenderer();
 
 		const gltf = await loadGLTF();
-		const { focusHandler, material, mixer, root } = setupLoadedModel(gltf, scene, camera);
+		const { material, mixer } = setupLoadedModel(gltf, scene, camera);
 
 		updateLoadingProgress(100);
 		hideLoader();
 
-		initializeModelInteractivity(material, root, camera);
+		createFadeInAnimation(material);
+		showInitialMessage();
 		createAnimationLoop(renderer, scene, camera, mixer);
-		createThemeObserver(focusHandler);
+		createThemeObserver(material);
 		createResizeHandler(camera, renderer);
-	} catch (err) {
-		console.error('Failed to initialize 3D model:', err);
+
+		model.addEventListener('click', onModelClick);
+	} catch (error) {
+		console.error('Failed to initialize 3D model:', error);
 		hideLoader();
 		showErrorMessage();
 	}
