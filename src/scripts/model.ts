@@ -70,6 +70,8 @@ const isDarkTheme = () => {
 
 const getModelColor = () => (isDarkTheme() ? DARK_THEME_COLOR : LIGHT_THEME_COLOR);
 
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const getRandomMessage = (category: MessageCategory) => {
 	const categoryMessages = messages[category];
 	const availableMessages = categoryMessages.filter((content) => !shownMessages.has(content));
@@ -126,21 +128,27 @@ const applyMaterialToMeshes = (object: THREE.Object3D, material: THREE.MeshBasic
 };
 
 const createFadeInAnimation = (material: THREE.MeshBasicMaterial) => {
-	const startTime = window.performance.now();
+	const shouldReduceMotion = prefersReducedMotion();
 
-	const animate = (currentTime: number) => {
-		const elapsed = currentTime - startTime;
-		const animationProgress = Math.min(elapsed / FADE_IN_DURATION_MS, 1);
-		const easeOutCubic = 1 - Math.pow(1 - animationProgress, 3);
-		material.opacity = easeOutCubic;
+	if (shouldReduceMotion) {
+		material.opacity = 1;
+	} else {
+		const startTime = window.performance.now();
 
-		if (animationProgress < 1) {
-			window.requestAnimationFrame(animate);
-		}
-	};
+		const animate = (currentTime: number) => {
+			const elapsed = currentTime - startTime;
+			const animationProgress = Math.min(elapsed / FADE_IN_DURATION_MS, 1);
+			const easeOutCubic = 1 - Math.pow(1 - animationProgress, 3);
+			material.opacity = easeOutCubic;
 
-	material.opacity = 0;
-	window.requestAnimationFrame(animate);
+			if (animationProgress < 1) {
+				window.requestAnimationFrame(animate);
+			}
+		};
+
+		material.opacity = 0;
+		window.requestAnimationFrame(animate);
+	}
 };
 
 const showMessage = (content: string, category: MessageCategory) => {
@@ -222,14 +230,24 @@ const hideLoader = () => {
 
 const setupModelAnimation = (gltf: GLTF, root: THREE.Group) => {
 	const firstAnimation = gltf.animations[0];
+	let mixer: THREE.AnimationMixer | null = null;
 
 	if (firstAnimation) {
-		const mixer = new THREE.AnimationMixer(root);
-		mixer.clipAction(firstAnimation).play();
-		return mixer;
+		mixer = new THREE.AnimationMixer(root);
+		const action = mixer.clipAction(firstAnimation);
+		const shouldReduceMotion = prefersReducedMotion();
+
+		if (shouldReduceMotion) {
+			action.reset();
+			action.play();
+			mixer.update(1 / 60);
+			action.paused = true;
+		} else {
+			action.play();
+		}
 	}
 
-	return null;
+	return mixer;
 };
 
 const fitModelToContainer = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {

@@ -146,7 +146,9 @@ import Menu from '@/components/shared/Menu.astro';
 	}
 
 	[data-icon='logo'] {
-		animation: dash 10s ease-in-out forwards infinite;
+		@media (prefers-reduced-motion: no-preference) {
+			animation: dash 10s ease-in-out forwards infinite;
+		}
 	}
 </style>
 

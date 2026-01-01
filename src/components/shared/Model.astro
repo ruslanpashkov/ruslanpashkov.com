@@ -118,7 +118,9 @@
 	}
 
 	.model-message--shake {
-		animation: shake 0.3s ease-in-out;
+		@media (prefers-reduced-motion: no-preference) {
+			animation: shake 0.3s ease-in-out;
+		}
 	}
 
 	.model-message__content {
@@ -201,7 +203,10 @@
 			oklch(var(--color-white) / 30%),
 			transparent
 		);
-		animation: shimmer 1.5s infinite;
+
+		@media (prefers-reduced-motion: no-preference) {
+			animation: shimmer 1.5s infinite;
+		}
 	}
 
 	.model-notification__percentage {
