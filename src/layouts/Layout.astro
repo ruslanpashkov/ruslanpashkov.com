@@ -70,7 +70,17 @@ const generator = Astro.generator;
 			type="font/woff2"
 			crossorigin
 		/>
-
+		{
+			(Astro.url.pathname === '/' || type === 'article') && (
+				<link
+					rel="preload"
+					href="/fonts/FiraCode-Light.woff2?v=1"
+					as="font"
+					type="font/woff2"
+					crossorigin
+				/>
+			)
+		}
 		{
 			type === 'article' && (
 				<>
@@ -84,13 +94,6 @@ const generator = Astro.generator;
 					<link
 						rel="preload"
 						href="/fonts/Montserrat-Italic.woff2?v=1"
-						as="font"
-						type="font/woff2"
-						crossorigin
-					/>
-					<link
-						rel="preload"
-						href="/fonts/FiraCode-Light.woff2?v=1"
 						as="font"
 						type="font/woff2"
 						crossorigin
