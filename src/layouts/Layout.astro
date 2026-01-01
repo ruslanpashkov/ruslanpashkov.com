@@ -48,6 +48,8 @@ const generator = Astro.generator;
 
 		<title>{title}</title>
 
+		<link rel="preconnect" href="https://cloud.umami.is" />
+
 		<script
 			async
 			data-do-not-track="true"
@@ -56,44 +58,77 @@ const generator = Astro.generator;
 			is:inline
 			src="https://cloud.umami.is/script.js"></script>
 
-		{
-			schemas.length > 0 &&
-				schemas.map((schema) => (
-					<script
-						is:inline
-						set:html={JSON.stringify(schema)}
-						type="application/ld+json"
-					/>
-				))
-		}
-
 		<style id="color-scheme-light" media="(prefers-color-scheme: light)" set:html={lightStyles}
 		></style>
 		<style id="color-scheme-dark" media="(prefers-color-scheme: dark)" set:html={darkStyles}
 		></style>
 
-		<link href="/favicon.ico" rel="icon" sizes="48x48" />
-		<link href="/icon.svg" rel="icon" type="image/svg+xml" />
-		<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
-		<link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed" />
+		<link
+			rel="preload"
+			href="/fonts/Montserrat-Regular.woff2?v=1"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
 
-		<link href="/manifest.webmanifest" rel="manifest" />
-
-		<link href="/sitemap-index.xml" rel="sitemap" />
-
-		<link href={rssURL} rel="alternate" title={global.author} type="application/rss+xml" />
-
-		<link href={canonicalURL} rel="canonical" />
+		{
+			type === 'article' && (
+				<>
+					<link
+						rel="preload"
+						href="/fonts/Montserrat-Bold.woff2?v=1"
+						as="font"
+						type="font/woff2"
+						crossorigin
+					/>
+					<link
+						rel="preload"
+						href="/fonts/Montserrat-Italic.woff2?v=1"
+						as="font"
+						type="font/woff2"
+						crossorigin
+					/>
+					<link
+						rel="preload"
+						href="/fonts/FiraCode-Light.woff2?v=1"
+						as="font"
+						type="font/woff2"
+						crossorigin
+					/>
+				</>
+			)
+		}
 
 		<meta content={title} name="title" />
 		<meta content={description} name="description" />
+		<meta content={global.author} name="author" />
+		<meta content={generator} name="generator" />
 
 		<meta content="yes" name="mobile-web-app-capable" />
 		<meta content={global.author} name="application-name" />
 
-		<meta content={global.author} name="author" />
+		<meta
+			content={colors.light}
+			id="theme-color-light"
+			media="(prefers-color-scheme: light)"
+			name="theme-color"
+		/>
+		<meta
+			content={colors.dark}
+			id="theme-color-dark"
+			media="(prefers-color-scheme: dark)"
+			name="theme-color"
+		/>
 
-		<meta content={generator} name="generator" />
+		<link href={canonicalURL} rel="canonical" />
+		<link href="/sitemap-index.xml" rel="sitemap" />
+		<link href={rssURL} rel="alternate" title={global.author} type="application/rss+xml" />
+		<link href="/manifest.webmanifest" rel="manifest" />
+
+		<link href="/favicon.ico" rel="icon" sizes="48x48" />
+		<link href="/icon.svg" rel="icon" type="image/svg+xml" />
+		<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
+		<link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed" />
 
 		<meta content="en_US" property="og:locale" />
 		<meta content={global.author} property="og:site_name" />
@@ -129,18 +164,16 @@ const generator = Astro.generator;
 			)
 		}
 
-		<meta
-			content={colors.light}
-			id="theme-color-light"
-			media="(prefers-color-scheme: light)"
-			name="theme-color"
-		/>
-		<meta
-			content={colors.dark}
-			id="theme-color-dark"
-			media="(prefers-color-scheme: dark)"
-			name="theme-color"
-		/>
+		{
+			schemas.length > 0 &&
+				schemas.map((schema) => (
+					<script
+						is:inline
+						set:html={JSON.stringify(schema)}
+						type="application/ld+json"
+					/>
+				))
+		}
 	</head>
 
 	<body class="page__body" id="body">
