@@ -231,23 +231,23 @@ const hideLoader = () => {
 const setupModelAnimation = (gltf: GLTF, root: THREE.Group) => {
 	const firstAnimation = gltf.animations[0];
 	let mixer: THREE.AnimationMixer | null = null;
+	let action: THREE.AnimationAction | null = null;
 
 	if (firstAnimation) {
 		mixer = new THREE.AnimationMixer(root);
-		const action = mixer.clipAction(firstAnimation);
+		action = mixer.clipAction(firstAnimation);
 		const shouldReduceMotion = prefersReducedMotion();
 
+		action.reset();
+		action.play();
+
 		if (shouldReduceMotion) {
-			action.reset();
-			action.play();
 			mixer.update(1 / 60);
 			action.paused = true;
-		} else {
-			action.play();
 		}
 	}
 
-	return mixer;
+	return { mixer, action };
 };
 
 const fitModelToContainer = (root: THREE.Group, camera: THREE.PerspectiveCamera) => {
@@ -310,9 +310,9 @@ const setupLoadedModel = (gltf: GLTF, scene: THREE.Scene, camera: THREE.Perspect
 	fitModelToContainer(root, camera);
 	scene.add(root);
 
-	const mixer = setupModelAnimation(gltf, root);
+	const { mixer, action } = setupModelAnimation(gltf, root);
 
-	return { material, mixer };
+	return { material, mixer, action };
 };
 
 const createAnimationLoop = (
@@ -356,6 +356,28 @@ const createThemeObserver = (material: THREE.MeshBasicMaterial) => {
 	}
 };
 
+const createReducedMotionObserver = (action: THREE.AnimationAction | null) => {
+	const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	const updateAnimation = (reduceMotion: boolean) => {
+		if (action) {
+			if (reduceMotion) {
+				action.paused = true;
+			} else {
+				action.paused = false;
+				action.play();
+			}
+		}
+	};
+
+	const handleChange = (event: MediaQueryListEvent) => {
+		updateAnimation(event.matches);
+	};
+
+	updateAnimation(mediaQuery.matches);
+	mediaQuery.addEventListener('change', handleChange);
+};
+
 const createResizeHandler = (camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer) => {
 	const onResize = () => {
 		const width = model.clientWidth;
@@ -384,7 +406,7 @@ const init = async () => {
 		const renderer = createRenderer();
 
 		const gltf = await loadGLTF();
-		const { material, mixer } = setupLoadedModel(gltf, scene, camera);
+		const { material, mixer, action } = setupLoadedModel(gltf, scene, camera);
 
 		updateLoadingProgress(100);
 		hideLoader();
@@ -393,6 +415,7 @@ const init = async () => {
 		showInitialMessage();
 		createAnimationLoop(renderer, scene, camera, mixer);
 		createThemeObserver(material);
+		createReducedMotionObserver(action);
 		createResizeHandler(camera, renderer);
 
 		model.addEventListener('click', onModelClick);
