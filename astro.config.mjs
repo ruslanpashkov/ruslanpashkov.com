@@ -23,6 +23,7 @@ export default defineConfig({
 	integrations: [
 		icon({ iconDir: 'src/assets/svg' }),
 		expressiveCode({
+			emitExternalStylesheet: false,
 			customizeTheme: (theme) => {
 				theme.name = theme.type;
 			},
