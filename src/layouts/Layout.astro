@@ -37,6 +37,8 @@ const rssURL = new URL('/rss.xml', Astro.site);
 const siteURL = new URL('/', Astro.site);
 
 const generator = Astro.generator;
+
+const enableServiceWorker = import.meta.env.PROD;
 ---
 
 <!doctype html>
@@ -189,6 +191,8 @@ const generator = Astro.generator;
 		</main>
 
 		<Footer />
+
+		{enableServiceWorker && <script src="/sw-register.js" defer is:inline />}
 	</body>
 </html>
 

@@ -1,0 +1,142 @@
+---
+import { Icon } from 'astro-icon/components';
+import Layout from '@/layouts/Layout.astro';
+import Glow from '@/components/shared/Glow.astro';
+import { generateTitle } from '@/utils/seo';
+
+const title = generateTitle('Offline Mode');
+---
+
+<Layout cover="offline.png" description="You are offline" title={title} type="website">
+	<div class="container container--gapped" data-testid="offline-page-container">
+		<section aria-labelledby="offline-title" class="offline" data-testid="offline-section">
+			<div class="offline__title-container">
+				<h1 class="offline__title" id="offline-title">Connection lost</h1>
+
+				<div class="offline__divider" role="presentation"></div>
+			</div>
+
+			<div class="offline__content">
+				<h2 class="offline__subtitle">You’re offline right now.</h2>
+
+				<p class="offline__description">
+					Reconnect to load the latest version of the site.
+				</p>
+
+				<p class="offline__note">
+					This page appears only when your connection drops. If you’re online, you can
+					continue normally.
+				</p>
+
+				<a class="offline__back hover" href="/">
+					<Icon aria-hidden="true" name="arrow-short" width={28} />
+
+					Back to the homepage
+				</a>
+			</div>
+		</section>
+
+		<span class="glow-offline" data-testid="offline-glow">
+			<Glow />
+		</span>
+	</div>
+</Layout>
+
+<style>
+	.offline {
+		padding-block: 60px;
+
+		@media (width >= 48rem) {
+			padding-block: 80px;
+		}
+
+		@media (width >= 64rem) {
+			padding-block: 100px;
+		}
+	}
+
+	.offline__title-container {
+		margin-bottom: 40px;
+	}
+
+	.offline__title {
+		margin-bottom: 12px;
+		font-size: 2.25rem;
+
+		@media (width >= 48rem) {
+			font-size: 3rem;
+		}
+
+		@media (width >= 64rem) {
+			font-size: 4.5rem;
+		}
+	}
+
+	.offline__divider {
+		height: 1px;
+		background-color: var(--color-contrast);
+	}
+
+	.offline__content {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+
+		@media (width >= 48rem) {
+			gap: 24px;
+		}
+
+		@media (width >= 64rem) {
+			gap: 20px;
+		}
+	}
+
+	.offline__subtitle {
+		font-size: 1.5rem;
+	}
+
+	.offline__description {
+		@media (width >= 48rem) {
+			font-size: 1.125rem;
+		}
+	}
+
+	.offline__note {
+		position: relative;
+		padding-left: 16px;
+		line-height: 1.6;
+		color: var(--color-neutral);
+	}
+
+	.offline__note::before {
+		content: '';
+		position: absolute;
+		top: 0.25em;
+		bottom: 0.25em;
+		left: 0;
+		width: 2px;
+		border-radius: 2px;
+		background: color-mix(in oklch, var(--color-contrast), transparent 75%);
+	}
+
+	.offline__back {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		width: max-content;
+		font-size: 1.125rem;
+		text-decoration: underline;
+	}
+
+	[data-icon='arrow-short'] {
+		transform: rotate(180deg);
+	}
+
+	.glow-offline {
+		position: absolute;
+		z-index: var(--z-index-glow);
+		bottom: 0;
+		width: 100vw;
+		margin-left: calc(50% + 50vw);
+	}
+</style>

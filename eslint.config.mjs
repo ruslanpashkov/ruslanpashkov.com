@@ -15,7 +15,7 @@ export default [
 	eslintPluginJsxA11y.flatConfigs.recommended,
 	eslintPluginPrettier,
 	{
-		files: ['src/**/*'],
+		files: ['src/**/*', 'public/**/*'],
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -23,10 +23,18 @@ export default [
 		},
 	},
 	{
-		ignores: ['src/**/*'],
+		ignores: ['src/**/*', 'public/**/*'],
 		languageOptions: {
 			globals: {
 				...globals.node,
+			},
+		},
+	},
+	{
+		files: ['public/sw.js'],
+		languageOptions: {
+			globals: {
+				...globals.serviceworker,
 			},
 		},
 	},
