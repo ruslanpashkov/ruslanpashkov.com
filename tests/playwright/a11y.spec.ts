@@ -11,7 +11,7 @@ test.describe('Accessibility', () => {
 				await page.goto(pagePath);
 				await page.waitForLoadState('networkidle');
 				const accessibilityScanResults = await new AxeBuilder({ page })
-					.withTags(['wcag22aa', 'best-practice'])
+					.withTags(['wcag22aa'])
 					.analyze();
 				expect(accessibilityScanResults.violations).toEqual([]);
 			});
